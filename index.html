@@ -63,6 +63,9 @@
     border-radius:9px;background:transparent}
   .note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
   .note a{color:var(--accent);text-decoration:none}
+  #placeq{flex:1;min-width:0;padding:9px 12px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--ink);font:500 12.5px/1.2 inherit}
+  #placeq::placeholder{color:var(--ink-soft)}
   #err{position:fixed;left:14px;right:14px;top:calc(76px + env(safe-area-inset-top));z-index:40;
     display:none;padding:13px 15px;border-radius:12px;background:rgba(44,17,20,.9);
     border:1px solid #5c2b2b;color:#f0b9b9;font-size:12.5px;line-height:1.5;
@@ -230,6 +233,16 @@
         <button id="clearaddr">Clear</button>
       </div>
       <p class="note" id="addrnote">O is the exterior observer face, the public permissioned database. I is the interior personal face, the private encrypted database. Same 1–288 numbers on both. Tap any cell to read its address.</p>
+    </div>
+
+    <div class="group">
+      <h2>Earth</h2>
+      <div class="btns">
+        <input id="placeq" list="places" placeholder="Search a place" autocomplete="off">
+        <button id="goplace">Go</button>
+      </div>
+      <datalist id="places"></datalist>
+      <p class="note" id="placenote">Type a place and Go: the camera swings and zooms onto it. Tap any gold marker on the globe to read it.</p>
     </div>
 
     </div>
@@ -509,6 +522,53 @@ function addressTexture(r, c, rows, cols){
    shell. 14 textures total instead of thousands of materials.       */
 var SHELL_COL  = [0xe23a2e,0xf2801f,0xf0c414,0x35a24f,0x2f6fed,0x5546c8,0x9a4fd6];
 var SHELL_NAME = ['Red','Orange','Yellow','Green','Blue','Indigo','Violet'];
+
+/* ---------- places on the geosphere ---------- */
+var PLACES = [
+  {n:'Minjerribah (Straddie)', lat:-27.49, lon:153.45},
+  {n:'Brisbane', lat:-27.47, lon:153.03},
+  {n:'Sydney', lat:-33.87, lon:151.21},
+  {n:'Melbourne', lat:-37.81, lon:144.96},
+  {n:'Perth', lat:-31.95, lon:115.86},
+  {n:'Darwin', lat:-12.46, lon:130.84},
+  {n:'Hobart', lat:-42.88, lon:147.33},
+  {n:'Auckland', lat:-36.85, lon:174.76},
+  {n:'Suva', lat:-18.14, lon:178.44},
+  {n:'Port Moresby', lat:-9.44, lon:147.18},
+  {n:'Tokyo', lat:35.68, lon:139.69},
+  {n:'Singapore', lat:1.35, lon:103.82},
+  {n:'Jakarta', lat:-6.20, lon:106.85},
+  {n:'Delhi', lat:28.61, lon:77.21},
+  {n:'Beijing', lat:39.90, lon:116.41},
+  {n:'Moscow', lat:55.76, lon:37.62},
+  {n:'Cairo', lat:30.04, lon:31.24},
+  {n:'Nairobi', lat:-1.29, lon:36.82},
+  {n:'Lagos', lat:6.52, lon:3.38},
+  {n:'Cape Town', lat:-33.92, lon:18.42},
+  {n:'London', lat:51.51, lon:-0.13},
+  {n:'Paris', lat:48.86, lon:2.35},
+  {n:'Berlin', lat:52.52, lon:13.40},
+  {n:'Rome', lat:41.90, lon:12.50},
+  {n:'Reykjavik', lat:64.15, lon:-21.94},
+  {n:'New York', lat:40.71, lon:-74.01},
+  {n:'Los Angeles', lat:34.05, lon:-118.24},
+  {n:'Mexico City', lat:19.43, lon:-99.13},
+  {n:'Sao Paulo', lat:-23.55, lon:-46.63},
+  {n:'Buenos Aires', lat:-34.60, lon:-58.38},
+  {n:'Santiago', lat:-33.45, lon:-70.67},
+  {n:'Honolulu', lat:21.31, lon:-157.86},
+  {n:'Vancouver', lat:49.28, lon:-123.12},
+  {n:'McMurdo Station', lat:-77.85, lon:166.67}
+];
+// lat/lon to a point on a three.js sphere carrying an equirectangular map
+function latLonToVec(lat, lon, r){
+  var phi = (90 - lat) * Math.PI / 180;
+  var theta = (lon + 180) * Math.PI / 180;
+  return new THREE.Vector3(
+    -r * Math.sin(phi) * Math.cos(theta),
+     r * Math.cos(phi),
+     r * Math.sin(phi) * Math.sin(theta));
+}
 var BODY_S = 0.30;                              // per-shell scale in the body arrangement
 
 function atlasCellPx(cols){ return cols > 32 ? 48 : 96; }
@@ -560,7 +620,7 @@ function makeAtlas(k, inside, rows, cols){
 
 /* Earth skin for the geosphere — same third-party trust level as the
    three.js CDN itself. If it never arrives, the wireframe stands alone. */
-var earthTex = null, sphereEarthMat = null;
+var earthTex = null, sphereEarthMat = null, sphereWire = null;
 new THREE.TextureLoader().load(
   'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
   function(t){
@@ -571,6 +631,7 @@ new THREE.TextureLoader().load(
       sphereEarthMat.visible = true;
       sphereEarthMat.needsUpdate = true;
     }
+    if(sphereWire) sphereWire.visible = false;   // grid is only the fallback
   });
 
 var fieldPool = [];
@@ -599,7 +660,7 @@ function reorder(shuffleIt){
 /* ---------- lattice ---------- */
 var mesh = null, lattice = null, geo = null, mats = [];
 var shells = [];                 // seven of {out, inn, atlOut, atlIn}
-var shellGeo = null, sphereMesh = null;
+var shellGeo = null, sphereMesh = null, markerGroup = null, selPlace = -1;
 var sel = null;                  // {k, cell, inside} highlighted address
 var uArr, vArr, ucArr, vcArr;      // per-vertex surface params + owning cell centre
 var lineU, lineV, lineUc, lineVc;
@@ -622,7 +683,8 @@ function clearMeshes(){
       if(o.geometry) o.geometry.dispose();
       if(o.material && o.material.dispose) o.material.dispose();
     });
-    sphereMesh = null; sphereEarthMat = null;
+    sphereMesh = null; sphereEarthMat = null; sphereWire = null;
+    markerGroup = null; selPlace = -1;
   }
   sel = null;
 }
@@ -793,8 +855,20 @@ function buildShells(){
   sphereEarthMat = new THREE.MeshBasicMaterial({visible: !!earthTex});
   if(earthTex) sphereEarthMat.map = earthTex;
   sphereMesh.add(new THREE.Mesh(sg, sphereEarthMat));
-  sphereMesh.add(new THREE.LineSegments(new THREE.WireframeGeometry(sg),
-    new THREE.LineBasicMaterial({color:0x8b939e, transparent:true, opacity:0.3})));
+  sphereWire = new THREE.LineSegments(new THREE.WireframeGeometry(sg),
+    new THREE.LineBasicMaterial({color:0x8b939e, transparent:true, opacity:0.3}));
+  sphereWire.visible = !earthTex;
+  sphereMesh.add(sphereWire);
+  markerGroup = new THREE.Group();
+  var Rs = 2 * R * 1.12;
+  var mgGeo = new THREE.SphereBufferGeometry(Rs * 0.012, 8, 8);
+  PLACES.forEach(function(p, i){
+    var m = new THREE.Mesh(mgGeo, new THREE.MeshBasicMaterial({color:0xd8b36a}));
+    m.position.copy(latLonToVec(p.lat, p.lon, Rs * 1.004));
+    m.userData = {place:i};
+    markerGroup.add(m);
+  });
+  sphereMesh.add(markerGroup);
   root.add(sphereMesh);
 
   buildWire();
@@ -1156,6 +1230,11 @@ function pick(e){
     -((e.clientY - rect.top) / rect.height) * 2 + 1), camera);
   var triPerCell = P.detail * P.detail * 2;
   if(P.shellsMode === 'seven'){
+    // place markers first: they are small, so give them priority
+    if(markerGroup && sphereMesh && sphereMesh.visible){
+      var mHits = raycaster.intersectObjects(markerGroup.children);
+      if(mHits.length){ focusPlace(mHits[0].object.userData.place); return; }
+    }
     var objs = [];
     shells.forEach(function(s){
       if(s.out.visible) objs.push(s.out);
@@ -1198,6 +1277,48 @@ function findAddress(){
   }
   cam.dist = inside ? Math.max(1.2, 2 * R * s) : Math.max(4, 2 * R * s * 3.2);
   applyCamera();
+}
+
+/* ---------- Earth places: search, zoom, tap ---------- */
+function fmtLatLon(p){
+  return Math.abs(p.lat).toFixed(1) + '°' + (p.lat < 0 ? 'S' : 'N') + ', ' +
+         Math.abs(p.lon).toFixed(1) + '°' + (p.lon < 0 ? 'W' : 'E');
+}
+function focusPlace(i){
+  if(!markerGroup) return;
+  if(selPlace >= 0 && markerGroup.children[selPlace]){
+    markerGroup.children[selPlace].material.color.setHex(0xd8b36a);
+    markerGroup.children[selPlace].scale.setScalar(1);
+  }
+  selPlace = i;
+  var m = markerGroup.children[i];
+  m.material.color.setHex(0xffffff);
+  m.scale.setScalar(1.4);
+  // hold the globe still so the place does not drift away
+  P.spin = 0;
+  document.getElementById('spin').value = 0;
+  sync('spin', '0.00');
+  root.updateMatrixWorld(true);
+  var v = new THREE.Vector3();
+  m.getWorldPosition(v);
+  var len = v.length();
+  cam.theta = Math.atan2(v.x, v.z);
+  cam.phi = Math.acos(Math.max(-1, Math.min(1, v.y / len)));
+  cam.dist = len * 1.9;
+  applyCamera();
+  document.getElementById('placenote').textContent =
+    PLACES[i].n + ' · ' + fmtLatLon(PLACES[i]);
+  document.getElementById('placeq').value = PLACES[i].n;
+  switchTab('find');
+}
+function goPlace(){
+  var q = document.getElementById('placeq').value.trim().toLowerCase();
+  if(!q) return;
+  for(var i = 0; i < PLACES.length; i++){
+    if(PLACES[i].n.toLowerCase().indexOf(q) !== -1){ focusPlace(i); return; }
+  }
+  document.getElementById('placenote').textContent =
+    'No marker for "' + q + '" yet. The gazetteer lives in PLACES inside this file.';
 }
 
 /* ---------- controls ---------- */
@@ -1335,6 +1456,17 @@ document.querySelectorAll('#sideseg button').forEach(function(b){
 });
 document.getElementById('goaddr').addEventListener('click', findAddress);
 document.getElementById('clearaddr').addEventListener('click', clearSel);
+
+var placeList = document.getElementById('places');
+PLACES.forEach(function(p){
+  var o = document.createElement('option');
+  o.value = p.n;
+  placeList.appendChild(o);
+});
+document.getElementById('goplace').addEventListener('click', goPlace);
+document.getElementById('placeq').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); goPlace(); }
+});
 
 document.getElementById('lock').addEventListener('click', function(){
   P.lock = !P.lock; this.classList.toggle('on', P.lock);
