@@ -1335,18 +1335,24 @@ function findAddress(){
    all shells. Each ray is a stable object with an empty `binding`
    field, reserved for a later system that binds rays to content and
    operations. All off by default; lit in groups, always dismissible. */
+function pad3(n){ return ('00' + n).slice(-3); }
+/* Register scheme from Luke's "Vert&Face Vector" map (Aura App Vector
+   Maps Red Torus 01): vertex rays are R{ring},L{nnn} — 12 rings of 24,
+   ring 1 being the seam ring, whose 24 registers coincide at the horn
+   point but keep their own identities. Centre rays are FR{row},L{facet}.
+   Facet corners wrap in u, and ring 13 wraps back to R1 in v. */
 function makeRayDefs(){
   var rows = P.rows, cols = P.cols;
   rayDefs = []; rayIndex = {};
   function addRay(d){ rayDefs.push(d); rayIndex[d.id] = d; }
-  // the horn rows collapse to the zero point, so they share one axis ray
-  addRay({id:'horn', kind:'horn', binding:null});
-  for(var r = 1; r < rows; r++)
+  for(var ring = 1; ring <= rows; ring++)
     for(var c = 0; c < cols; c++)
-      addRay({id:'v'+r+'x'+c, kind:'vertex', r:r, c:c, un:c/cols, vn:r/rows, binding:null});
+      addRay({id:'R'+ring+',L'+pad3((ring-1)*cols + c + 1), kind:'vertex',
+        ring:ring, c:c, un:c/cols, vn:(ring-1)/rows, horn:(ring === 1), binding:null});
   for(var r2 = 0; r2 < rows; r2++)
     for(var c2 = 0; c2 < cols; c2++)
-      addRay({id:'c'+r2+'x'+c2, kind:'centre', r:r2, c:c2, un:(c2+0.5)/cols, vn:(r2+0.5)/rows, binding:null});
+      addRay({id:'FR'+(r2+1)+',L'+pad3(r2*cols + c2 + 1), kind:'centre',
+        ring:r2+1, c:c2, un:(c2+0.5)/cols, vn:(r2+0.5)/rows, horn:false, binding:null});
 }
 // exact point on the closed roll-path torus (unscaled)
 function torusPointClosed(un, vn){
@@ -1360,11 +1366,16 @@ function activeRayIds(){
   var rows = P.rows, cols = P.cols;
   var cell = Math.min(P.addrcell, rows * cols) - 1;
   var r = (cell / cols) | 0, c = cell % cols, ids = [];
-  function vid(rr, cc){ return (rr === 0 || rr === rows) ? 'horn' : 'v'+rr+'x'+(cc % cols); }
+  // vertex-row rr (0-based) is ring rr+1; ring rows+1 wraps back to R1
+  function vid(rr, cc){
+    var ring = (rr % rows) + 1;
+    return 'R' + ring + ',L' + pad3((ring-1)*cols + (cc % cols) + 1);
+  }
+  function fid(rr, cc){ return 'FR' + (rr+1) + ',L' + pad3(rr*cols + cc + 1); }
   if(P.rays === 'cell'){
-    ids = [vid(r,c), vid(r,c+1), vid(r+1,c), vid(r+1,c+1), 'c'+r+'x'+c];
+    ids = [vid(r,c), vid(r,c+1), vid(r+1,c), vid(r+1,c+1), fid(r,c)];
   } else if(P.rays === 'row'){
-    for(var i = 0; i < cols; i++) ids.push(vid(r,i), vid(r+1,i), 'c'+r+'x'+i);
+    for(var i = 0; i < cols; i++) ids.push(vid(r,i), vid(r+1,i), fid(r,i));
   } else if(P.rays === 'shell'){
     ids = rayDefs.map(function(d){ return d.id; });
   }
@@ -1374,11 +1385,14 @@ function rebuildRayLines(){
   if(rayLines){ root.remove(rayLines); rayLines.geometry.dispose(); rayLines.material.dispose(); rayLines = null; }
   var ids = activeRayIds();
   if(!ids.length) return;
-  var pos = [];
+  var pos = [], hornDrawn = false;
   ids.forEach(function(id){
     var d = rayIndex[id];
     if(!d) return;
-    if(d.kind === 'horn'){
+    if(d.horn){
+      // the 24 seam registers coincide at the horn: one axis segment
+      if(hornDrawn) return;
+      hornDrawn = true;
       var rV = P.rows / TAU;
       pos.push(0, -rV, 0, 0, rV, 0);
     } else {
