@@ -621,17 +621,26 @@ function makeAtlas(k, inside, rows, cols){
 /* Earth skin for the geosphere — same third-party trust level as the
    three.js CDN itself. If it never arrives, the wireframe stands alone. */
 var earthTex = null, sphereEarthMat = null, sphereWire = null;
+function applyEarth(t){
+  t.encoding = THREE.sRGBEncoding;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  earthTex = t;
+  if(sphereEarthMat){
+    sphereEarthMat.map = t;
+    sphereEarthMat.visible = true;
+    sphereEarthMat.needsUpdate = true;
+  }
+  if(sphereWire) sphereWire.visible = false;   // grid is only the fallback
+}
+// 4K Blue Marble first; the 2K three.js texture as fallback; wireframe if both fail
 new THREE.TextureLoader().load(
-  'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
-  function(t){
-    t.encoding = THREE.sRGBEncoding;
-    earthTex = t;
-    if(sphereEarthMat){
-      sphereEarthMat.map = t;
-      sphereEarthMat.visible = true;
-      sphereEarthMat.needsUpdate = true;
-    }
-    if(sphereWire) sphereWire.visible = false;   // grid is only the fallback
+  'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+  applyEarth,
+  undefined,
+  function(){
+    new THREE.TextureLoader().load(
+      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
+      applyEarth);
   });
 
 var fieldPool = [];
@@ -861,12 +870,24 @@ function buildShells(){
   sphereMesh.add(sphereWire);
   markerGroup = new THREE.Group();
   var Rs = 2 * R * 1.12;
-  var mgGeo = new THREE.SphereBufferGeometry(Rs * 0.012, 8, 8);
+  // pinpoint markers: a fine needle whose tip touches the exact spot
+  var pinH = Rs * 0.028, upAxis = new THREE.Vector3(0, 1, 0);
+  var needleGeo = new THREE.ConeBufferGeometry(Rs * 0.0022, pinH, 6);
+  var headGeo = new THREE.SphereBufferGeometry(Rs * 0.006, 8, 8);
   PLACES.forEach(function(p, i){
-    var m = new THREE.Mesh(mgGeo, new THREE.MeshBasicMaterial({color:0xd8b36a}));
-    m.position.copy(latLonToVec(p.lat, p.lon, Rs * 1.004));
-    m.userData = {place:i};
-    markerGroup.add(m);
+    var pin = new THREE.Group();
+    var mat = new THREE.MeshBasicMaterial({color:0xd8b36a});
+    var needle = new THREE.Mesh(needleGeo, mat);
+    needle.rotation.x = Math.PI;            // apex down, onto the surface
+    needle.position.y = pinH / 2;
+    var head = new THREE.Mesh(headGeo, mat);
+    head.position.y = pinH;
+    pin.add(needle); pin.add(head);
+    var at = latLonToVec(p.lat, p.lon, Rs);
+    pin.position.copy(at);
+    pin.quaternion.setFromUnitVectors(upAxis, at.clone().normalize());
+    pin.userData = {place:i};
+    markerGroup.add(pin);
   });
   sphereMesh.add(markerGroup);
   root.add(sphereMesh);
@@ -1232,8 +1253,12 @@ function pick(e){
   if(P.shellsMode === 'seven'){
     // place markers first: they are small, so give them priority
     if(markerGroup && sphereMesh && sphereMesh.visible){
-      var mHits = raycaster.intersectObjects(markerGroup.children);
-      if(mHits.length){ focusPlace(mHits[0].object.userData.place); return; }
+      var mHits = raycaster.intersectObjects(markerGroup.children, true);
+      if(mHits.length){
+        var po = mHits[0].object;
+        while(po && po.userData.place === undefined) po = po.parent;
+        if(po){ focusPlace(po.userData.place); return; }
+      }
     }
     var objs = [];
     shells.forEach(function(s){
@@ -1284,16 +1309,19 @@ function fmtLatLon(p){
   return Math.abs(p.lat).toFixed(1) + '°' + (p.lat < 0 ? 'S' : 'N') + ', ' +
          Math.abs(p.lon).toFixed(1) + '°' + (p.lon < 0 ? 'W' : 'E');
 }
+function setPinState(pin, hot){
+  pin.scale.setScalar(hot ? 1.5 : 1);
+  pin.traverse(function(o){
+    if(o.material) o.material.color.setHex(hot ? 0xffffff : 0xd8b36a);
+  });
+}
 function focusPlace(i){
   if(!markerGroup) return;
-  if(selPlace >= 0 && markerGroup.children[selPlace]){
-    markerGroup.children[selPlace].material.color.setHex(0xd8b36a);
-    markerGroup.children[selPlace].scale.setScalar(1);
-  }
+  if(selPlace >= 0 && markerGroup.children[selPlace])
+    setPinState(markerGroup.children[selPlace], false);
   selPlace = i;
   var m = markerGroup.children[i];
-  m.material.color.setHex(0xffffff);
-  m.scale.setScalar(1.4);
+  setPinState(m, true);
   // hold the globe still so the place does not drift away
   P.spin = 0;
   document.getElementById('spin').value = 0;
@@ -1304,7 +1332,7 @@ function focusPlace(i){
   var len = v.length();
   cam.theta = Math.atan2(v.x, v.z);
   cam.phi = Math.acos(Math.max(-1, Math.min(1, v.y / len)));
-  cam.dist = len * 1.9;
+  cam.dist = len * 1.22;
   applyCamera();
   document.getElementById('placenote').textContent =
     PLACES[i].n + ' · ' + fmtLatLon(PLACES[i]);
