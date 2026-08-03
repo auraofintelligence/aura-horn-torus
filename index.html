@@ -236,6 +236,19 @@
     </div>
 
     <div class="group">
+      <h2>Rays</h2>
+      <div class="btns">
+        <div class="seg" id="rayseg">
+          <button data-rays="cell" type="button">Cell</button>
+          <button data-rays="row" type="button">Row</button>
+          <button data-rays="shell" type="button">Shell</button>
+        </div>
+        <button id="raysoff" type="button">Clear</button>
+      </div>
+      <p class="note">Rays run from the zero point out to the lattice: one to every vertex, one to every cell centre. Pick a cell (tap or Address), then light that cell's rays, its row's, or the whole shell's. Off by default; Clear returns the bare shell.</p>
+    </div>
+
+    <div class="group">
       <h2>Earth</h2>
       <div class="btns">
         <input id="placeq" list="places" placeholder="Search a place" autocomplete="off">
@@ -388,7 +401,7 @@ var P = {
   rows:12, cols:24, lock:true, wire:false,
   mode:'field', bright:1, tint:0xffffff, spin:0.12,
   bg:'none', bgcolor:0x0e1014,
-  shellsMode:'seven', sphere:true, aura:true, arrange:0, focus:0, peel:0,
+  shellsMode:'seven', sphere:true, aura:true, arrange:0, focus:0, peel:0, rays:'off',
   addrshell:4, addrcell:1, addrside:'out'
 };
 
@@ -670,6 +683,7 @@ function reorder(shuffleIt){
 var mesh = null, lattice = null, geo = null, mats = [];
 var shells = [];                 // seven of {out, inn, atlOut, atlIn}
 var shellGeo = null, sphereMesh = null, markerGroup = null, selPlace = -1;
+var rayDefs = [], rayIndex = {}, rayLines = null;
 var sel = null;                  // {k, cell, inside} highlighted address
 var uArr, vArr, ucArr, vcArr;      // per-vertex surface params + owning cell centre
 var lineU, lineV, lineUc, lineVc;
@@ -695,6 +709,9 @@ function clearMeshes(){
     sphereMesh = null; sphereEarthMat = null; sphereWire = null;
     markerGroup = null; selPlace = -1;
   }
+  if(rayLines){ root.remove(rayLines); rayLines.geometry.dispose(); rayLines.material.dispose(); rayLines = null; }
+  P.rays = 'off';
+  document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
   sel = null;
 }
 
@@ -898,7 +915,9 @@ function buildShells(){
   styleAll();
   reframe();
 
-  window.__htl = {shells:shells, camera:camera, root:root, scene:scene};
+  makeRayDefs();
+  rebuildRayLines();
+  window.__htl = {shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs};
 
   document.getElementById('sub').textContent =
     '7 shells · ' + rows + ' × ' + cols + ' · ' + (cells * 2 * 7) + ' addresses';
@@ -949,6 +968,11 @@ function updateShellTransforms(){
     var colHalf = 3 * (2 * R * BODY_S * 1.15) + 2 * R * BODY_S;
     var grow = Math.max(1, colHalf * 1.08 / (2 * R * 1.12));
     sphereMesh.scale.setScalar(1 + (grow - 1) * t);
+  }
+  if(rayLines){
+    var rrk = P.focus > 0 ? P.focus - 1 : 6;
+    rayLines.scale.setScalar(shellS(rrk));
+    rayLines.position.set(0, shellY(rrk), 0);
   }
   if(lattice){
     lattice.visible = P.wire && P.aura;
@@ -1237,6 +1261,7 @@ function setSel(k, cell, inside){
   document.querySelectorAll('#sideseg button').forEach(function(x){
     x.classList.toggle('on', x.dataset.side === P.addrside);
   });
+  if(P.rays === 'cell' || P.rays === 'row') rebuildRayLines();
 }
 
 function clearSel(){
@@ -1302,6 +1327,70 @@ function findAddress(){
   }
   cam.dist = inside ? Math.max(1.2, 2 * R * s) : Math.max(4, 2 * R * s * 3.2);
   applyCamera();
+}
+
+/* ---------- rays: zero point to lattice ----------
+   One ray per lattice vertex, one per cell centre. Directions are the
+   same on every shell, so a ray passes through the matching point on
+   all shells. Each ray is a stable object with an empty `binding`
+   field, reserved for a later system that binds rays to content and
+   operations. All off by default; lit in groups, always dismissible. */
+function makeRayDefs(){
+  var rows = P.rows, cols = P.cols;
+  rayDefs = []; rayIndex = {};
+  function addRay(d){ rayDefs.push(d); rayIndex[d.id] = d; }
+  // the horn rows collapse to the zero point, so they share one axis ray
+  addRay({id:'horn', kind:'horn', binding:null});
+  for(var r = 1; r < rows; r++)
+    for(var c = 0; c < cols; c++)
+      addRay({id:'v'+r+'x'+c, kind:'vertex', r:r, c:c, un:c/cols, vn:r/rows, binding:null});
+  for(var r2 = 0; r2 < rows; r2++)
+    for(var c2 = 0; c2 < cols; c2++)
+      addRay({id:'c'+r2+'x'+c2, kind:'centre', r:r2, c:c2, un:(c2+0.5)/cols, vn:(r2+0.5)/rows, binding:null});
+}
+// exact point on the closed roll-path torus (unscaled)
+function torusPointClosed(un, vn){
+  var rV = P.rows / TAU;
+  var w = vn * TAU, psi = (un - 0.5) * TAU;
+  var q = rV * (1 - Math.cos(w));
+  return new THREE.Vector3(q * Math.sin(psi), -rV * Math.sin(w), q * Math.cos(psi));
+}
+function activeRayIds(){
+  if(P.rays === 'off' || P.shellsMode !== 'seven') return [];
+  var rows = P.rows, cols = P.cols;
+  var cell = Math.min(P.addrcell, rows * cols) - 1;
+  var r = (cell / cols) | 0, c = cell % cols, ids = [];
+  function vid(rr, cc){ return (rr === 0 || rr === rows) ? 'horn' : 'v'+rr+'x'+(cc % cols); }
+  if(P.rays === 'cell'){
+    ids = [vid(r,c), vid(r,c+1), vid(r+1,c), vid(r+1,c+1), 'c'+r+'x'+c];
+  } else if(P.rays === 'row'){
+    for(var i = 0; i < cols; i++) ids.push(vid(r,i), vid(r+1,i), 'c'+r+'x'+i);
+  } else if(P.rays === 'shell'){
+    ids = rayDefs.map(function(d){ return d.id; });
+  }
+  return Array.from(new Set(ids));
+}
+function rebuildRayLines(){
+  if(rayLines){ root.remove(rayLines); rayLines.geometry.dispose(); rayLines.material.dispose(); rayLines = null; }
+  var ids = activeRayIds();
+  if(!ids.length) return;
+  var pos = [];
+  ids.forEach(function(id){
+    var d = rayIndex[id];
+    if(!d) return;
+    if(d.kind === 'horn'){
+      var rV = P.rows / TAU;
+      pos.push(0, -rV, 0, 0, rV, 0);
+    } else {
+      var p = torusPointClosed(d.un, d.vn);
+      pos.push(0, 0, 0, p.x, p.y, p.z);
+    }
+  });
+  var g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  rayLines = new THREE.LineSegments(g,
+    new THREE.LineBasicMaterial({color:0xd8b36a, transparent:true, opacity:0.55}));
+  root.add(rayLines);
 }
 
 /* ---------- Earth places: search, zoom, tap ---------- */
@@ -1491,6 +1580,22 @@ PLACES.forEach(function(p){
   o.value = p.n;
   placeList.appendChild(o);
 });
+document.querySelectorAll('#rayseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    var mode = b.dataset.rays;
+    P.rays = (P.rays === mode) ? 'off' : mode;
+    document.querySelectorAll('#rayseg button').forEach(function(x){
+      x.classList.toggle('on', P.rays === x.dataset.rays);
+    });
+    rebuildRayLines();
+  });
+});
+document.getElementById('raysoff').addEventListener('click', function(){
+  P.rays = 'off';
+  document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
+  rebuildRayLines();
+});
+
 document.getElementById('goplace').addEventListener('click', goPlace);
 document.getElementById('placeq').addEventListener('keydown', function(e){
   if(e.key === 'Enter'){ e.preventDefault(); goPlace(); }
