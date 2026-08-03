@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Horn Torus Lattice</title>
+<style>
+  :root{
+    --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
+    --panel:rgba(12,14,20,.62); --accent:#d8b36a; --glow:rgba(216,179,106,.35);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;overflow:hidden;color:var(--ink);
+    background:radial-gradient(ellipse at 50% 32%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif}
+  canvas{display:block;touch-action:none}
+  #stage{position:fixed;inset:0}
+  #hud{position:fixed;top:0;left:0;right:0;padding:16px 18px calc(16px + env(safe-area-inset-top));
+    display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
+  #hud h1{margin:0;font-size:12.5px;font-weight:650;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent)}
+  #hud p{margin:2px 0 0;font-size:12.5px;color:var(--ink-soft)}
+  #eqn{font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink-soft);
+    text-align:right;white-space:pre;font-variant-numeric:tabular-nums}
+
+  #sheet{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--panel);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border-top:1px solid var(--line);border-radius:18px 18px 0 0;
+    transform:translateY(calc(100% - 58px));transition:transform .32s cubic-bezier(.4,.05,.2,1);
+    padding-bottom:env(safe-area-inset-bottom)}
+  #sheet.open{transform:translateY(0)}
+  #grip{height:58px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 18px;cursor:pointer;user-select:none}
+  #grip span{font-size:13px;font-weight:600}
+  #grip em{font:11px/1 ui-monospace,Menlo,monospace;color:var(--ink-soft);font-style:normal}
+  #body{max-height:46vh;overflow-y:auto;padding:2px 18px 22px;-webkit-overflow-scrolling:touch}
+  .group{border-top:1px solid var(--line);padding:14px 0 4px}
+  .group:first-child{border-top:0;padding-top:4px}
+  .group > h2{margin:0 0 10px;font:600 10.5px/1 ui-monospace,Menlo,monospace;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
+  .row{display:flex;align-items:center;gap:12px;margin:0 0 11px}
+  .row label{flex:0 0 100px;font-size:12.5px}
+  .row input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:22px;background:none}
+  .row input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:2px;background:var(--line)}
+  .row input[type=range]::-moz-range-track{height:3px;border-radius:2px;background:var(--line)}
+  .row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;
+    border-radius:50%;background:#0d0f15;border:1.5px solid var(--accent);margin-top:-8px;
+    box-shadow:0 0 8px var(--glow)}
+  .row input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;
+    background:#0d0f15;border:1.5px solid var(--accent);box-shadow:0 0 8px var(--glow)}
+  .row output{flex:0 0 46px;text-align:right;font:11.5px/1 ui-monospace,Menlo,monospace;
+    color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 10px;align-items:center}
+  button,.filebtn{font:500 12.5px/1 inherit;padding:9px 14px;border-radius:9px;
+    border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer}
+  button.on{background:rgba(216,179,106,.16);color:var(--accent);
+    border-color:rgba(216,179,106,.5);box-shadow:0 0 10px var(--glow)}
+  .filebtn input{display:none}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{border:0;border-radius:0;border-left:1px solid var(--line)}
+  .seg button:first-child{border-left:0}
+  input[type=color]{width:38px;height:34px;padding:0;border:1px solid var(--line);
+    border-radius:9px;background:transparent}
+  .note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
+  .note a{color:var(--accent);text-decoration:none}
+  #err{position:fixed;left:14px;right:14px;top:calc(76px + env(safe-area-inset-top));z-index:40;
+    display:none;padding:13px 15px;border-radius:12px;background:rgba(44,17,20,.9);
+    border:1px solid #5c2b2b;color:#f0b9b9;font-size:12.5px;line-height:1.5;
+    box-shadow:0 6px 20px rgba(0,0,0,.4)}
+  #err b{display:block;margin-bottom:3px;font-size:13px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  body.seven .single-only{display:none}
+  #tabs{display:flex;gap:4px;padding:4px 0 10px}
+  #tabs .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:7px 2px;border:1px solid transparent;background:none;border-radius:10px;
+    font-size:10.5px;font-weight:500;color:var(--ink-soft);cursor:pointer}
+  #tabs .tab svg{width:18px;height:18px;stroke:currentColor;fill:none;
+    stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  #tabs .tab.on{background:rgba(216,179,106,.14);border-color:rgba(216,179,106,.45);
+    color:var(--accent);font-weight:600}
+  .panel{display:none}
+  .panel.act{display:block}
+  #rail{position:fixed;left:14px;top:50%;transform:translateY(-50%);z-index:12;
+    display:none;flex-direction:column;align-items:center;gap:11px;padding:12px 9px;
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);border-radius:999px}
+  body.seven #rail{display:flex}
+  #rail .dot{width:21px;height:21px;border-radius:50%;padding:0;cursor:pointer;
+    border:2px solid rgba(255,255,255,.22);box-shadow:none;
+    transition:transform .15s ease, box-shadow .15s ease}
+  #rail .dot:hover{transform:scale(1.18)}
+  #rail .dot.on{border-color:#fff;transform:scale(1.22);
+    box-shadow:0 0 12px var(--dc, rgba(255,255,255,.4))}
+  #rail .dot.sphere{background:transparent;border-style:dashed;
+    border-color:rgba(255,255,255,.45)}
+  #rail .dot.sphere.on{border-color:#fff;box-shadow:0 0 10px rgba(255,255,255,.35)}
+  #rail .dot.aura{background:conic-gradient(#e23a2e,#f2801f,#f0c414,#35a24f,#2f6fed,#5546c8,#9a4fd6,#e23a2e)}
+  #rail .dot.aura.on{border-color:#fff;box-shadow:0 0 12px rgba(216,179,106,.6)}
+  #rail .sep{width:16px;height:1px;background:var(--line)}
+  #dock{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));z-index:11;
+    transform:translateX(-50%);display:flex;flex-direction:column;gap:9px;
+    padding:13px 16px;width:min(420px,calc(100vw - 24px));
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);border-radius:16px}
+  .dockrow{display:flex;align-items:center;gap:11px}
+  .dockrow svg{width:18px;height:18px;stroke:var(--ink-soft);fill:none;
+    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+  .dockrow input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:22px;background:none}
+  .dockrow input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:2px;background:var(--line)}
+  .dockrow input[type=range]::-moz-range-track{height:3px;border-radius:2px;background:var(--line)}
+  .dockrow input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;
+    border-radius:50%;background:#0d0f15;border:1.5px solid var(--accent);margin-top:-8px;
+    box-shadow:0 0 8px var(--glow)}
+  .dockrow input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;
+    background:#0d0f15;border:1.5px solid var(--accent);box-shadow:0 0 8px var(--glow)}
+  #dock{transition:opacity .25s ease}
+  @media (max-width:819px){body.sheet-open #dock{opacity:0;pointer-events:none}}
+  @media (min-width:820px){#dock{bottom:22px;left:calc(50% - 190px)}}
+  @media (prefers-reduced-motion: reduce){#sheet{transition:none}}
+  @media (min-width:820px){
+    #sheet{left:auto;right:20px;bottom:20px;width:360px;border-radius:16px;
+      border:1px solid var(--line);transform:none}
+    #body{max-height:min(68vh,640px)}
+  }
+</style>
+</head>
+<body class="seven">
+
+<div id="stage"></div>
+<div id="err" role="alert"></div>
+
+<div id="hud">
+  <div><h1>Horn Torus Lattice</h1><p id="sub">12 × 24 · 288 cells</p></div>
+  <div id="eqn"></div>
+</div>
+
+<nav id="rail" aria-label="Shell focus">
+  <button class="dot sphere on" id="railSphere" title="Geosphere and Earth" type="button"></button>
+  <button class="dot aura on" id="railAura" title="Aura layers" type="button"></button>
+  <span class="sep" aria-hidden="true"></span>
+  <button class="dot" data-k="7" title="Violet · crown" type="button" style="background:#9a4fd6;--dc:#9a4fd6"></button>
+  <button class="dot" data-k="6" title="Indigo" type="button" style="background:#5546c8;--dc:#5546c8"></button>
+  <button class="dot" data-k="5" title="Blue · throat" type="button" style="background:#2f6fed;--dc:#2f6fed"></button>
+  <button class="dot" data-k="4" title="Green · heart" type="button" style="background:#35a24f;--dc:#35a24f"></button>
+  <button class="dot" data-k="3" title="Yellow · plexus" type="button" style="background:#f0c414;--dc:#f0c414"></button>
+  <button class="dot" data-k="2" title="Orange · sacral" type="button" style="background:#f2801f;--dc:#f2801f"></button>
+  <button class="dot" data-k="1" title="Red · base" type="button" style="background:#e23a2e;--dc:#e23a2e"></button>
+</nav>
+
+<div id="dock" aria-label="Primary controls">
+  <div class="dockrow" title="Master fold: flat sheets to nested tori">
+    <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
+    <input id="master" type="range" min="0" max="1" step="0.001" value="1">
+    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="5"/><ellipse cx="12" cy="12" rx="3.2" ry="1.6"/></svg>
+  </div>
+  <div class="dockrow" title="Arrange: nested on the pineal, or spread up the body">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="12" r="6.4"/><circle cx="12" cy="12" r="10"/></svg>
+    <input id="arrange" type="range" min="0" max="1" step="0.001" value="0">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="4.6" r="2.4"/><path d="M12 7.5v7.5"/><path d="M5.5 10.5h13"/><path d="M12 15l-4.5 6.5"/><path d="M12 15l4.5 6.5"/></svg>
+  </div>
+</div>
+
+<section id="sheet" aria-label="Controls">
+  <div id="grip" role="button" tabindex="0" aria-expanded="false">
+    <span>Controls</span><em id="gripval">morph 1.00</em>
+  </div>
+  <div id="body">
+
+    <nav id="tabs" aria-label="Control sections">
+      <button class="tab on" data-tab="view" type="button">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        View</button>
+      <button class="tab" data-tab="find" type="button">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+        Find</button>
+      <button class="tab" data-tab="morph" type="button">
+        <svg viewBox="0 0 24 24"><path d="M3 17c4 0 4-10 9-10s5 10 9 10"/></svg>
+        Morph</button>
+      <button class="tab" data-tab="grid" type="button">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Grid</button>
+      <button class="tab" data-tab="look" type="button">
+        <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2"/><line x1="4" y1="13" x2="20" y2="13"/><circle cx="15" cy="13" r="2.2"/><line x1="4" y1="19" x2="20" y2="19"/><circle cx="11" cy="19" r="2.2"/></svg>
+        Look</button>
+    </nav>
+
+    <div class="panel act" data-panel="view">
+
+    <div class="group">
+      <h2>Shells</h2>
+      <div class="btns">
+        <div class="seg" id="shellseg">
+          <button data-shells="seven" class="on">Seven + sphere</button>
+          <button data-shells="one">One shell</button>
+        </div>
+        <button id="sphere" class="on">Geosphere</button>
+        <button id="auraBtn" class="on">Aura layers</button>
+      </div>
+      <div class="row"><label for="focus">Focus shell</label>
+        <input id="focus" type="range" min="0" max="7" step="1" value="0"><output>all</output></div>
+      <div class="row"><label for="peel">Peel</label>
+        <input id="peel" type="range" min="0" max="1" step="0.01" value="0"><output>0.00</output></div>
+      <p class="note">Seven tori, one per chakra. Arrange 0 nests them around one zero point, the pineal. Arrange 1 spreads them up the body, red root at the base, violet crown on top. Focus isolates a shell; Peel fades from the violet shell inward.</p>
+    </div>
+
+    <div class="group">
+      <h2>Motion</h2>
+      <div class="row"><label for="spin">Auto rotate</label>
+        <input id="spin" type="range" min="-1" max="1" step="0.01" value="0.12"><output>0.12</output></div>
+      <div class="btns"><button id="reframe">Reframe</button></div>
+      <p class="note">The two dock sliders below the stage are Master fold (sheet to torus) and Arrange (pineal nest to body column). Fine-grain stages live under Morph.</p>
+    </div>
+
+    </div>
+
+    <div class="panel" data-panel="find">
+
+    <div class="group">
+      <h2>Address</h2>
+      <div class="row"><label for="addrshell">Shell</label>
+        <input id="addrshell" type="range" min="1" max="7" step="1" value="4"><output>4</output></div>
+      <div class="row"><label for="addrcell">Cell</label>
+        <input id="addrcell" type="range" min="1" max="288" step="1" value="1"><output>1</output></div>
+      <div class="btns">
+        <div class="seg" id="sideseg">
+          <button data-side="out" class="on">O · outside</button>
+          <button data-side="in">I · inside</button>
+        </div>
+        <button id="goaddr">Find</button>
+        <button id="clearaddr">Clear</button>
+      </div>
+      <p class="note" id="addrnote">O is the exterior observer face, the public permissioned database. I is the interior personal face, the private encrypted database. Same 1–288 numbers on both. Tap any cell to read its address.</p>
+    </div>
+
+    </div>
+
+    <div class="panel" data-panel="morph">
+
+    <div class="group">
+      <h2>Stages</h2>
+      <div class="row"><label for="curl">1 · Curl (v)</label>
+        <input id="curl" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+      <div class="row"><label for="ring">2 · Ring (u)</label>
+        <input id="ring" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+      <div class="row"><label for="pinch">3 · Pinch</label>
+        <input id="pinch" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+      <div class="row"><label for="gore">Gore</label>
+        <input id="gore" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+      <p class="note">Master runs Curl then Ring. Pinch is separate — it picks the target: 0 a ring torus with blunt-ended wedges, 1 the horn where the tips come to a point. Gore shapes the unrolled sheet into lenses, so at Master 0 you get 24 wedges with 48 tips meeting the equator edge to edge.</p>
+      <div class="row"><label for="explode">Separate</label>
+        <input id="explode" type="range" min="0" max="1.5" step="0.01" value="0"><output>0.00</output></div>
+      <div class="btns">
+        <div class="seg" id="pathseg">
+          <button data-path="roll" class="on">Roll up</button>
+          <button data-path="direct">Direct</button>
+        </div>
+      </div>
+      <p class="note">Roll curls the sheet into a tube first, then bends the tube into the ring. Direct drags vertices straight to their targets, so the surface passes through itself on the way.</p>
+    </div>
+
+    </div>
+
+    <div class="panel" data-panel="grid">
+
+    <div class="group">
+      <h2>Lattice</h2>
+      <div class="row"><label for="rows">Rows (v)</label>
+        <input id="rows" type="range" min="4" max="32" step="2" value="12"><output>12</output></div>
+      <div class="row"><label for="cols">Columns (u)</label>
+        <input id="cols" type="range" min="8" max="64" step="2" value="24"><output>24</output></div>
+      <div class="row"><label for="detail">Cell detail</label>
+        <input id="detail" type="range" min="1" max="6" step="1" value="3"><output>3</output></div>
+      <div class="row"><label for="seam">Seam</label>
+        <input id="seam" type="range" min="0" max="0.35" step="0.005" value="0"><output>0.000</output></div>
+      <div class="row single-only"><label for="show">Wedges</label>
+        <input id="show" type="range" min="1" max="24" step="1" value="24"><output>24</output></div>
+      <div class="btns">
+        <button id="wire">Show lattice</button>
+        <button id="lock" class="on">Lock 2:1</button>
+      </div>
+      <p class="note">Drop Wedges to 1 to isolate a single gore. Rows must divide evenly so a vertex row lands on the horn. 2:1 keeps cells square at the equator.</p>
+    </div>
+
+    <div class="group single-only">
+      <h2>Cell content</h2>
+      <div class="btns">
+        <div class="seg" id="modeseg">
+          <button data-mode="field" class="on">Field</button>
+          <button data-mode="address">Address</button>
+          <button data-mode="photo">Photos</button>
+        </div>
+      </div>
+      <div class="btns">
+        <label class="filebtn">Add photos<input id="files" type="file" accept="image/*" multiple></label>
+        <button id="shuffle">Shuffle</button>
+      </div>
+      <p class="note" id="cellnote">Field mode gives each cell a distinct generated gradient.</p>
+    </div>
+
+    </div>
+
+    <div class="panel" data-panel="look">
+
+    <div class="group">
+      <h2>Style</h2>
+      <div class="row"><label for="bright">Brightness</label>
+        <input id="bright" type="range" min="0.2" max="1.8" step="0.01" value="1"><output>1.00</output></div>
+      <div class="row"><label for="tint">Base colour</label>
+        <input id="tint" type="color" value="#ffffff"><output></output></div>
+    </div>
+
+    <div class="group">
+      <h2>Output</h2>
+      <div class="btns">
+        <div class="seg" id="bgseg">
+          <button data-bg="none" class="on">No background</button>
+          <button data-bg="solid">Solid</button>
+        </div>
+        <input type="color" id="bgcolor" value="#0e1014">
+        <button id="save">Save PNG</button>
+      </div>
+    </div>
+
+    </div>
+
+    <p class="note" style="text-align:center;padding:10px 0 2px">
+      <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+/* -----------------------------------------------------------------
+   Horn torus, R = r, axis along Y:
+
+     P(u,v) = ( R(1 + cos v) cos u ,  R sin v ,  R(1 + cos v) sin u )
+
+   Cells are quads on a shared (u,v) lattice. Neighbouring cells are
+   evaluated from identical parameters, so their corners coincide to
+   the bit — the surface closes with no gaps. At v = π the ring radius
+   is exactly zero: every column meets at the origin. That is the horn.
+------------------------------------------------------------------*/
+
+var TAU = Math.PI * 2;
+
+/* ---------- diagnostics ---------- */
+var errBox = document.getElementById('err');
+function fail(title, detail){
+  errBox.innerHTML = '';
+  var b = document.createElement('b'); b.textContent = title;
+  errBox.appendChild(b);
+  errBox.appendChild(document.createTextNode(detail));
+  errBox.style.display = 'block';
+}
+window.addEventListener('error', function(ev){
+  if(errBox.style.display === 'block') return;   // first error only
+  fail('Something failed', ev.message === 'Script error.'
+    ? 'The error came from inside three.js, so the browser withheld the detail. Usually this is a lost WebGL context — close other tabs and reload.'
+    : (ev.message || 'Unknown error') + (ev.lineno ? ' (line ' + ev.lineno + ')' : ''));
+});
+
+if(typeof THREE === 'undefined'){
+  fail('three.js did not load',
+    'The library is fetched from cdnjs. Check the connection and reload, or serve three.min.js alongside this file.');
+  return;
+}
+
+var P = {
+  master:1, curl:1, ring:1, pinch:1, gore:1, show:24,
+  detail:3, seam:0, explode:0, roll:true,
+  rows:12, cols:24, lock:true, wire:false,
+  mode:'field', bright:1, tint:0xffffff, spin:0.12,
+  bg:'none', bgcolor:0x0e1014,
+  shellsMode:'seven', sphere:true, aura:true, arrange:0, focus:0, peel:0,
+  addrshell:4, addrcell:1, addrside:'out'
+};
+
+/* ---------- renderer ---------- */
+var stage = document.getElementById('stage');
+var renderer;
+try {
+  renderer = new THREE.WebGLRenderer({antialias:true, alpha:true, preserveDrawingBuffer:true});
+} catch(e){
+  fail('WebGL is not available',
+    'Safari limits how many WebGL contexts can be live at once. Close other tabs using this page and reload.');
+  return;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+
+renderer.domElement.addEventListener('webglcontextlost', function(e){
+  e.preventDefault();
+  fail('Graphics context was dropped',
+    'The browser reclaimed this page\u2019s WebGL context, usually under memory pressure. Reload to restore it.');
+});
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(38, 1, 0.02, 500);
+var root = new THREE.Group();
+scene.add(root);
+
+/* ---------- orbit ---------- */
+var cam = {theta:0.6, phi:1.12, dist:16};
+var drag = null, pinch = null;
+function applyCamera(){
+  cam.phi = Math.max(0.05, Math.min(Math.PI - 0.05, cam.phi));
+  cam.dist = Math.max(0.25, Math.min(300, cam.dist));
+  camera.position.set(
+    cam.dist * Math.sin(cam.phi) * Math.sin(cam.theta),
+    cam.dist * Math.cos(cam.phi),
+    cam.dist * Math.sin(cam.phi) * Math.cos(cam.theta));
+  camera.lookAt(0,0,0);
+}
+var el = renderer.domElement;
+var tapStart = null;
+el.addEventListener('pointerdown', function(e){
+  if(pinch) return;
+  drag = {x:e.clientX, y:e.clientY};
+  tapStart = {x:e.clientX, y:e.clientY};
+  el.setPointerCapture(e.pointerId);
+});
+el.addEventListener('pointermove', function(e){
+  if(!drag) return;
+  cam.theta -= (e.clientX - drag.x) * 0.0062;
+  cam.phi   -= (e.clientY - drag.y) * 0.0062;
+  drag.x = e.clientX; drag.y = e.clientY;
+  applyCamera();
+});
+el.addEventListener('pointerup', function(e){
+  if(tapStart && Math.hypot(e.clientX - tapStart.x, e.clientY - tapStart.y) < 6) pick(e);
+  drag = null; tapStart = null;
+});
+el.addEventListener('pointercancel', function(){ drag = null; tapStart = null; });
+el.addEventListener('wheel', function(e){
+  e.preventDefault(); cam.dist *= Math.pow(1.0016, e.deltaY); applyCamera();
+}, {passive:false});
+el.addEventListener('touchstart', function(e){
+  if(e.touches.length === 2){
+    drag = null;
+    pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                       e.touches[0].clientY - e.touches[1].clientY);
+  }
+}, {passive:true});
+el.addEventListener('touchmove', function(e){
+  if(e.touches.length === 2 && pinch){
+    e.preventDefault();
+    var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX,
+                       e.touches[0].clientY - e.touches[1].clientY);
+    cam.dist *= pinch / Math.max(d,1); pinch = d; applyCamera();
+  }
+}, {passive:false});
+el.addEventListener('touchend', function(e){ if(e.touches.length < 2) pinch = null; }, {passive:true});
+
+/* ---------- textures ---------- */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function fieldTexture(seed){
+  var c = document.createElement('canvas'); c.width = c.height = 128;
+  var x = c.getContext('2d'), rnd = mulberry32(seed * 2654435761);
+  var h1 = Math.floor(rnd()*360), h2 = Math.floor((h1 + 50 + rnd()*120) % 360);
+  var g = x.createLinearGradient(0,0,128,128);
+  g.addColorStop(0,'hsl('+h1+',66%,'+(62 + (rnd()*16|0))+'%)');
+  g.addColorStop(1,'hsl('+h2+',72%,'+(44 + (rnd()*18|0))+'%)');
+  x.fillStyle = g; x.fillRect(0,0,128,128);
+  for(var i=0;i<3;i++){
+    var cx = rnd()*128, cy = rnd()*128, rr = 26 + rnd()*48;
+    var rg = x.createRadialGradient(cx,cy,2,cx,cy,rr);
+    var hh = Math.floor((h2 + rnd()*90) % 360);
+    rg.addColorStop(0,'hsla('+hh+',85%,72%,0.7)');
+    rg.addColorStop(1,'hsla('+hh+',85%,72%,0)');
+    x.fillStyle = rg; x.fillRect(0,0,128,128);
+  }
+  var t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t;
+}
+function pad(n){ return (n < 10 ? '0' : '') + n; }
+function addressTexture(r, c, rows, cols){
+  var cv = document.createElement('canvas'); cv.width = cv.height = 128;
+  var x = cv.getContext('2d');
+  var v = r / rows;
+  var hue = Math.floor((c / cols) * 360);
+  var lum = 88 - Math.abs(0.5 - v) * 2 * 46;   // bright at the horn, dark at the equator
+  x.fillStyle = 'hsl(' + hue + ',54%,' + lum.toFixed(0) + '%)';
+  x.fillRect(0,0,128,128);
+  x.strokeStyle = 'rgba(0,0,0,.22)'; x.lineWidth = 2;
+  x.strokeRect(1,1,126,126);
+  x.fillStyle = lum > 58 ? '#15181d' : '#f4f6f8';
+  x.textAlign = 'center';
+  x.font = '600 25px ui-monospace, SFMono-Regular, Menlo, monospace';
+  x.fillText('u' + pad(c), 64, 58);
+  x.fillText('v' + pad(r), 64, 88);
+  var t = new THREE.CanvasTexture(cv); t.encoding = THREE.sRGBEncoding; return t;
+}
+
+/* ---------- chakra shells: colours + address atlases ----------
+   One canvas atlas per shell per face. Numbers are 1..288 on BOTH
+   faces; the letter carries the register — O outside (public,
+   permissioned), I inside (private, encrypted). Colour carries the
+   shell. 14 textures total instead of thousands of materials.       */
+var SHELL_COL  = [0xe23a2e,0xf2801f,0xf0c414,0x35a24f,0x2f6fed,0x5546c8,0x9a4fd6];
+var SHELL_NAME = ['Red','Orange','Yellow','Green','Blue','Indigo','Violet'];
+var BODY_S = 0.30;                              // per-shell scale in the body arrangement
+
+function atlasCellPx(cols){ return cols > 32 ? 48 : 96; }
+
+function drawAtlasCell(x, px, r, c, rows, cols, k, inside, hi){
+  var n = r * cols + c + 1;
+  var base = new THREE.Color(SHELL_COL[k]);
+  var bg = base.clone().lerp(new THREE.Color(inside ? 0x101216 : 0xffffff), inside ? 0.6 : 0.74);
+  var X = c * px, Y = r * px;
+  x.fillStyle = '#' + bg.getHexString();
+  x.fillRect(X, Y, px, px);
+  x.strokeStyle = inside ? 'rgba(255,255,255,.18)' : 'rgba(0,0,0,.2)';
+  x.lineWidth = Math.max(1, px / 48);
+  x.strokeRect(X + .5, Y + .5, px - 1, px - 1);
+  // The surface's v-axis runs opposite to canvas y, so the outside face
+  // needs a vertical flip to read upright; the inside face is the same skin
+  // viewed from behind, so it needs the horizontal mirror too (180°).
+  x.save();
+  x.translate(X + px / 2, Y + px / 2);
+  x.scale(inside ? -1 : 1, -1);
+  x.textAlign = 'center';
+  x.fillStyle = inside ? '#eef1f5' : '#15181d';
+  x.font = '600 ' + Math.round(px * 0.3) + 'px ui-monospace, SFMono-Regular, Menlo, monospace';
+  x.fillText((inside ? 'I' : 'O') + n, 0, px * 0.16);
+  x.fillStyle = inside ? 'rgba(238,241,245,.7)' : 'rgba(21,24,29,.55)';
+  x.font = '500 ' + Math.round(px * 0.14) + 'px ui-monospace, SFMono-Regular, Menlo, monospace';
+  x.fillText('u' + pad(c) + ' v' + pad(r), 0, px * 0.38);
+  x.restore();
+  if(hi){
+    var w = Math.max(3, px / 12);
+    x.strokeStyle = '#ffd60a';
+    x.lineWidth = w;
+    x.strokeRect(X + w / 2, Y + w / 2, px - w, px - w);
+  }
+}
+function makeAtlas(k, inside, rows, cols){
+  var px = atlasCellPx(cols);
+  var cv = document.createElement('canvas');
+  cv.width = cols * px; cv.height = rows * px;
+  var x = cv.getContext('2d');
+  for(var r = 0; r < rows; r++)
+    for(var c = 0; c < cols; c++)
+      drawAtlasCell(x, px, r, c, rows, cols, k, inside, false);
+  var t = new THREE.CanvasTexture(cv);
+  t.encoding = THREE.sRGBEncoding;
+  t.anisotropy = 4;
+  return {tex:t, canvas:cv, px:px};
+}
+
+/* Earth skin for the geosphere — same third-party trust level as the
+   three.js CDN itself. If it never arrives, the wireframe stands alone. */
+var earthTex = null, sphereEarthMat = null;
+new THREE.TextureLoader().load(
+  'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
+  function(t){
+    t.encoding = THREE.sRGBEncoding;
+    earthTex = t;
+    if(sphereEarthMat){
+      sphereEarthMat.map = t;
+      sphereEarthMat.visible = true;
+      sphereEarthMat.needsUpdate = true;
+    }
+  });
+
+var fieldPool = [];
+for(var fp=0; fp<64; fp++) fieldPool.push(fieldTexture(fp+1));
+var photoPool = [];
+var addressPool = null;
+var order = [];
+
+function textureFor(index, r, c){
+  if(P.mode === 'address') return addressPool[index];
+  var pool = (P.mode === 'photo' && photoPool.length) ? photoPool : fieldPool;
+  return pool[order[index] % pool.length];
+}
+function reorder(shuffleIt){
+  var n = P.rows * P.cols;
+  order = new Array(n);
+  for(var i=0;i<n;i++) order[i] = i;
+  if(shuffleIt){
+    for(var j=n-1;j>0;j--){
+      var k = Math.floor(Math.random()*(j+1));
+      var t = order[j]; order[j] = order[k]; order[k] = t;
+    }
+  }
+}
+
+/* ---------- lattice ---------- */
+var mesh = null, lattice = null, geo = null, mats = [];
+var shells = [];                 // seven of {out, inn, atlOut, atlIn}
+var shellGeo = null, sphereMesh = null;
+var sel = null;                  // {k, cell, inside} highlighted address
+var uArr, vArr, ucArr, vcArr;      // per-vertex surface params + owning cell centre
+var lineU, lineV, lineUc, lineVc;
+
+function radius(){ return P.cols / (2 * TAU); }   // 2π(R+r) = cols  ⇒  R = cols/4π
+
+function clearMeshes(){
+  if(mesh){ root.remove(mesh); geo.dispose(); mats.forEach(function(m){ m.dispose(); }); mesh = null; mats = []; }
+  if(lattice){ root.remove(lattice); lattice.geometry.dispose(); lattice.material.dispose(); lattice = null; }
+  shells.forEach(function(s){
+    root.remove(s.out); root.remove(s.inn);
+    s.out.material.map.dispose(); s.out.material.dispose();
+    s.inn.material.map.dispose(); s.inn.material.dispose();
+  });
+  shells = [];
+  if(shellGeo){ shellGeo.dispose(); shellGeo = null; }
+  if(sphereMesh){
+    root.remove(sphereMesh);
+    sphereMesh.traverse(function(o){
+      if(o.geometry) o.geometry.dispose();
+      if(o.material && o.material.dispose) o.material.dispose();
+    });
+    sphereMesh = null; sphereEarthMat = null;
+  }
+  sel = null;
+}
+
+function rebuild(){
+  if(P.shellsMode === 'seven') buildShells(); else buildLattice();
+}
+
+function buildLattice(){
+  clearMeshes();
+
+  var rows = P.rows, cols = P.cols, d = P.detail;
+  var cells = rows * cols;
+  reorder(false);
+
+  if(P.mode === 'address'){
+    addressPool = [];
+    for(var r0=0;r0<rows;r0++)
+      for(var c0=0;c0<cols;c0++)
+        addressPool.push(addressTexture(r0, c0, rows, cols));
+  }
+
+  var quadsPerCell = d * d;
+  var vertCount = cells * quadsPerCell * 4;
+  var triCount  = cells * quadsPerCell * 2;
+
+  var pos = new Float32Array(vertCount * 3);
+  var uv  = new Float32Array(vertCount * 2);
+  var idx = new Uint32Array(triCount * 3);
+  uArr = new Float32Array(vertCount);
+  vArr = new Float32Array(vertCount);
+  ucArr = new Float32Array(vertCount);
+  vcArr = new Float32Array(vertCount);
+
+  geo = new THREE.BufferGeometry();
+  mats = [];
+
+  var vi = 0, ii = 0;
+  for(var r=0;r<rows;r++){
+    for(var c=0;c<cols;c++){
+      var cellStart = ii;
+      var uc = (c + 0.5) / cols, vc = (r + 0.5) / rows;
+
+      for(var a=0;a<d;a++){
+        for(var b=0;b<d;b++){
+          // seam pulls the cell's parameter window in towards its centre
+          var s = P.seam * 0.5;
+          var u0 = (c + (a     / d) * (1 - 2*s) + s) / cols;
+          var u1 = (c + ((a+1) / d) * (1 - 2*s) + s) / cols;
+          var v0 = (r + (b     / d) * (1 - 2*s) + s) / rows;
+          var v1 = (r + ((b+1) / d) * (1 - 2*s) + s) / rows;
+
+          var base = vi;
+          var quadU = [u0, u1, u1, u0];
+          var quadV = [v0, v0, v1, v1];
+          var quadUV = [a/d, (a+1)/d, (a+1)/d, a/d];
+          var quadVV = [1 - b/d, 1 - b/d, 1 - (b+1)/d, 1 - (b+1)/d];
+
+          for(var k=0;k<4;k++){
+            uArr[vi] = quadU[k]; vArr[vi] = quadV[k];
+            ucArr[vi] = uc;      vcArr[vi] = vc;
+            uv[vi*2]   = quadUV[k];
+            uv[vi*2+1] = quadVV[k];
+            vi++;
+          }
+          idx[ii++] = base;   idx[ii++] = base+1; idx[ii++] = base+2;
+          idx[ii++] = base;   idx[ii++] = base+2; idx[ii++] = base+3;
+        }
+      }
+
+      var m = new THREE.MeshBasicMaterial({side:THREE.DoubleSide});
+      m.map = textureFor(r*cols + c, r, c);
+      mats.push(m);
+      geo.addGroup(cellStart, ii - cellStart, mats.length - 1);
+    }
+  }
+
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.setIndex(new THREE.BufferAttribute(idx, 1));
+
+  mesh = new THREE.Mesh(geo, mats);
+  root.add(mesh);
+
+  buildWire();
+  applyVisibility();
+  updateGeometry();
+  styleAll();
+  reframe();
+
+  document.getElementById('sub').textContent = rows + ' × ' + cols + ' · ' + cells + ' cells';
+  syncAddrRange();
+}
+
+/* Seven nested shells sharing ONE geometry — per-shell scale and
+   position live on the mesh transforms, so the morph only ever
+   rewrites one vertex buffer. Two meshes per shell: FrontSide with
+   the O atlas, BackSide with the I atlas.                            */
+function buildShells(){
+  clearMeshes();
+
+  var rows = P.rows, cols = P.cols, d = P.detail;
+  var cells = rows * cols, quadsPerCell = d * d;
+  var vertCount = cells * quadsPerCell * 4;
+  var triCount  = cells * quadsPerCell * 2;
+
+  var pos = new Float32Array(vertCount * 3);
+  var uv  = new Float32Array(vertCount * 2);
+  var idx = new Uint32Array(triCount * 3);
+  uArr = new Float32Array(vertCount);
+  vArr = new Float32Array(vertCount);
+  ucArr = new Float32Array(vertCount);
+  vcArr = new Float32Array(vertCount);
+
+  var vi = 0, ii = 0;
+  for(var r=0;r<rows;r++){
+    for(var c=0;c<cols;c++){
+      var uc = (c + 0.5) / cols, vc = (r + 0.5) / rows;
+      for(var a=0;a<d;a++){
+        for(var b=0;b<d;b++){
+          var s = P.seam * 0.5;
+          var u0 = (c + (a     / d) * (1 - 2*s) + s) / cols;
+          var u1 = (c + ((a+1) / d) * (1 - 2*s) + s) / cols;
+          var v0 = (r + (b     / d) * (1 - 2*s) + s) / rows;
+          var v1 = (r + ((b+1) / d) * (1 - 2*s) + s) / rows;
+          var base = vi;
+          var quadU = [u0, u1, u1, u0];
+          var quadV = [v0, v0, v1, v1];
+          var lu = [a/d, (a+1)/d, (a+1)/d, a/d];
+          var lv = [1 - b/d, 1 - b/d, 1 - (b+1)/d, 1 - (b+1)/d];
+          for(var k4=0;k4<4;k4++){
+            uArr[vi] = quadU[k4]; vArr[vi] = quadV[k4];
+            ucArr[vi] = uc;       vcArr[vi] = vc;
+            uv[vi*2]   = (c + lu[k4]) / cols;
+            uv[vi*2+1] = (rows - 1 - r + lv[k4]) / rows;
+            vi++;
+          }
+          idx[ii++] = base;   idx[ii++] = base+1; idx[ii++] = base+2;
+          idx[ii++] = base;   idx[ii++] = base+2; idx[ii++] = base+3;
+        }
+      }
+    }
+  }
+
+  shellGeo = new THREE.BufferGeometry();
+  shellGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  shellGeo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  shellGeo.setIndex(new THREE.BufferAttribute(idx, 1));
+  geo = shellGeo;
+
+  for(var k=0;k<7;k++){
+    var atlOut = makeAtlas(k, false, rows, cols);
+    var atlIn  = makeAtlas(k, true,  rows, cols);
+    // On the ROLL path (the default) the front faces point OUTWARD — verified
+    // by raycast. The Direct path mirrors the surface, so don't trust algebra
+    // from one path on the other.
+    var mo = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlOut.tex, side:THREE.FrontSide}));
+    var mi = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlIn.tex,  side:THREE.BackSide}));
+    mo.userData = {k:k, inside:false};
+    mi.userData = {k:k, inside:true};
+    root.add(mi); root.add(mo);
+    shells.push({out:mo, inn:mi, atlOut:atlOut, atlIn:atlIn});
+  }
+
+  var R = radius();
+  var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, cols, rows);
+  sphereMesh = new THREE.Group();
+  sphereEarthMat = new THREE.MeshBasicMaterial({visible: !!earthTex});
+  if(earthTex) sphereEarthMat.map = earthTex;
+  sphereMesh.add(new THREE.Mesh(sg, sphereEarthMat));
+  sphereMesh.add(new THREE.LineSegments(new THREE.WireframeGeometry(sg),
+    new THREE.LineBasicMaterial({color:0x8b939e, transparent:true, opacity:0.3})));
+  root.add(sphereMesh);
+
+  buildWire();
+  updateGeometry();
+  updateShellTransforms();
+  styleAll();
+  reframe();
+
+  window.__htl = {shells:shells, camera:camera, root:root, scene:scene};
+
+  document.getElementById('sub').textContent =
+    '7 shells · ' + rows + ' × ' + cols + ' · ' + (cells * 2 * 7) + ' addresses';
+  syncAddrRange();
+}
+
+function syncAddrRange(){
+  var s = document.getElementById('addrcell');
+  var cells = P.rows * P.cols;
+  s.max = cells;
+  if(P.addrcell > cells){ P.addrcell = cells; s.value = cells; sync('addrcell', String(cells)); }
+}
+
+function shellS(k){
+  var t = smoothstep(P.arrange);
+  var sN = (k + 1) / 7;
+  return sN + (BODY_S - sN) * t;
+}
+function shellY(k){
+  var t = smoothstep(P.arrange);
+  var gap = 2 * radius() * BODY_S * 1.15;
+  return (k - 3) * gap * t;
+}
+
+function updateShellTransforms(){
+  if(P.shellsMode !== 'seven' || !shells.length) return;
+  var R = radius();
+  var t = smoothstep(P.arrange);
+  var flat = 1 - (P.roll ? P.curl : smoothstep(P.master));
+  for(var k=0;k<7;k++){
+    var s = shellS(k), y = shellY(k);
+    var z = (k - 3) * (P.rows * 0.55) * flat * (1 - t);
+    var sh = shells[k];
+    sh.out.scale.setScalar(s); sh.inn.scale.setScalar(s);
+    sh.out.position.set(0, y, z); sh.inn.position.set(0, y, z);
+    var vis = P.aura, op = 1;
+    if(P.focus > 0) vis = vis && (k === P.focus - 1);
+    if(P.peel > 0){
+      op = Math.max(0, Math.min(1, (1 - P.peel) * 7 - k + 0.5));
+      if(op <= 0.02) vis = false;
+    }
+    sh.out.visible = vis; sh.inn.visible = vis;
+    sh.out.material.opacity = op; sh.inn.material.opacity = op;
+    sh.out.material.transparent = op < 1; sh.inn.material.transparent = op < 1;
+  }
+  if(sphereMesh){
+    sphereMesh.visible = P.sphere;
+    var colHalf = 3 * (2 * R * BODY_S * 1.15) + 2 * R * BODY_S;
+    var grow = Math.max(1, colHalf * 1.08 / (2 * R * 1.12));
+    sphereMesh.scale.setScalar(1 + (grow - 1) * t);
+  }
+  if(lattice){
+    lattice.visible = P.wire && P.aura;
+    var fk = P.focus > 0 ? P.focus - 1 : 6;
+    lattice.scale.setScalar(shellS(fk));
+    lattice.position.set(0, shellY(fk), (fk - 3) * (P.rows * 0.55) * flat * (1 - t));
+  }
+}
+
+function shownCols(){ return Math.max(1, Math.min(P.show, P.cols)); }
+
+function applyVisibility(){
+  var n = shownCols();
+  for(var i=0;i<mats.length;i++) mats[i].visible = (i % P.cols) < n;
+}
+
+function buildWire(){
+  var rows = P.rows, cols = P.cols, n = shownCols();
+  var segs = rows * n * 4;
+  var lp = new Float32Array(segs * 2 * 3);
+  lineU = new Float32Array(segs * 2);
+  lineV = new Float32Array(segs * 2);
+  lineUc = new Float32Array(segs * 2);
+  lineVc = new Float32Array(segs * 2);
+  var k = 0;
+  for(var r=0;r<rows;r++){
+    for(var c=0;c<n;c++){
+      var s = P.seam * 0.5;
+      var u0 = (c + s) / cols, u1 = (c + 1 - s) / cols;
+      var v0 = (r + s) / rows, v1 = (r + 1 - s) / rows;
+      var uc = (c + 0.5) / cols, vc = (r + 0.5) / rows;
+      var pairs = [[u0,v0,u1,v0],[u1,v0,u1,v1],[u1,v1,u0,v1],[u0,v1,u0,v0]];
+      for(var p=0;p<4;p++){
+        lineU[k] = pairs[p][0]; lineV[k] = pairs[p][1];
+        lineUc[k] = uc; lineVc[k] = vc; k++;
+        lineU[k] = pairs[p][2]; lineV[k] = pairs[p][3];
+        lineUc[k] = uc; lineVc[k] = vc; k++;
+      }
+    }
+  }
+  var lg = new THREE.BufferGeometry();
+  lg.setAttribute('position', new THREE.BufferAttribute(lp, 3));
+  lattice = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({
+    color:0x11141a, transparent:true, opacity:0.5
+  }));
+  lattice.visible = P.wire;
+  root.add(lattice);
+}
+
+function rebuildWire(){
+  if(lattice){ root.remove(lattice); lattice.geometry.dispose(); lattice.material.dispose(); }
+  buildWire();
+  applyVisibility();
+  updateGeometry();
+}
+
+/* ---------- surface evaluation ----------
+
+   Roll mode bends the sheet in two stages instead of dragging vertices
+   along straight lines (which makes the surface pass through itself).
+
+   Stage 1 (t 0 → 0.5): curl along v into a tube of radius R.
+     A strip of length L bent through Φ lies on an arc of radius L/Φ.
+     Φ = 0 is the flat limit; Φ = 2π closes the tube exactly.
+
+   Stage 2 (t 0.5 → 1): bend the tube's centre-line into a circle.
+     The sheet's u extent is the OUTER equator (4πR), but the centre-line
+     circumference is only 2πR, so the axial length is eased from one to
+     the other as it closes. That compression is real horn-torus geometry,
+     not a fudge — the inner side of a torus is shorter than the outer.
+------------------------------------------------------------------*/
+function smoothstep(x){
+  x = x < 0 ? 0 : (x > 1 ? 1 : x);
+  return x * x * (3 - 2 * x);
+}
+
+function writePositions(arr, us, vs, ucs, vcs, count){
+  var W = P.cols, H = P.rows;
+  var a = P.curl, b = P.ring, c = P.pinch;
+  var ease = smoothstep(P.master);
+
+  var rV = H / TAU;                          // tube radius once fully curled
+  var phiV = a * TAU;
+  var rhoV = phiV > 1e-6 ? H / phiV : 0;
+
+  var phiU = b * TAU;
+  var axialLen = W + (TAU * rV - W) * c;     // 4πr (ring) → 2πr (horn) → less (spindle)
+  var rhoU = phiU > 1e-6 ? axialLen / phiU : 0;
+  var rhoFinal = axialLen / TAU;             // centre-line radius when fully closed
+
+  // The gore profile only shapes the UNROLLED sheet — once the ring closes,
+  // the bend supplies the taper on its own, so it fades out with b.
+  var goreAmt = P.gore * (1 - b);
+  var q = axialLen > 1e-6 ? W / axialLen : 1;    // equator span ÷ centre-line span
+  var denom = rhoFinal + rV;
+
+  for(var i=0;i<count;i++){
+    var un = us[i], vn = vs[i], uc = ucs[i];
+    var x, y, z;
+
+    if(P.roll){
+      // ---- stage 1: curl along v. The seam sits AT the horn, so an
+      //      unrolled column is a lens pinched at both ends — a gore.
+      var t0, g0;
+      if(phiV > 1e-6){
+        var av = (vn - 1) * phiV;
+        t0 = rhoV * Math.sin(av);
+        g0 = rhoV * (1 - Math.cos(av));
+      } else {
+        t0 = (vn - 1) * H;
+        g0 = 0;
+      }
+      var dr = g0 - rV * a;                  // radial offset from the tube centre-line
+      y = -(t0 + (H * 0.5) * (1 - a));       // height, re-centred while flat
+
+      // Width profile comes from where the row will FINISH radially, not where
+      // it currently sits — otherwise the taper only exists once the sheet has
+      // already curled, which is exactly when you cannot see it laid out flat.
+      var drFinal = -rV * Math.cos((vn - 1) * TAU);
+      var f = (rhoFinal + drFinal) / denom;
+      // No clamp: if the target ever goes past the horn the profile crosses
+      // zero and the wedge folds back, which is what a spindle actually does.
+      // Clamping at zero would flatten a whole band of rows into nothing.
+      var kBase = 1 + goreAmt * (q - 1);         // spacing between gore centres
+      var kSpan = 1 + goreAmt * (f * q - 1);     // width within one gore
+      var span = (uc - 0.5) * kBase + (un - uc) * kSpan;
+
+      // ---- stage 2: bend the centre-line into a ring ----
+      if(phiU > 1e-6){
+        var psi = span * phiU;
+        var rpt = rhoU + dr;
+        x = rpt * Math.sin(psi);
+        z = rpt * Math.cos(psi) - rhoU + rhoFinal * b;
+      } else {
+        x = span * axialLen;
+        z = dr;
+      }
+    } else {
+      // ---- direct interpolation, master only ----
+      var R = radius();
+      var u = un * TAU, v = vn * TAU;
+      var ring = R * (1 + Math.cos(v));
+      var fx = (un - 0.5) * W, fy = (0.5 - vn) * H;
+      x = fx + (ring * Math.cos(u) - fx) * ease;
+      y = fy + (R * Math.sin(v)   - fy) * ease;
+      z = 0  + (ring * Math.sin(u)     ) * ease;
+    }
+
+    if(P.explode > 0){
+      var acv = (vcs[i] - 1) * TAU;
+      var psic = (ucs[i] - 0.5) * phiU;
+      var cav = Math.cos(acv), sav = Math.sin(acv);
+      var nx = (-cav * Math.sin(psic)) * a;
+      var ny = (sav) * a;
+      var nz = (-cav * Math.cos(psic)) * a + (1 - a);
+      var len = Math.sqrt(nx*nx + ny*ny + nz*nz) || 1;
+      x += nx / len * P.explode;
+      y += ny / len * P.explode;
+      z += nz / len * P.explode;
+    }
+
+    arr[i*3] = x; arr[i*3+1] = y; arr[i*3+2] = z;
+  }
+}
+
+function updateGeometry(){
+  var pa = geo.attributes.position;
+  writePositions(pa.array, uArr, vArr, ucArr, vcArr, pa.count);
+  pa.needsUpdate = true;
+  geo.computeBoundingSphere();
+
+  var la = lattice.geometry.attributes.position;
+  writePositions(la.array, lineU, lineV, lineUc, lineVc, la.count);
+  la.needsUpdate = true;
+  lattice.geometry.computeBoundingSphere();
+}
+
+function refreshTextures(){
+  if(P.mode === 'address' && (!addressPool || addressPool.length !== P.rows*P.cols)){
+    addressPool = [];
+    for(var r=0;r<P.rows;r++)
+      for(var c=0;c<P.cols;c++)
+        addressPool.push(addressTexture(r, c, P.rows, P.cols));
+  }
+  for(var i=0;i<mats.length;i++){
+    mats[i].map = textureFor(i, (i / P.cols) | 0, i % P.cols);
+    mats[i].needsUpdate = true;
+  }
+}
+
+function styleAll(){
+  var col = new THREE.Color(P.tint).multiplyScalar(P.bright);
+  for(var i=0;i<mats.length;i++) mats[i].color.copy(col);
+  if(sel && mats.length && mats[sel.cell]) mats[sel.cell].color.setHex(0xffd60a);
+  shells.forEach(function(s){
+    s.out.material.color.copy(col);
+    s.inn.material.color.copy(col);
+  });
+  if(P.bg === 'solid') renderer.setClearColor(P.bgcolor, 1);
+  else renderer.setClearColor(0x000000, 0);
+  if(lattice) lattice.material.color.setHex(0xd7dbe4);
+}
+
+function reframe(){
+  updateGeometry();
+  var span = (geo.boundingSphere && geo.boundingSphere.radius) || 10;
+  cam.dist = (span * 1.35) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  applyCamera();
+}
+
+/* ---------- loop ---------- */
+var clock = new THREE.Clock();
+var eqn = document.getElementById('eqn');
+var gripval = document.getElementById('gripval');
+var dirty = true;
+
+function resize(){
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  applyCamera();
+}
+window.addEventListener('resize', resize);
+
+function tick(){
+  requestAnimationFrame(tick);
+  var dt = clock.getDelta();
+  root.rotation.y += P.spin * dt * 0.5;
+  if(dirty){ updateGeometry(); dirty = false; }
+  updateShellTransforms();
+  var rV = P.rows / TAU;
+  var axialLen = P.cols + (TAU * rV - P.cols) * P.pinch;
+  var Rmaj = axialLen / TAU;
+  var kind = Math.abs(Rmaj - rV) < 1e-3 ? 'horn' : (Rmaj > rV ? 'ring' : 'spindle');
+  eqn.textContent =
+    'r  = ' + rV.toFixed(3) + '\n' +
+    'R  = ' + Rmaj.toFixed(3) + '  ' + kind + '\n' +
+    'cells ' + (P.rows * P.cols);
+  gripval.textContent = 'master ' + P.master.toFixed(2);
+  renderer.render(scene, camera);
+}
+
+/* ---------- addressing: tap to read, find to highlight ---------- */
+var raycaster = new THREE.Raycaster();
+var ADDR_HELP = 'O is the exterior observer face, the public permissioned database. I is the interior personal face, the private encrypted database. Same 1–288 numbers on both. Tap any cell to read its address.';
+
+function addrLabel(k, cell, inside){
+  var cols = P.cols;
+  var r = (cell / cols) | 0, c = cell % cols;
+  return (P.shellsMode === 'seven' ? 'Shell ' + (k+1) + ' ' + SHELL_NAME[k] + ' · ' : '') +
+    (inside ? 'I' : 'O') + (cell + 1) +
+    ' · ' + (inside ? 'interior · personal · private encrypted' : 'exterior · observer · public permissioned') +
+    ' · u' + pad(c) + ' / v' + pad(r);
+}
+
+function clearSelDraw(){
+  if(!sel) return;
+  var rows = P.rows, cols = P.cols;
+  var r = (sel.cell / cols) | 0, c = sel.cell % cols;
+  if(P.shellsMode === 'seven' && shells.length){
+    var atl = sel.inside ? shells[sel.k].atlIn : shells[sel.k].atlOut;
+    drawAtlasCell(atl.canvas.getContext('2d'), atl.px, r, c, rows, cols, sel.k, sel.inside, false);
+    atl.tex.needsUpdate = true;
+  }
+  var wasSel = sel; sel = null;
+  if(P.shellsMode !== 'seven' && mats.length && mats[wasSel.cell]) styleAll();
+}
+
+function setSel(k, cell, inside){
+  clearSelDraw();
+  sel = {k:k, cell:cell, inside:inside};
+  var rows = P.rows, cols = P.cols;
+  var r = (cell / cols) | 0, c = cell % cols;
+  if(P.shellsMode === 'seven' && shells.length){
+    var atl = inside ? shells[k].atlIn : shells[k].atlOut;
+    drawAtlasCell(atl.canvas.getContext('2d'), atl.px, r, c, rows, cols, k, inside, true);
+    atl.tex.needsUpdate = true;
+  } else {
+    styleAll();
+  }
+  document.getElementById('addrnote').textContent = addrLabel(k, cell, inside);
+  switchTab('find');   // surface the readout wherever the tap came from
+  P.addrshell = k + 1; P.addrcell = cell + 1; P.addrside = inside ? 'in' : 'out';
+  document.getElementById('addrshell').value = k + 1; sync('addrshell', String(k + 1));
+  document.getElementById('addrcell').value = cell + 1; sync('addrcell', String(cell + 1));
+  document.querySelectorAll('#sideseg button').forEach(function(x){
+    x.classList.toggle('on', x.dataset.side === P.addrside);
+  });
+}
+
+function clearSel(){
+  clearSelDraw();
+  document.getElementById('addrnote').textContent = ADDR_HELP;
+}
+
+function pick(e){
+  var rect = el.getBoundingClientRect();
+  raycaster.setFromCamera(new THREE.Vector2(
+    ((e.clientX - rect.left) / rect.width) * 2 - 1,
+    -((e.clientY - rect.top) / rect.height) * 2 + 1), camera);
+  var triPerCell = P.detail * P.detail * 2;
+  if(P.shellsMode === 'seven'){
+    var objs = [];
+    shells.forEach(function(s){
+      if(s.out.visible) objs.push(s.out);
+      if(s.inn.visible) objs.push(s.inn);
+    });
+    var hits = raycaster.intersectObjects(objs);
+    if(!hits.length){ clearSel(); return; }
+    var h = hits[0];
+    setSel(h.object.userData.k, (h.faceIndex / triPerCell) | 0, h.object.userData.inside);
+  } else if(mesh){
+    var hits2 = raycaster.intersectObject(mesh);
+    if(!hits2.length){ clearSel(); return; }
+    var h2 = hits2[0];
+    var nm = new THREE.Matrix3().getNormalMatrix(mesh.matrixWorld);
+    var wn = h2.face.normal.clone().applyMatrix3(nm).normalize();
+    var inside = wn.dot(raycaster.ray.direction) > 0;   // roll path: front faces outward
+    setSel(0, (h2.faceIndex / triPerCell) | 0, inside);
+  }
+}
+
+function findAddress(){
+  var rows = P.rows, cols = P.cols;
+  var k = P.shellsMode === 'seven' ? P.addrshell - 1 : 0;
+  var cell = Math.min(P.addrcell, rows * cols) - 1;
+  var inside = P.addrside === 'in';
+  setSel(k, cell, inside);
+  // swing the camera to face the cell on the closed torus
+  var r = (cell / cols) | 0, c = cell % cols;
+  var uc = ((c + 0.5) / cols) * TAU, vc = ((r + 0.5) / rows) * TAU;
+  var R = radius();
+  var s = P.shellsMode === 'seven' ? shellS(k) : 1;
+  var ring = R * (1 + Math.cos(vc)) * s;
+  var px = ring * Math.cos(uc);
+  var py = R * Math.sin(vc) * s + (P.shellsMode === 'seven' ? shellY(k) : 0);
+  var pz = ring * Math.sin(uc);
+  var len = Math.sqrt(px*px + py*py + pz*pz);
+  if(len > 1e-6){
+    cam.theta = Math.atan2(px, pz) + root.rotation.y;
+    cam.phi = Math.acos(Math.max(-1, Math.min(1, py / len)));
+  }
+  cam.dist = inside ? Math.max(1.2, 2 * R * s) : Math.max(4, 2 * R * s * 3.2);
+  applyCamera();
+}
+
+/* ---------- controls ---------- */
+function sync(id, text){
+  var o = document.getElementById(id).parentNode.querySelector('output');
+  if(o) o.textContent = text;
+}
+function slider(id, key, dp, after){
+  var input = document.getElementById(id);
+  var fmt = function(v){ return dp === 0 ? String(v) : v.toFixed(dp); };
+  sync(id, fmt(P[key]));
+  input.addEventListener('input', function(){
+    P[key] = dp === 0 ? parseInt(input.value, 10) : parseFloat(input.value);
+    sync(id, fmt(P[key]));
+    if(after) after();
+  });
+}
+
+function setStage(key, value){
+  P[key] = value;
+  var input = document.getElementById(key);
+  input.value = value;
+  sync(key, value.toFixed(2));
+}
+
+// Master runs Curl then Ring. Pinch stays put — it selects which torus you are
+// heading for (ring / horn / spindle), not how far along the fold you are.
+document.getElementById('master').addEventListener('input', function(){
+  P.master = parseFloat(this.value);
+  sync('master', P.master.toFixed(2));
+  setStage('curl', smoothstep(P.master / 0.5));
+  setStage('ring', smoothstep((P.master - 0.5) / 0.5));
+  dirty = true;
+});
+
+slider('gore','gore',2, function(){ dirty = true; });
+slider('show','show',0, rebuildWire);
+slider('curl','curl',2, function(){ dirty = true; });
+slider('ring','ring',2, function(){ dirty = true; });
+slider('pinch','pinch',2, function(){ dirty = true; });
+slider('explode','explode',2, function(){ dirty = true; });
+slider('detail','detail',0, rebuild);
+slider('seam','seam',3, rebuild);
+slider('arrange','arrange',2);
+slider('peel','peel',2);
+slider('focus','focus',0, function(){
+  sync('focus', P.focus === 0 ? 'all' : String(P.focus));
+  syncRail();
+});
+sync('focus','all');
+slider('addrshell','addrshell',0);
+slider('addrcell','addrcell',0);
+slider('bright','bright',2, styleAll);
+slider('spin','spin',2);
+
+function syncWedgeRange(){
+  var s = document.getElementById('show');
+  s.max = P.cols;
+  if(P.show > P.cols || P.show === parseInt(s.dataset.wasAll || '0', 10)) P.show = P.cols;
+  s.dataset.wasAll = String(P.cols);
+  s.value = P.show;
+  sync('show', String(P.show));
+}
+
+slider('rows','rows',0, function(){
+  if(P.lock){
+    P.cols = Math.min(64, P.rows * 2);
+    document.getElementById('cols').value = P.cols;
+    sync('cols', String(P.cols));
+  }
+  syncWedgeRange();
+  rebuild();
+});
+slider('cols','cols',0, function(){
+  if(P.lock){
+    P.rows = Math.max(4, Math.round(P.cols / 2));
+    document.getElementById('rows').value = P.rows;
+    sync('rows', String(P.rows));
+  }
+  syncWedgeRange();
+  rebuild();
+});
+
+document.querySelectorAll('#shellseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#shellseg button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    P.shellsMode = b.dataset.shells;
+    document.body.classList.toggle('seven', P.shellsMode === 'seven');
+    document.getElementById('addrnote').textContent = ADDR_HELP;
+    rebuild();
+  });
+});
+document.getElementById('sphere').addEventListener('click', function(){
+  P.sphere = !P.sphere; this.classList.toggle('on', P.sphere);
+  syncRail();
+});
+
+/* chakra rail: tap a dot to focus that shell, tap again for all */
+var railDots = document.querySelectorAll('#rail .dot[data-k]');
+function syncRail(){
+  railDots.forEach(function(d){
+    d.classList.toggle('on', P.focus === parseInt(d.dataset.k, 10));
+  });
+  document.getElementById('railSphere').classList.toggle('on', P.sphere);
+}
+railDots.forEach(function(d){
+  d.addEventListener('click', function(){
+    var k = parseInt(d.dataset.k, 10);
+    P.focus = (P.focus === k) ? 0 : k;
+    var f = document.getElementById('focus');
+    f.value = P.focus;
+    sync('focus', P.focus === 0 ? 'all' : String(P.focus));
+    syncRail();
+  });
+});
+document.getElementById('railSphere').addEventListener('click', function(){
+  P.sphere = !P.sphere;
+  document.getElementById('sphere').classList.toggle('on', P.sphere);
+  syncRail();
+});
+function setAura(on){
+  P.aura = on;
+  document.getElementById('auraBtn').classList.toggle('on', on);
+  document.getElementById('railAura').classList.toggle('on', on);
+}
+document.getElementById('auraBtn').addEventListener('click', function(){ setAura(!P.aura); });
+document.getElementById('railAura').addEventListener('click', function(){ setAura(!P.aura); });
+document.querySelectorAll('#sideseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#sideseg button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    P.addrside = b.dataset.side;
+  });
+});
+document.getElementById('goaddr').addEventListener('click', findAddress);
+document.getElementById('clearaddr').addEventListener('click', clearSel);
+
+document.getElementById('lock').addEventListener('click', function(){
+  P.lock = !P.lock; this.classList.toggle('on', P.lock);
+});
+document.getElementById('wire').addEventListener('click', function(){
+  P.wire = !P.wire; this.classList.toggle('on', P.wire);
+  if(lattice) lattice.visible = P.wire;
+});
+document.getElementById('reframe').addEventListener('click', reframe);
+document.getElementById('shuffle').addEventListener('click', function(){
+  reorder(true); refreshTextures();
+});
+
+document.querySelectorAll('#modeseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#modeseg button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    P.mode = b.dataset.mode;
+    document.getElementById('cellnote').textContent =
+      P.mode === 'address' ? 'Each cell is labelled with its lattice address. Lightness tracks v, hue tracks u.'
+    : P.mode === 'photo'   ? (photoPool.length ? photoPool.length + ' photos across ' + (P.rows*P.cols) + ' cells.'
+                                               : 'No photos loaded yet — add some to fill the cells.')
+    : 'Field mode gives each cell a distinct generated gradient.';
+    refreshTextures();
+  });
+});
+
+document.querySelectorAll('#pathseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#pathseg button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    P.roll = b.dataset.path === 'roll';
+    dirty = true;
+  });
+});
+
+document.querySelectorAll('#bgseg button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('#bgseg button').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on'); P.bg = b.dataset.bg; styleAll();
+  });
+});
+document.getElementById('tint').addEventListener('input', function(e){
+  P.tint = parseInt(e.target.value.slice(1),16); styleAll();
+});
+document.getElementById('bgcolor').addEventListener('input', function(e){
+  P.bgcolor = parseInt(e.target.value.slice(1),16); styleAll();
+});
+
+document.getElementById('files').addEventListener('change', function(e){
+  var files = Array.prototype.slice.call(e.target.files || []);
+  if(!files.length) return;
+  var loader = new THREE.TextureLoader();
+  var pending = files.length;
+  files.forEach(function(f){
+    var reader = new FileReader();
+    reader.onload = function(){
+      loader.load(reader.result, function(tex){
+        tex.encoding = THREE.sRGBEncoding;
+        photoPool.push(tex);
+        if(--pending === 0){
+          P.mode = 'photo';
+          document.querySelectorAll('#modeseg button').forEach(function(x){
+            x.classList.toggle('on', x.dataset.mode === 'photo');
+          });
+          refreshTextures();
+          document.getElementById('cellnote').textContent =
+            photoPool.length + ' photos across ' + (P.rows*P.cols) + ' cells.';
+        }
+      });
+    };
+    reader.readAsDataURL(f);
+  });
+  e.target.value = '';
+});
+
+document.getElementById('save').addEventListener('click', function(){
+  updateGeometry();
+  renderer.render(scene, camera);
+  var a = document.createElement('a');
+  a.download = 'horn-torus.png';
+  a.href = renderer.domElement.toDataURL('image/png');
+  a.click();
+});
+
+function switchTab(name){
+  document.querySelectorAll('#tabs .tab').forEach(function(x){
+    x.classList.toggle('on', x.dataset.tab === name);
+  });
+  document.querySelectorAll('.panel').forEach(function(p){
+    p.classList.toggle('act', p.dataset.panel === name);
+  });
+}
+document.querySelectorAll('#tabs .tab').forEach(function(b){
+  b.addEventListener('click', function(){ switchTab(b.dataset.tab); });
+});
+
+var sheet = document.getElementById('sheet'), grip = document.getElementById('grip');
+function toggleSheet(){
+  var open = sheet.classList.toggle('open');
+  grip.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.classList.toggle('sheet-open', open);   // dock yields to the sheet
+}
+grip.addEventListener('click', toggleSheet);
+grip.addEventListener('keydown', function(e){
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSheet(); }
+});
+
+/* ---------- go ---------- */
+resize();
+rebuild();
+tick();
+
+})();
+</script>
+</body>
+</html>

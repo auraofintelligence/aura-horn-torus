@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry · Aura Horn Torus</title>
+<style>
+  :root{
+    --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
+    --panel:rgba(12,14,20,.62); --accent:#d8b36a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);
+    background:radial-gradient(ellipse at 50% 20%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    line-height:1.65}
+  main{max-width:720px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 4px}
+  .crumb{font-size:13px;color:var(--ink-soft);margin:0 0 36px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  h2{font-size:16px;margin:36px 0 10px}
+  p{margin:0 0 14px;font-size:14.5px;color:#c9cfda}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;overflow-x:auto;color:var(--ink)}
+  .aside{font-size:13px;color:var(--ink-soft);border-left:2px solid var(--accent);
+    padding-left:12px;margin:14px 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>The geometry</h1>
+  <p class="crumb"><a href="index.html">← back to the demo</a> · <a href="about.html">about</a></p>
+
+  <h2>The horn torus</h2>
+  <p>A torus is the shape of a doughnut: a tube bent into a ring. It has two radii, the ring radius R and the tube radius r. When R is bigger than r there is a hole in the middle. When R equals r the hole closes completely and the inner edge pinches to a single point. That is the horn torus. Every line of the surface passes through that one centre point.</p>
+  <pre>P(u,v) = ( R(1 + cos v) cos u,  R sin v,  R(1 + cos v) sin u )   with R = r</pre>
+  <p>u runs the long way around the ring, v runs around the tube. The demo checks itself against this formula: every vertex sits within about 10⁻¹⁵ of the exact surface, and the horn row collapses to the centre to the same precision.</p>
+
+  <h2>Why 12 × 24</h2>
+  <p>The lattice is 12 rows by 24 columns, 288 cells. The 2:1 ratio is not a preference. The outer equator of a horn torus is twice as long as a path around the tube, so two columns for every row keeps the cells close to square where they are most visible. It is a property of the shape.</p>
+
+  <h2>The fold</h2>
+  <p>Think of rolling a beach towel. First you curl it into a tube. Then you bend the tube around until its two ends meet, making a ring. Then the ring tightens until the hole in the middle closes to a point. The demo does exactly this in three stages named Curl, Ring and Pinch, and the Master slider runs the first two in order. Folding this way means the surface never has to pass through itself, which a straight-line morph would do.</p>
+
+  <h2>Gores</h2>
+  <p>If you slice a globe's paper map so it lies flat, you get lens-shaped strips called gores, like the segments of a peeled orange. The same is true here in reverse: the flat sheet is shaped into 24 lens strips whose tips meet at the horn, so every cell keeps its size when the sheet closes into the torus.</p>
+
+  <h2>Addresses</h2>
+  <p>Each cell has a number from 1 to 288, counted along each row. The same number names both faces of the cell, and a letter says which face you mean. O is the exterior, the observer's view. I is the interior, the personal view. Seven shells nested inside each other multiply that out to 4,032 addresses in one structure.</p>
+  <p class="aside">The two faces are treated as two registers of one cell: the exterior as public and permissioned, the interior as private and encrypted. The demo only renders labels; it stores nothing.</p>
+
+  <h2>One texture per face</h2>
+  <p>Rather than giving all 4,032 addresses their own material, each shell's face carries a single texture atlas holding all 288 labels. Seven shells with two faces each is 14 draw calls, which is why the whole stack stays smooth.</p>
+</main>
+</body>
+</html>
