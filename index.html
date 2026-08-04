@@ -55,6 +55,7 @@
     border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);cursor:pointer}
   button.on{background:rgba(216,179,106,.16);color:var(--accent);
     border-color:rgba(216,179,106,.5);box-shadow:0 0 10px var(--glow)}
+  button:disabled{opacity:.35;cursor:default}
   .filebtn input{display:none}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
   .seg button{border:0;border-radius:0;border-left:1px solid var(--line)}
@@ -85,6 +86,24 @@
   #menu .mh{font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;
     text-transform:uppercase;color:var(--ink-soft);padding:8px 12px 4px}
   #hud{padding-right:64px}
+  #steps{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));z-index:11;
+    transform:translateX(-50%);display:none;flex-direction:column;gap:8px;
+    padding:14px 16px;width:min(440px,calc(100vw - 24px));
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);border-radius:16px}
+  body.guided #steps{display:flex}
+  body.guided #dock{display:none}
+  #stepHead{display:flex;align-items:baseline;gap:8px}
+  #stepNum{font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;color:var(--accent)}
+  #stepTitle{font-size:14px;font-weight:650}
+  #stepBlurb{margin:0;font-size:12.5px;line-height:1.55;color:#c3cad6}
+  #stepBar{display:flex;align-items:center;gap:10px;margin-top:2px}
+  #stepDots{flex:1;display:flex;justify-content:center;gap:6px}
+  #stepDots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18)}
+  #stepDots i.on{background:var(--accent)}
+  #stepSkip{align-self:center;border:0;background:none;color:var(--ink-soft);
+    font-size:11px;padding:2px 6px}
+  @media (min-width:820px){#steps{bottom:22px;left:calc(50% - 190px)}}
   #err{position:fixed;left:14px;right:14px;top:calc(76px + env(safe-area-inset-top));z-index:40;
     display:none;padding:13px 15px;border-radius:12px;background:rgba(44,17,20,.9);
     border:1px solid #5c2b2b;color:#f0b9b9;font-size:12.5px;line-height:1.5;
@@ -146,7 +165,7 @@
   }
 </style>
 </head>
-<body class="seven">
+<body class="seven guided">
 
 <div id="stage"></div>
 <div id="err" role="alert"></div>
@@ -166,6 +185,7 @@
   <a href="geometry.html">Geometry</a>
   <a href="about.html">About</a>
   <span class="mh">View</span>
+  <button id="menuGuide" type="button">Build guide</button>
   <button id="menuReframe" type="button">Reframe view</button>
   <button id="menuSave" type="button">Save PNG</button>
 </nav>
@@ -194,6 +214,17 @@
     <input id="arrange" type="range" min="0" max="1" step="0.001" value="0">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="4.6" r="2.4"/><path d="M12 7.5v7.5"/><path d="M5.5 10.5h13"/><path d="M12 15l-4.5 6.5"/><path d="M12 15l4.5 6.5"/></svg>
   </div>
+</div>
+
+<div id="steps" aria-label="Build guide">
+  <div id="stepHead"><span id="stepNum"></span><strong id="stepTitle"></strong></div>
+  <p id="stepBlurb"></p>
+  <div id="stepBar">
+    <button id="stepPrev" type="button">◀ Back</button>
+    <div id="stepDots"></div>
+    <button id="stepNext" type="button">Next ▶</button>
+  </div>
+  <button id="stepSkip" type="button">Skip the guide, explore freely</button>
 </div>
 
 <section id="sheet" aria-label="Controls">
@@ -225,10 +256,6 @@
     <div class="group">
       <h2>Shells</h2>
       <div class="btns">
-        <div class="seg" id="shellseg">
-          <button data-shells="seven" class="on">Seven + sphere</button>
-          <button data-shells="one">One shell</button>
-        </div>
         <button id="sphere" class="on">Geosphere</button>
         <button id="auraBtn" class="on">Aura layers</button>
         <button id="wireShellsBtn">Wireframe</button>
@@ -345,29 +372,11 @@
         <input id="detail" type="range" min="1" max="6" step="1" value="3"><output>3</output></div>
       <div class="row"><label for="seam">Seam</label>
         <input id="seam" type="range" min="0" max="0.35" step="0.005" value="0"><output>0.000</output></div>
-      <div class="row single-only"><label for="show">Wedges</label>
-        <input id="show" type="range" min="1" max="24" step="1" value="24"><output>24</output></div>
       <div class="btns">
         <button id="wire">Show lattice</button>
         <button id="lock" class="on">Lock 2:1</button>
       </div>
-      <p class="note">Drop Wedges to 1 to isolate a single gore. Rows must divide evenly so a vertex row lands on the horn. 2:1 keeps cells square at the equator.</p>
-    </div>
-
-    <div class="group single-only">
-      <h2>Cell content</h2>
-      <div class="btns">
-        <div class="seg" id="modeseg">
-          <button data-mode="field" class="on">Field</button>
-          <button data-mode="address">Address</button>
-          <button data-mode="photo">Photos</button>
-        </div>
-      </div>
-      <div class="btns">
-        <label class="filebtn">Add photos<input id="files" type="file" accept="image/*" multiple></label>
-        <button id="shuffle">Shuffle</button>
-      </div>
-      <p class="note" id="cellnote">Field mode gives each cell a distinct generated gradient.</p>
+      <p class="note">Rows must divide evenly so a vertex row lands on the horn. 2:1 keeps cells square at the equator.</p>
     </div>
 
     </div>
@@ -1618,7 +1627,6 @@ document.getElementById('master').addEventListener('input', function(){
 });
 
 slider('gore','gore',2, function(){ dirty = true; });
-slider('show','show',0, rebuildWire);
 slider('curl','curl',2, function(){ dirty = true; });
 slider('ring','ring',2, function(){ dirty = true; });
 slider('pinch','pinch',2, function(){ dirty = true; });
@@ -1644,22 +1652,12 @@ slider('addrcell','addrcell',0);
 slider('bright','bright',2, styleAll);
 slider('spin','spin',2);
 
-function syncWedgeRange(){
-  var s = document.getElementById('show');
-  s.max = P.cols;
-  if(P.show > P.cols || P.show === parseInt(s.dataset.wasAll || '0', 10)) P.show = P.cols;
-  s.dataset.wasAll = String(P.cols);
-  s.value = P.show;
-  sync('show', String(P.show));
-}
-
 slider('rows','rows',0, function(){
   if(P.lock){
     P.cols = Math.min(64, P.rows * 2);
     document.getElementById('cols').value = P.cols;
     sync('cols', String(P.cols));
   }
-  syncWedgeRange();
   rebuild();
 });
 slider('cols','cols',0, function(){
@@ -1668,24 +1666,15 @@ slider('cols','cols',0, function(){
     document.getElementById('rows').value = P.rows;
     sync('rows', String(P.rows));
   }
-  syncWedgeRange();
   rebuild();
 });
 
-document.querySelectorAll('#shellseg button').forEach(function(b){
-  b.addEventListener('click', function(){
-    document.querySelectorAll('#shellseg button').forEach(function(x){ x.classList.remove('on'); });
-    b.classList.add('on');
-    P.shellsMode = b.dataset.shells;
-    document.body.classList.toggle('seven', P.shellsMode === 'seven');
-    document.getElementById('addrnote').textContent = ADDR_HELP;
-    rebuild();
-  });
-});
-document.getElementById('sphere').addEventListener('click', function(){
-  P.sphere = !P.sphere; this.classList.toggle('on', P.sphere);
+function setSphere(on){
+  P.sphere = on;
+  document.getElementById('sphere').classList.toggle('on', on);
   syncRail();
-});
+}
+document.getElementById('sphere').addEventListener('click', function(){ setSphere(!P.sphere); });
 
 /* chakra rail: tap a dot to focus that shell, tap again for all */
 var railDots = document.querySelectorAll('#rail .dot[data-k]');
@@ -1705,24 +1694,21 @@ railDots.forEach(function(d){
     syncRail();
   });
 });
-document.getElementById('railSphere').addEventListener('click', function(){
-  P.sphere = !P.sphere;
-  document.getElementById('sphere').classList.toggle('on', P.sphere);
-  syncRail();
-});
+document.getElementById('railSphere').addEventListener('click', function(){ setSphere(!P.sphere); });
 function setAura(on){
   P.aura = on;
   document.getElementById('auraBtn').classList.toggle('on', on);
   document.getElementById('railAura').classList.toggle('on', on);
 }
-document.getElementById('wireShellsBtn').addEventListener('click', function(){
-  P.wireShells = !P.wireShells;
-  this.classList.toggle('on', P.wireShells);
+function setWire(on){
+  P.wireShells = on;
+  document.getElementById('wireShellsBtn').classList.toggle('on', on);
   shells.forEach(function(sh){
-    sh.out.material.wireframe = P.wireShells;
-    sh.inn.material.wireframe = P.wireShells;
+    sh.out.material.wireframe = on;
+    sh.inn.material.wireframe = on;
   });
-});
+}
+document.getElementById('wireShellsBtn').addEventListener('click', function(){ setWire(!P.wireShells); });
 document.getElementById('auraBtn').addEventListener('click', function(){ setAura(!P.aura); });
 document.getElementById('railAura').addEventListener('click', function(){ setAura(!P.aura); });
 document.querySelectorAll('#sideseg button').forEach(function(b){
@@ -1822,23 +1808,6 @@ document.getElementById('wire').addEventListener('click', function(){
   if(lattice) lattice.visible = P.wire;
 });
 document.getElementById('reframe').addEventListener('click', reframe);
-document.getElementById('shuffle').addEventListener('click', function(){
-  reorder(true); refreshTextures();
-});
-
-document.querySelectorAll('#modeseg button').forEach(function(b){
-  b.addEventListener('click', function(){
-    document.querySelectorAll('#modeseg button').forEach(function(x){ x.classList.remove('on'); });
-    b.classList.add('on');
-    P.mode = b.dataset.mode;
-    document.getElementById('cellnote').textContent =
-      P.mode === 'address' ? 'Each cell is labelled with its lattice address. Lightness tracks v, hue tracks u.'
-    : P.mode === 'photo'   ? (photoPool.length ? photoPool.length + ' photos across ' + (P.rows*P.cols) + ' cells.'
-                                               : 'No photos loaded yet — add some to fill the cells.')
-    : 'Field mode gives each cell a distinct generated gradient.';
-    refreshTextures();
-  });
-});
 
 document.querySelectorAll('#pathseg button').forEach(function(b){
   b.addEventListener('click', function(){
@@ -1860,33 +1829,6 @@ document.getElementById('tint').addEventListener('input', function(e){
 });
 document.getElementById('bgcolor').addEventListener('input', function(e){
   P.bgcolor = parseInt(e.target.value.slice(1),16); styleAll();
-});
-
-document.getElementById('files').addEventListener('change', function(e){
-  var files = Array.prototype.slice.call(e.target.files || []);
-  if(!files.length) return;
-  var loader = new THREE.TextureLoader();
-  var pending = files.length;
-  files.forEach(function(f){
-    var reader = new FileReader();
-    reader.onload = function(){
-      loader.load(reader.result, function(tex){
-        tex.encoding = THREE.sRGBEncoding;
-        photoPool.push(tex);
-        if(--pending === 0){
-          P.mode = 'photo';
-          document.querySelectorAll('#modeseg button').forEach(function(x){
-            x.classList.toggle('on', x.dataset.mode === 'photo');
-          });
-          refreshTextures();
-          document.getElementById('cellnote').textContent =
-            photoPool.length + ' photos across ' + (P.rows*P.cols) + ' cells.';
-        }
-      });
-    };
-    reader.readAsDataURL(f);
-  });
-  e.target.value = '';
 });
 
 document.getElementById('save').addEventListener('click', function(){
@@ -1921,9 +1863,122 @@ grip.addEventListener('keydown', function(e){
   if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSheet(); }
 });
 
+/* ---------- build guide: an aura for a person, step by step ---------- */
+function setRange(id, v){
+  var el = document.getElementById(id);
+  el.value = v;
+  el.dispatchEvent(new Event('input'));
+}
+function animateRange(id, to, ms){
+  var el = document.getElementById(id);
+  var from = parseFloat(el.value), t0 = null;
+  function stepFrame(t){
+    if(t0 === null) t0 = t;
+    var k = Math.min(1, (t - t0) / ms);
+    var e = k * k * (3 - 2 * k);
+    el.value = from + (to - from) * e;
+    el.dispatchEvent(new Event('input'));
+    if(k < 1) requestAnimationFrame(stepFrame);
+  }
+  requestAnimationFrame(stepFrame);
+}
+function resetRays(){
+  P.rays = 'off';
+  document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
+  rebuildRayLines();
+  clearRaySel();
+}
+var STEPS = [
+  {t:'One matrix', b:'Each box on this 12 by 24 matrix is a programmable object: 288 boxes, with a front and a back. This is the red base layer, laid out flat.',
+   go:function(){
+     setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
+     setRange('focus', 1); setRange('arrange', 0); setRange('spin', 0.06);
+     animateRange('master', 0, 700);
+     cam.dist = 10; applyCamera();
+   }},
+  {t:'Fold it closed', b:'The sheet curls into a cylinder, the cylinder closes into a ring, and the ring pinches into a horn torus. The individual stages are under Morph whenever you want to scrub them.',
+   go:function(){
+     setAura(true); setSphere(false); resetRays();
+     setRange('focus', 1); setRange('arrange', 0);
+     animateRange('master', 1, 1600);
+     cam.dist = 10; applyCamera();
+   }},
+  {t:'Two faces', b:'Folded, the two sides of the sheet become two faces. The interior is the personal view, I, private and encrypted. The exterior is the observer view, O, public and permissioned. Same 1 to 288 numbers on both.',
+   go:function(){
+     setAura(true); setSphere(false); resetRays();
+     setRange('focus', 1); setRange('master', 1);
+     setRange('addrshell', 1); setRange('addrcell', 1);
+     P.addrside = 'out';
+     findAddress();
+   }},
+  {t:'The zero point', b:'Every vertex and every cell centre has a ray from the zero point, and every ray is a register waiting to be bound to content. New information enters the torus at the centre point; old information exits the same way.',
+   go:function(){
+     setAura(true); setSphere(false);
+     setRange('focus', 1); setRange('addrshell', 1);
+     P.rays = 'cell';
+     document.querySelectorAll('#rayseg button').forEach(function(x){
+       x.classList.toggle('on', x.dataset.rays === 'cell');
+     });
+     rebuildRayLines();
+     selectRay('Red FR1,L001');
+   }},
+  {t:'Seven layers', b:'Seven tori, one per chakra, red innermost to violet, nested on the one zero point. Each torus carries its own registers: Red R1,L001 and Violet R1,L001 are different registers on one shared direction.',
+   go:function(){
+     resetRays(); clearSel();
+     setAura(true); setSphere(false);
+     setRange('focus', 0); setRange('arrange', 0);
+     cam.dist = 17; applyCamera();
+   }},
+  {t:'On the body', b:'Arranged up the body: red root at the base, violet crown on top, one vortex per chakra, as worn by a person.',
+   go:function(){
+     setAura(true); setSphere(false);
+     setRange('focus', 0);
+     animateRange('arrange', 1, 1400);
+     cam.dist = 19; applyCamera();
+   }},
+  {t:'In the world', b:'The geosphere carries the Earth around the whole aura: maps of self, place and mind kept close together for intuitive navigation. Next, explore freely: every control stays live.',
+   go:function(){
+     setAura(true); setSphere(true);
+     cam.dist = 27; applyCamera();
+   }}
+];
+var stepIdx = 0;
+function applyStep(i){
+  stepIdx = Math.max(0, Math.min(STEPS.length - 1, i));
+  var s = STEPS[stepIdx];
+  document.getElementById('stepNum').textContent = 'STEP ' + (stepIdx + 1) + ' / ' + STEPS.length;
+  document.getElementById('stepTitle').textContent = s.t;
+  document.getElementById('stepBlurb').textContent = s.b;
+  var dots = document.getElementById('stepDots');
+  dots.innerHTML = '';
+  STEPS.forEach(function(_, j){
+    var d = document.createElement('i');
+    if(j === stepIdx) d.className = 'on';
+    dots.appendChild(d);
+  });
+  document.getElementById('stepPrev').disabled = stepIdx === 0;
+  document.getElementById('stepNext').textContent = stepIdx === STEPS.length - 1 ? 'Explore ▶' : 'Next ▶';
+  s.go();
+}
+function endGuide(){
+  document.body.classList.remove('guided');
+  switchTab('view');
+}
+document.getElementById('stepPrev').addEventListener('click', function(){ applyStep(stepIdx - 1); });
+document.getElementById('stepNext').addEventListener('click', function(){
+  if(stepIdx === STEPS.length - 1) endGuide(); else applyStep(stepIdx + 1);
+});
+document.getElementById('stepSkip').addEventListener('click', endGuide);
+document.getElementById('menuGuide').addEventListener('click', function(){
+  menuEl.classList.remove('open');
+  document.body.classList.add('guided');
+  applyStep(0);
+});
+
 /* ---------- go ---------- */
 resize();
 rebuild();
+applyStep(0);
 tick();
 
 })();

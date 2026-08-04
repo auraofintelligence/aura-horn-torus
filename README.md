@@ -15,8 +15,8 @@ Live page: https://auraofintelligence.github.io/aura-horn-torus/
 - Every cell has an address: a shell, a number from 1 to 288, and a face letter. O is the exterior observer face, treated as a public permissioned register. I is the interior personal face, treated as a private encrypted register. Tap any cell to read its address, or type one in and the camera swings to it.
 - An Arrange slider that moves the seven shells between two layouts: nested on a single centre, or spread up a body column, red at the base and violet at the crown.
 - A geosphere around the outside carrying an Earth map, so maps of self and place sit in the one navigable space. The aura layers toggle on and off in front of it.
-- The full fold: seven flat sheets curl into tubes, close into rings, and pinch into horn tori, live on sliders.
-- A single-shell mode with the original demo intact: gores, wedges, photo cells, PNG export.
+- The full fold: flat sheets curl into tubes, close into rings, and pinch into horn tori, live on sliders.
+- A build guide that opens the page: one matrix, fold it closed, two faces, the zero point, seven layers, on the body, in the world, then free exploration.
 
 ## Running it
 
