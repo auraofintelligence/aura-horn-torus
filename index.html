@@ -198,6 +198,7 @@
         </div>
         <button id="sphere" class="on">Geosphere</button>
         <button id="auraBtn" class="on">Aura layers</button>
+        <button id="wireShellsBtn">Wireframe</button>
       </div>
       <div class="row"><label for="focus">Focus shell</label>
         <input id="focus" type="range" min="0" max="7" step="1" value="0"><output>all</output></div>
@@ -245,7 +246,15 @@
         </div>
         <button id="raysoff" type="button">Clear</button>
       </div>
-      <p class="note">Rays run from the zero point out to the lattice: one to every vertex, one to every cell centre. Pick a cell (tap or Address), then light that cell's rays, its row's, or the whole shell's. Off by default; Clear returns the bare shell.</p>
+      <div class="btns">
+        <button id="rayprev" type="button" title="Previous register on this ring">◀</button>
+        <button id="raynext" type="button" title="Next register on this ring">▶</button>
+        <button id="rayup" type="button" title="Ring up">▲ ring</button>
+        <button id="raydown" type="button" title="Ring down">▼ ring</button>
+        <button id="raykind" type="button" title="Swap vertex and centre register">V⇄F</button>
+      </div>
+      <p class="note" id="raynote">No register selected. Light a group, then step with these buttons or the arrow keys. A ray passes through the matching point on every shell.</p>
+      <p class="note">Rays run from the zero point out to the lattice: one register per vertex, one per cell centre. Off by default; Clear returns the bare shell.</p>
     </div>
 
     <div class="group">
@@ -401,7 +410,7 @@ var P = {
   rows:12, cols:24, lock:true, wire:false,
   mode:'field', bright:1, tint:0xffffff, spin:0.12,
   bg:'none', bgcolor:0x0e1014,
-  shellsMode:'seven', sphere:true, aura:true, arrange:0, focus:0, peel:0, rays:'off',
+  shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
   addrshell:4, addrcell:1, addrside:'out'
 };
 
@@ -710,6 +719,8 @@ function clearMeshes(){
     markerGroup = null; selPlace = -1;
   }
   if(rayLines){ root.remove(rayLines); rayLines.geometry.dispose(); rayLines.material.dispose(); rayLines = null; }
+  if(rayHi){ root.remove(rayHi); rayHi.geometry.dispose(); rayHi.material.dispose(); rayHi = null; }
+  selRayId = null;
   P.rays = 'off';
   document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
   sel = null;
@@ -867,8 +878,8 @@ function buildShells(){
     // On the ROLL path (the default) the front faces point OUTWARD — verified
     // by raycast. The Direct path mirrors the surface, so don't trust algebra
     // from one path on the other.
-    var mo = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlOut.tex, side:THREE.FrontSide}));
-    var mi = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlIn.tex,  side:THREE.BackSide}));
+    var mo = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlOut.tex, side:THREE.FrontSide, wireframe:P.wireShells}));
+    var mi = new THREE.Mesh(shellGeo, new THREE.MeshBasicMaterial({map:atlIn.tex,  side:THREE.BackSide, wireframe:P.wireShells}));
     mo.userData = {k:k, inside:false};
     mi.userData = {k:k, inside:true};
     root.add(mi); root.add(mo);
@@ -970,9 +981,14 @@ function updateShellTransforms(){
     sphereMesh.scale.setScalar(1 + (grow - 1) * t);
   }
   if(rayLines){
-    var rrk = P.focus > 0 ? P.focus - 1 : 6;
+    var rrk = rayShellIdxNow();
     rayLines.scale.setScalar(shellS(rrk));
     rayLines.position.set(0, shellY(rrk), 0);
+  }
+  if(rayHi && selRayId && rayIndex[selRayId]){
+    var hk = rayIndex[selRayId].shell;
+    rayHi.scale.setScalar(shellS(hk));
+    rayHi.position.set(0, shellY(hk), 0);
   }
   if(lattice){
     lattice.visible = P.wire && P.aura;
@@ -1345,14 +1361,19 @@ function makeRayDefs(){
   var rows = P.rows, cols = P.cols;
   rayDefs = []; rayIndex = {};
   function addRay(d){ rayDefs.push(d); rayIndex[d.id] = d; }
-  for(var ring = 1; ring <= rows; ring++)
-    for(var c = 0; c < cols; c++)
-      addRay({id:'R'+ring+',L'+pad3((ring-1)*cols + c + 1), kind:'vertex',
-        ring:ring, c:c, un:c/cols, vn:(ring-1)/rows, horn:(ring === 1), binding:null});
-  for(var r2 = 0; r2 < rows; r2++)
-    for(var c2 = 0; c2 < cols; c2++)
-      addRay({id:'FR'+(r2+1)+',L'+pad3(r2*cols + c2 + 1), kind:'centre',
-        ring:r2+1, c:c2, un:(c2+0.5)/cols, vn:(r2+0.5)/rows, horn:false, binding:null});
+  // one full register set PER TORUS: Red R1,L001 and Violet R1,L001 are
+  // different registers sharing one direction. 7 × 576 = 4032 at 12×24.
+  for(var k = 0; k < 7; k++){
+    var pre = SHELL_NAME[k] + ' ';
+    for(var ring = 1; ring <= rows; ring++)
+      for(var c = 0; c < cols; c++)
+        addRay({id:pre+'R'+ring+',L'+pad3((ring-1)*cols + c + 1), kind:'vertex', shell:k,
+          ring:ring, c:c, un:c/cols, vn:(ring-1)/rows, horn:(ring === 1), binding:null});
+    for(var r2 = 0; r2 < rows; r2++)
+      for(var c2 = 0; c2 < cols; c2++)
+        addRay({id:pre+'FR'+(r2+1)+',L'+pad3(r2*cols + c2 + 1), kind:'centre', shell:k,
+          ring:r2+1, c:c2, un:(c2+0.5)/cols, vn:(r2+0.5)/rows, horn:false, binding:null});
+  }
 }
 // exact point on the closed roll-path torus (unscaled)
 function torusPointClosed(un, vn){
@@ -1361,23 +1382,26 @@ function torusPointClosed(un, vn){
   var q = rV * (1 - Math.cos(w));
   return new THREE.Vector3(q * Math.sin(psi), -rV * Math.sin(w), q * Math.cos(psi));
 }
+function rayShellIdxNow(){ return Math.min(6, Math.max(0, P.addrshell - 1)); }
 function activeRayIds(){
   if(P.rays === 'off' || P.shellsMode !== 'seven') return [];
   var rows = P.rows, cols = P.cols;
+  var pre = SHELL_NAME[rayShellIdxNow()] + ' ';
   var cell = Math.min(P.addrcell, rows * cols) - 1;
   var r = (cell / cols) | 0, c = cell % cols, ids = [];
   // vertex-row rr (0-based) is ring rr+1; ring rows+1 wraps back to R1
   function vid(rr, cc){
     var ring = (rr % rows) + 1;
-    return 'R' + ring + ',L' + pad3((ring-1)*cols + (cc % cols) + 1);
+    return pre + 'R' + ring + ',L' + pad3((ring-1)*cols + (cc % cols) + 1);
   }
-  function fid(rr, cc){ return 'FR' + (rr+1) + ',L' + pad3(rr*cols + cc + 1); }
+  function fid(rr, cc){ return pre + 'FR' + (rr+1) + ',L' + pad3(rr*cols + cc + 1); }
   if(P.rays === 'cell'){
     ids = [vid(r,c), vid(r,c+1), vid(r+1,c), vid(r+1,c+1), fid(r,c)];
   } else if(P.rays === 'row'){
     for(var i = 0; i < cols; i++) ids.push(vid(r,i), vid(r+1,i), fid(r,i));
   } else if(P.rays === 'shell'){
-    ids = rayDefs.map(function(d){ return d.id; });
+    ids = rayDefs.filter(function(d){ return d.shell === rayShellIdxNow(); })
+                 .map(function(d){ return d.id; });
   }
   return Array.from(new Set(ids));
 }
@@ -1403,8 +1427,57 @@ function rebuildRayLines(){
   var g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
   rayLines = new THREE.LineSegments(g,
-    new THREE.LineBasicMaterial({color:0xd8b36a, transparent:true, opacity:0.55}));
+    new THREE.LineBasicMaterial({color:SHELL_COL[rayShellIdxNow()], transparent:true, opacity:0.6}));
   root.add(rayLines);
+}
+
+/* single-register navigation: select one ray, read it, step the lattice */
+var selRayId = null, rayHi = null;
+function selectRay(id){
+  var d = rayIndex[id];
+  if(!d) return;
+  selRayId = id;
+  if(rayHi){ root.remove(rayHi); rayHi.geometry.dispose(); rayHi.material.dispose(); rayHi = null; }
+  var pos;
+  if(d.horn){ var rV = P.rows / TAU; pos = [0, -rV, 0, 0, rV, 0]; }
+  else { var p = torusPointClosed(d.un, d.vn); pos = [0, 0, 0, p.x, p.y, p.z]; }
+  var g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+  rayHi = new THREE.LineSegments(g,
+    new THREE.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.95}));
+  root.add(rayHi);
+  document.getElementById('raynote').textContent =
+    id + ' · ' + d.kind + (d.horn ? ' · seam ring, 24 registers one point' : '') +
+    ' · ring ' + d.ring + ' · col ' + (d.c + 1) + ' · binding: empty';
+  var s = shellS(d.shell);
+  var v = d.horn ? new THREE.Vector3(0, P.rows / TAU, 0) : torusPointClosed(d.un, d.vn);
+  var wx = v.x * s, wy = v.y * s + shellY(d.shell), wz = v.z * s;
+  var len = Math.sqrt(wx*wx + wy*wy + wz*wz);
+  if(len > 1e-6){
+    cam.theta = Math.atan2(wx, wz) + root.rotation.y;
+    cam.phi = Math.acos(Math.max(-1, Math.min(1, wy / len)));
+    applyCamera();
+  }
+}
+function clearRaySel(){
+  if(rayHi){ root.remove(rayHi); rayHi.geometry.dispose(); rayHi.material.dispose(); rayHi = null; }
+  selRayId = null;
+  var n = document.getElementById('raynote');
+  if(n) n.textContent = 'No register selected. Light a group, then step with these buttons or the arrow keys. A ray passes through the matching point on every shell.';
+}
+function stepRay(dRing, dCol, toggleKind){
+  var d = selRayId ? rayIndex[selRayId] : null;
+  if(!d){
+    var cell = Math.min(P.addrcell, P.rows * P.cols) - 1;
+    selectRay(SHELL_NAME[rayShellIdxNow()] + ' FR' + (((cell / P.cols) | 0) + 1) + ',L' + pad3(cell + 1));
+    return;
+  }
+  var rows = P.rows, cols = P.cols;
+  var kind = toggleKind ? (d.kind === 'vertex' ? 'centre' : 'vertex') : d.kind;
+  var ring = ((d.ring - 1 + dRing + rows) % rows) + 1;
+  var c = (d.c + dCol + cols) % cols;
+  selectRay(SHELL_NAME[d.shell] + ' ' +
+    (kind === 'vertex' ? 'R' : 'FR') + ring + ',L' + pad3((ring - 1) * cols + c + 1));
 }
 
 /* ---------- Earth places: search, zoom, tap ---------- */
@@ -1500,7 +1573,14 @@ slider('focus','focus',0, function(){
   syncRail();
 });
 sync('focus','all');
-slider('addrshell','addrshell',0);
+slider('addrshell','addrshell',0, function(){
+  if(P.rays !== 'off') rebuildRayLines();
+  if(selRayId && rayIndex[selRayId]){
+    // same register code, re-scoped to the newly chosen torus
+    var code = selRayId.split(' ').slice(1).join(' ');
+    selectRay(SHELL_NAME[rayShellIdxNow()] + ' ' + code);
+  }
+});
 slider('addrcell','addrcell',0);
 slider('bright','bright',2, styleAll);
 slider('spin','spin',2);
@@ -1576,6 +1656,14 @@ function setAura(on){
   document.getElementById('auraBtn').classList.toggle('on', on);
   document.getElementById('railAura').classList.toggle('on', on);
 }
+document.getElementById('wireShellsBtn').addEventListener('click', function(){
+  P.wireShells = !P.wireShells;
+  this.classList.toggle('on', P.wireShells);
+  shells.forEach(function(sh){
+    sh.out.material.wireframe = P.wireShells;
+    sh.inn.material.wireframe = P.wireShells;
+  });
+});
 document.getElementById('auraBtn').addEventListener('click', function(){ setAura(!P.aura); });
 document.getElementById('railAura').addEventListener('click', function(){ setAura(!P.aura); });
 document.querySelectorAll('#sideseg button').forEach(function(b){
@@ -1608,6 +1696,19 @@ document.getElementById('raysoff').addEventListener('click', function(){
   P.rays = 'off';
   document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
   rebuildRayLines();
+  clearRaySel();
+});
+document.getElementById('rayprev').addEventListener('click', function(){ stepRay(0, -1, false); });
+document.getElementById('raynext').addEventListener('click', function(){ stepRay(0, 1, false); });
+document.getElementById('rayup').addEventListener('click', function(){ stepRay(1, 0, false); });
+document.getElementById('raydown').addEventListener('click', function(){ stepRay(-1, 0, false); });
+document.getElementById('raykind').addEventListener('click', function(){ stepRay(0, 0, true); });
+window.addEventListener('keydown', function(e){
+  if(e.target && e.target.tagName === 'INPUT') return;
+  if(P.shellsMode !== 'seven') return;
+  if(P.rays === 'off' && !selRayId) return;
+  var map = {ArrowLeft:[0,-1], ArrowRight:[0,1], ArrowUp:[1,0], ArrowDown:[-1,0]};
+  if(map[e.key]){ e.preventDefault(); stepRay(map[e.key][0], map[e.key][1], false); }
 });
 
 document.getElementById('goplace').addEventListener('click', goPlace);
