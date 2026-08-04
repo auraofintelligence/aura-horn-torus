@@ -439,6 +439,8 @@
 ------------------------------------------------------------------*/
 
 var TAU = Math.PI * 2;
+function mix(a, b, t){ return a + (b - a) * t; }
+function clamp01(t){ return t < 0 ? 0 : (t > 1 ? 1 : t); }
 
 /* ---------- diagnostics ---------- */
 var errBox = document.getElementById('err');
@@ -470,8 +472,8 @@ var P = {
   bg:'none', bgcolor:0x0e1014,
   shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
   foldSeq:-1,   // ≥0: fold columns one at a time, in column units (taper leads fold by one)
-  colFocus:-1, colFocusK:0,   // focus one column: the rest slide into it and shrink away
-  uFold:-1,   // ≥0: horizontal concertina, columns unfold sideways one at a time
+  colSpread:24,   // how many columns have arrived; the rest are collapsed into column 1
+  auraFade:1,
   addrshell:4, addrcell:1, addrside:'out'
 };
 
@@ -989,7 +991,8 @@ function buildShells(){
 
   makeRayDefs();
   rebuildRayLines();
-  window.__htl = {shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs};
+  window.__htl = {shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
+    P:P, journey:function(j){ applyJourney(j); updateGeometry(); }};
 
   document.getElementById('sub').textContent =
     '7 shells · ' + rows + ' × ' + cols + ' · ' + (cells * 2 * 7) + ' addresses';
@@ -1034,6 +1037,8 @@ function updateShellTransforms(){
       op = Math.max(0, Math.min(1, (1 - P.peel) * 7 - k + 0.5));
       if(op <= 0.02) vis = false;
     }
+    op *= P.auraFade;
+    if(op <= 0.02) vis = false;
     sh.out.visible = vis; sh.inn.visible = vis;
     sh.out.material.opacity = op; sh.inn.material.opacity = op;
     sh.out.material.transparent = op < 1; sh.inn.material.transparent = op < 1;
@@ -1147,22 +1152,6 @@ function writePositions(arr, us, vs, ucs, vcs, count){
   // the bend supplies the taper on its own, so it fades out with b.
   var goreAmt = P.gore * (1 - b);
 
-  // horizontal concertina: columns unfold sideways one at a time, the
-  // twin of the intro wallet's vertical unfold. Chain of hinged panels.
-  var uf = P.uFold, ufStarts = null, ufAng = null, ufP = null, ufW = 0;
-  if(uf >= 0){
-    ufW = axialLen / W;
-    ufStarts = []; ufAng = []; ufP = [];
-    var frac = Math.min(uf, W - 1) / (W - 1);
-    var ufx = -ufW / 2 - frac * (axialLen - ufW) / 2, ufz = 0, ufA = 0;
-    for(var ci = 0; ci < W; ci++){
-      var ufp = ci === 0 ? 1 : Math.max(0, Math.min(1, uf - (ci - 1)));
-      if(ci > 0) ufA += ((ci % 2 === 1) ? 1 : -1) * (1 - ufp) * Math.PI;
-      ufStarts.push([ufx, ufz]); ufAng.push(ufA); ufP.push(ufp);
-      ufx += ufW * Math.cos(ufA);
-      ufz += ufW * Math.sin(ufA);
-    }
-  }
   var q = axialLen > 1e-6 ? W / axialLen : 1;    // equator span ÷ centre-line span
   var denom = rhoFinal + rV;
 
@@ -1170,15 +1159,7 @@ function writePositions(arr, us, vs, ucs, vcs, count){
     var un = us[i], vn = vs[i], uc = ucs[i];
     var x, y, z;
 
-    if(P.roll && uf >= 0){
-      // concertina placement overrides the fold entirely while active
-      var colU = Math.min(W - 1, Math.max(0, Math.floor(un * W - 1e-9)));
-      var xi = un * W - colU;
-      x = ufStarts[colU][0] + xi * ufW * Math.cos(ufAng[colU]);
-      z = ufStarts[colU][1] + xi * ufW * Math.sin(ufAng[colU]) +
-          0.012 * colU * (1 - ufP[colU]);
-      y = H * 0.5 - vn * H;
-    } else if(P.roll){
+    if(P.roll){
       // Per-column fold: when P.foldSeq >= 0, each column curls into the
       // torus on its own schedule (taper arrives one column-unit before
       // the fold), with the ring bend held closed so every column lands
@@ -1186,6 +1167,13 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       var aL = a, phiVL = phiV, rhoVL = rhoV, phiUL = phiU, rhoUL = rhoU,
           bL = b, goreL = goreAmt, ucD = uc, wShrink = 1;
       var colI = Math.min(W - 1, Math.floor(uc * W));
+      // colSpread: columns arrive one at a time out of column 1. Below its
+      // own index a column has zero width and sits on column 1's centre.
+      if(P.colSpread < W){
+        var ti = clamp01(P.colSpread - colI);
+        ucD = mix(0.5 / W, uc, ti);
+        wShrink = ti;
+      }
       if(P.foldSeq >= 0){
         var tK = Math.max(0, Math.min(1, P.foldSeq - colI));
         aL = Math.max(0, Math.min(1, P.foldSeq - colI - 1));
@@ -1198,11 +1186,6 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       }
       // column focus: every other column slides into the focused one and
       // shrinks away, leaving a single column of 12 on stage
-      if(P.colFocus >= 0 && P.colFocusK > 0 && colI !== P.colFocus){
-        var kf = P.colFocusK;
-        ucD = uc + (((P.colFocus + 0.5) / W) - uc) * kf;
-        wShrink = 1 - kf;
-      }
 
       // ---- stage 1: curl along v. The seam sits AT the horn, so an
       //      unrolled column is a lens pinched at both ends — a gore.
@@ -1960,7 +1943,7 @@ function cardTex(n, inside){
 
 function buildIntro(){
   if(intro) return;
-  intro = {group:new THREE.Group(), inner:new THREE.Group(), hinges:[], accT:0, tubeT:0};
+  intro = {group:new THREE.Group(), inner:new THREE.Group(), hinges:[], mats:[], accT:0, tubeT:0};
   intro.group.add(intro.inner);
   var plane = new THREE.PlaneBufferGeometry(1, 1);
   var parent = intro.inner, prev = null;
@@ -1968,11 +1951,12 @@ function buildIntro(){
     var hinge = new THREE.Group();
     if(i === 0){ hinge.position.set(0, 0.5, 0); parent.add(hinge); }
     else { hinge.position.set(0, -1, 0); prev.add(hinge); }
-    var front = new THREE.Mesh(plane,
-      new THREE.MeshBasicMaterial({map:cardTex(i, false), side:THREE.FrontSide}));
+    var fm = new THREE.MeshBasicMaterial({map:cardTex(i, false), side:THREE.FrontSide});
+    var bm = new THREE.MeshBasicMaterial({map:cardTex(i, true), side:THREE.FrontSide});
+    intro.mats.push(fm, bm);
+    var front = new THREE.Mesh(plane, fm);
     front.position.y = -0.5;
-    var back = new THREE.Mesh(plane,
-      new THREE.MeshBasicMaterial({map:cardTex(i, true), side:THREE.FrontSide}));
+    var back = new THREE.Mesh(plane, bm);
     back.position.y = -0.5;
     back.rotation.y = Math.PI;
     hinge.add(front); hinge.add(back);
@@ -1987,29 +1971,24 @@ function recentreIntro(){
   intro.group.worldToLocal(c);
   intro.inner.position.sub(c);
 }
-function introAccordion(t){
-  intro.accT = t;
+/* one pose function for the card rig: unfold amount and tube amount.
+   Cards unfold end over end, then the whole strip bends into its ring. */
+function introPose(accT, tubeT){
+  intro.accT = accT; intro.tubeT = tubeT;
   for(var i = 1; i < 12; i++){
-    intro.hinges[i].rotation.x = Math.PI * (1 - Math.max(0, Math.min(1, t * 11 - (i - 1))));
+    var open = clamp01(accT * 11 - (i - 1));
+    var folded = Math.PI * (1 - open);
+    intro.hinges[i].rotation.x = folded + tubeT * Math.PI / 6;
+    intro.hinges[i].position.z = (1 - open) * 0.004 * i;   // no z-fight when stacked
   }
   recentreIntro();
 }
-function introTube(t){
-  // bend towards the back faces so the public O side stays on the outside
-  intro.tubeT = t;
-  for(var i = 1; i < 12; i++) intro.hinges[i].rotation.x = t * Math.PI / 6;
-  recentreIntro();
-}
-function introScale(to, ms){
-  animateVal(intro.group.scale.x, to, ms, function(v){ intro.group.scale.setScalar(v); });
-}
-function showIntro(stage){
-  buildIntro();
-  intro.group.visible = true;
-  intro.hinges[1].visible = stage > 1;   // hides cards 2..12 as one subtree
-  intro.group.rotation.set(0, 0, 0);
-  intro.inner.position.set(0, 0, 0);
-  // scale is deliberately left alone: steps animate it from its actual value
+function introSetFade(f){
+  intro.mats.forEach(function(m){
+    m.opacity = f;
+    m.transparent = f < 1;
+    m.depthWrite = f > 0.98;
+  });
 }
 function hideIntro(){
   if(intro) intro.group.visible = false;
@@ -2061,345 +2040,204 @@ function resetRays(){
   rebuildRayLines();
   clearRaySel();
 }
-function introScene(stage){
-  setAura(false); setSphere(false); setWire(false); resetRays(); clearSel();
-  showIntro(stage);
-}
-function sheetScene(){
-  hideIntro();
-  setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
-  setRange('focus', 1); setRange('spin', 0.06);
-  if(parseFloat(document.getElementById('arrange').value) > 0.01)
-    animateRange('arrange', 0, 600);
-  // morph state (foldSeq, colFocus, uFold, gore, curl, ring) is left as it
-  // stands: every step animates onward from the actual state, never a snap
-}
-function seqFold(v){ P.foldSeq = v; dirty = true; }
-function seqFocusK(v){ P.colFocusK = v; dirty = true; }
+/* ================= the journey =================================
+   The whole story is one number, J from 0 to 100, and one pure
+   function that maps it to a pose. Steps are waypoints on that
+   number. Running it backwards is the same function in reverse,
+   so nothing needs a special case, and the recap is simply a
+   sweep. Each phase eases inside its own window, so even a
+   constant speed sweep reads as breathing.
+
+     0  22   card turns, eleven unfold, the strip closes to a tube
+    22  26   cards cross-fade to the lattice, same pose, same size
+    26  38   the tube lengthens, one column becomes twenty four
+    38  46   the cylinder bends until its mouths meet: a ring torus
+    46  54   the hole closes to a single point: the horn torus
+    54  70   it opens back out, and the needles are revealed
+    70  78   the whole matrix breathes, needle to rectangle and back
+    78  90   one column alone, tapered, folded into its wedge
+    90 100   the other twenty three return, each landing on the point
+--------------------------------------------------------------- */
 function rangeVal(id){ return parseFloat(document.getElementById(id).value); }
-// how folded is the stage right now, in cascade units (0 flat .. 25 torus)
-function effFold(){
-  if(P.foldSeq >= 0) return P.foldSeq;
-  var folded = Math.max(rangeVal('curl'), rangeVal('ring'), rangeVal('master'));
-  return folded > 0.5 ? 25 : 0;
+function resetRays(){
+  P.rays = 'off';
+  document.querySelectorAll('#rayseg button').forEach(function(x){ x.classList.remove('on'); });
+  rebuildRayLines();
+  clearRaySel();
 }
-// continuously settle whatever is on stage back to the plain flat sheet
-function settleSheet(then){
-  function clearGore(){
-    if(rangeVal('gore') > 0.01) animateRange('gore', 0, 500);
-    if(P.uFold >= 0){ P.uFold = -1; dirty = true; }
-    if(then) after(540, then);
-  }
-  function clearFocus(){
-    if(P.colFocusK > 0.01){
-      animateVal(P.colFocusK, 0, 600, seqFocusK, function(){ P.colFocus = -1; clearGore(); });
-    } else { P.colFocus = -1; clearGore(); }
-  }
-  var eff = effFold();
-  if(P.foldSeq >= 0 && eff > 0.01){
-    animateVal(eff, 0, Math.max(400, 100 * eff), seqFold, function(){
-      P.foldSeq = -1;
-      setRange('curl', 0); setRange('ring', 0); setRange('master', 0);
-      dirty = true; clearFocus();
-    });
-  } else if(P.foldSeq < 0 && (rangeVal('curl') > 0.01 || rangeVal('ring') > 0.01)){
-    animateRange('ring', 0, 700);
-    after(720, function(){
-      animateRange('curl', 0, 700);
-      after(720, function(){ setRange('master', 0); clearFocus(); });
-    });
-  } else {
-    if(P.foldSeq >= 0) P.foldSeq = -1;
-    setRange('master', 0); dirty = true; clearFocus();
-  }
+function seg(J, a, b){ return clamp01((J - a) / (b - a)); }
+function es(J, a, b){ var t = seg(J, a, b); return t * t * (3 - 2 * t); }
+function setP(id, key, v, dp){
+  P[key] = v;
+  var el = document.getElementById(id);
+  if(el){ el.value = v; sync(id, dp === 0 ? String(v) : v.toFixed(dp)); }
 }
 
-/* shared steps */
-var S_ONE_COLUMN = {t:'Back to one column', b:'Back to one column of 12: the rest of the sheet steps aside. Instead of every face the same size, the ends taper to a needle point from the halfway edge. Fold that column into a circle and it looks like a wedge slice from an apple.',
+var journeyJ = 0;
+function applyJourney(J){
+  journeyJ = J;
+  buildIntro();
+
+  /* ---- the card rig, and its cross-fade out ---- */
+  var introFade = 1 - seg(J, 22, 26);
+  intro.group.visible = introFade > 0.004;
+  if(intro.group.visible){
+    intro.group.scale.setScalar(1);
+    intro.group.rotation.set(0,
+      J < 6 ? mix(0, Math.PI, es(J, 0, 6)) : mix(Math.PI, 0.45, es(J, 6, 14)), 0);
+    introPose(es(J, 6, 14), es(J, 14, 22));
+    introSetFade(introFade);
+  }
+
+  /* ---- the lattice, and its cross-fade in ---- */
+  P.aura = J > 22.001;
+  document.getElementById('auraBtn').classList.toggle('on', P.aura);
+  document.getElementById('railAura').classList.toggle('on', P.aura);
+  P.auraFade = seg(J, 22, 26);
+
+  /* columns present: one, then all twenty four, then one, then all */
+  var spread = J < 26 ? 1
+    : J < 38 ? mix(1, 24, es(J, 26, 38))
+    : J < 78 ? 24
+    : J < 84 ? mix(24, 1, es(J, 78, 84))
+    : J < 90 ? 1
+    : mix(1, 24, es(J, 90, 96));
+  P.colSpread = spread;
+
+  /* the fold itself. Rows are curled from the moment the cards hand
+     over, because the card tube already is that curl. */
+  var curl  = J <= 22 ? 0 : 1 - es(J, 64, 70);
+  var ring  = es(J, 38, 46) * (1 - es(J, 58, 64));
+  var pinch = J < 46 ? 0 : es(J, 46, 54) * (1 - es(J, 54, 58));
+  if(J >= 90) pinch = 1;                       // wedges land on the point
+
+  /* the taper: absent while we build, revealed by the unfolding,
+     then breathed once so both readings are visible */
+  var gore = J < 64 ? 0
+    : J < 70 ? es(J, 64, 70)
+    : J < 78 ? 1 - 0.5 * (1 - Math.cos(seg(J, 70, 78) * TAU))
+    : 1;
+
+  /* the closing cascade: each column folds home on its own beat */
+  if(J >= 84){
+    P.foldSeq = J < 90 ? mix(0, 2, es(J, 84, 90)) : mix(2, 25, es(J, 90, 100));
+    curl = 0; ring = 0;
+  } else P.foldSeq = -1;
+
+  setP('curl',  'curl',  curl,  2);
+  setP('ring',  'ring',  ring,  2);
+  setP('pinch', 'pinch', pinch, 2);
+  setP('gore',  'gore',  gore,  2);
+  setP('master','master', Math.max(curl, ring), 2);
+  document.getElementById('gripval').textContent = 'journey ' + Math.round(J);
+
+  if(J >= 99.99){                              // settle onto the clean torus
+    P.foldSeq = -1;
+    setP('curl', 'curl', 1, 2);
+    setP('ring', 'ring', 1, 2);
+    setP('master', 'master', 1, 2);
+    P.colSpread = 24;
+  }
+  dirty = true;
+}
+
+/* speed is constant in J, so every step moves at the same pace */
+function animateJourney(to, msPerUnit, done){
+  var from = journeyJ, dist = Math.abs(to - from);
+  var ms = Math.max(420, dist * (msPerUnit || 105));
+  var t0 = null, tok = animToken;
+  function fr(t){
+    if(tok !== animToken) return;
+    if(t0 === null) t0 = t;
+    var k = clamp01((t - t0) / ms);
+    applyJourney(mix(from, to, k * k * (3 - 2 * k)));
+    if(k < 1) requestAnimationFrame(fr);
+    else if(done) done();
+  }
+  requestAnimationFrame(fr);
+}
+
+/* a step is a waypoint: title, blurb, and where the number lands */
+function J(j, t, b, extra){ return {j:j, t:t, b:b, extra:extra}; }
+function stageReset(){
+  buildIntro();
+  setSphere(false); setWire(false); resetRays(); clearSel();
+  setP('focus', 'focus', 1, 0); sync('focus', '1');
+  if(rangeVal('arrange') > 0.01) animateRange('arrange', 0, 700);
+}
+
+var S_SEVEN = {t:'Seven layers', b:'One aura is seven of these, nested on the one zero point: a torus for each chakra, red innermost to violet. Each carries its own registers, so Red R1,L001 and Violet R1,L001 are different addresses on one shared direction.',
   go:function(){
-    sheetScene();
-    setRange('gore', 1);
-    cam.dist = 9; applyCamera();
-    var eff = effFold();
-    P.colFocus = 0; dirty = true;
-    if(eff > 2){
-      // arriving from the torus: the cascade unwinds back to the one wedge
-      P.foldSeq = eff; setRange('master', 0); dirty = true;
-      animateVal(eff, 2, Math.max(700, 90 * (eff - 2)), seqFold, function(){
-        animateVal(P.colFocusK, 1, 800, seqFocusK);
-      });
-    } else {
-      // arriving flat: retreat to one column, taper, then fold the wedge
-      if(P.foldSeq >= 0){ P.foldSeq = -1; dirty = true; }
-      setRange('master', 0);
-      animateVal(P.colFocusK, 1, 800, seqFocusK, function(){
-        after(350, function(){
-          P.foldSeq = 0; dirty = true;
-          animateVal(0, 1, 900, seqFold, function(){
-            after(500, function(){ animateVal(1, 2, 1100, seqFold); });
-          });
-        });
-      });
-    }
-  }};
-var S_OTHER_23 = {t:'All 24 into one point', b:'Unfold the sheet again and do the same to the other 23 columns, folding every one into the same point in the middle, one at a time. The horn torus builds: hollow inside where the private information is stored, solid on the outside where the public information sits. Information enters and leaves at that infinity point.',
-  go:function(){
-    sheetScene();
-    setRange('gore', 1);
-    cam.dist = 11; applyCamera();
-    var eff = effFold();
-    if(eff >= 24.5){
-      // already the full torus: nothing to fold, just settle the sliders
-      P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0; dirty = true;
-      setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-      return;
-    }
-    P.foldSeq = Math.max(eff, 0); setRange('master', 0); dirty = true;
-    // the sheet returns from wherever it is, then the cascade folds home
-    animateVal(P.colFocusK, 0, P.colFocusK > 0.01 ? 800 : 1, seqFocusK, function(){
-      P.colFocus = -1; dirty = true;
-      var from = Math.max(effFold(), 0);
-      animateVal(from, 25, Math.max(900, 180 * (25 - from)), seqFold, function(){
-        P.foldSeq = -1;
-        setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-      });
+    hideIntro(); resetRays(); clearSel();
+    P.auraFade = 1; P.aura = true; setAura(true); setSphere(false);
+    animateJourney(100, 70, function(){
+      setP('focus', 'focus', 0, 0); sync('focus', 'all');
     });
-  }};
-var S_SEVEN = {t:'Seven layers', b:'Seven tori, one per chakra, red innermost to violet, nested on the one zero point. Each torus carries its own registers: Red R1,L001 and Violet R1,L001 are different registers on one shared direction.',
-  go:function(){
-    hideIntro();
-    resetRays(); clearSel();
-    setAura(true); setSphere(false);
+    animateRange('spin', 0.12, 800);
     cam.dist = 17; applyCamera();
-    setRange('focus', 0);
-    if(P.uFold >= 0){ P.uFold = -1; dirty = true; }
-    if(rangeVal('arrange') > 0.01) animateRange('arrange', 0, 700);
-    function settled(){
-      P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0; dirty = true;
-      setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-      if(rangeVal('pinch') < 0.99) animateRange('pinch', 1, 700);
-    }
-    var eff = effFold();
-    if(P.foldSeq >= 0 && eff < 24.5){
-      // mid cascade: finish folding home, then continue
-      if(P.colFocusK > 0.01) animateVal(P.colFocusK, 0, 500, seqFocusK);
-      animateVal(eff, 25, Math.max(600, 90 * (25 - eff)), seqFold, settled);
-    } else if(eff < 0.5){
-      // flat sheet: fold the whole thing closed first
-      animateRange('master', 1, 1200);
-      after(1260, settled);
-    } else settled();
   }};
-var S_BODY = {t:'On the body', b:'Arranged up the body: red root at the base, violet crown on top, one vortex per chakra, as worn by a person.',
+var S_BODY = {t:'On the body', b:'Spread up the body: red root at the base, violet crown on top, one vortex where each chakra sits, as worn by a person.',
   go:function(){
-    hideIntro();
-    setAura(true); setSphere(false);
-    P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0;
-    setRange('master', 1);
-    setRange('focus', 0);
-    animateRange('arrange', 1, 1400);
+    hideIntro(); P.auraFade = 1; setAura(true); setSphere(false);
+    applyJourney(100);
+    setP('focus', 'focus', 0, 0); sync('focus', 'all');
+    animateRange('arrange', 1, 1600);
     cam.dist = 19; applyCamera();
   }};
-var S_WORLD = {t:'In the world', b:'The geosphere carries the Earth around the whole aura: maps of self, place and mind kept close together for intuitive navigation. Next, explore freely: every control stays live.',
+var S_WORLD = {t:'In the world', b:'The geosphere carries the Earth around the whole aura, so maps of self, place and mind stay close together. Next, explore freely: every control stays live.',
   go:function(){
-    hideIntro();
-    setAura(true); setSphere(true);
+    hideIntro(); P.auraFade = 1; setAura(true); setSphere(true);
+    applyJourney(100);
+    setP('focus', 'focus', 0, 0); sync('focus', 'all');
     cam.dist = 27; applyCamera();
   }};
 var TAIL = [S_SEVEN, S_BODY, S_WORLD];
 
-/* sequence 1: The Wallet — Luke's original narration */
+/* ---------------- The Wallet: build it, then explain it ---------- */
 var SEQ_WALLET = [
-  {t:'One block', b:'This is an addressable block where you can store information for pattern matching and sorting priority. It has two sides with different permissions: one side is populated from an encrypted private database, the other from a less private, more public database that still takes permissions, so not everyone can access it.',
+  J(6,  'One block', 'One addressable block, where information is stored for pattern matching and sorting priority. It has two sides on different permissions: one filled from a private encrypted database, the other from a more public one that still takes permissions, so not everyone gets in.'),
+  J(14, 'Eleven more', 'Eleven more unfold out of the first, end over end, like a wallet of photo cards. Twelve: your first set, with a top and a bottom.'),
+  J(22, 'Close it into a tube', 'Bring the top and the bottom together and the strip becomes a tube. Now the private faces look inward and the public faces look out at the world.'),
+  J(38, 'Lengthen it', 'One ring of twelve is thin workspace, so the tube grows along its own axis, column by column, until there are twenty four. How many hours in a day? Twenty four. Twelve rows by twenty four: 288 public blocks and 288 private.'),
+  J(46, 'Close the loop', 'Bend the whole cylinder around until its two mouths meet and join. That is a ring torus: an ordinary third dimensional doughnut, with a hole straight through the middle.'),
+  J(54, 'Shrink to the horn', 'Now tighten the ring. The hole narrows, and keeps narrowing, until it closes completely to a single point. This is the horn torus, and that point is the zero point where inside meets outside.'),
+  J(70, 'Unfold it and look', 'Open the whole thing back out flat to see what the closing demanded. The columns are not rectangles any more. Each one is a needle: full width at the equator, tapering to a point at both ends.'),
+  J(78, 'The matrix breathes', 'Watch all 288 blocks pass between the two readings of themselves: plain rectangles, and needles. Same blocks, same addresses, one shape holding the flat table and the other holding the horn.'),
+  J(90, 'Why a needle', 'One column alone shows the reason. At the zero point all twenty four columns occupy the same place, and only zero width fits there. Any column with width left over would overlap its neighbours. So the ends must come to a point: the taper is what the zero point costs.'),
+  J(100,'Fold them home', 'Now the other twenty three return, each already tapered, each tip landing on that same point, one beat at a time. Twenty four wedges, one shared centre: hollow and private within, solid and public without, and information entering and leaving at the point.'),
+  {t:'The whole breath', b:'Once more from the beginning, quickly, so it lands as one gesture rather than a series of lessons: one block, twelve, a tube, twenty four, the ring, the horn.',
    go:function(){
-     introScene(1);
-     introScale(1, 500);
-     introSpin = true;
-     cam.dist = 5; applyCamera();
-   }},
-  {t:'Here is eleven more', b:'Eleven more fold out of the first, end over end, like a wallet of photo cards. Here is a dozen: this is your first set.',
-   go:function(){
-     introScene(2);
-     intro.group.rotation.y = 0.45;
-     introScale(1, 500);
-     cam.dist = 18; applyCamera();
-     if(intro.tubeT > 0.01){
-       // arriving back from the tube: unbend to the open strip
-       animateVal(intro.tubeT, 0, 900, introTube);
-     } else {
-       introAccordion(0);
-       animateVal(0, 1, 2400, introAccordion);
-     }
-   }},
-  {t:'Top and bottom', b:'The top and the bottom can be a beginning and an end, or we can connect them into a tube, so the private data stays on the inside and the public data goes on the outside.',
-   go:function(){
-     var fromSheet = !intro || !intro.group.visible;
-     introScene(2);
-     intro.group.rotation.y = 0.45;
-     if(intro.accT < 1) introAccordion(1);
-     if(fromSheet) intro.group.scale.setScalar(0.143);   // appear at sheet scale
-     introScale(1, 700);
-     animateVal(intro.tubeT, 1, 1800, introTube);
-     cam.dist = 9; applyCamera();
-   }},
-  {t:'A bigger workspace', b:'A tube is not much good for pattern matching yet, so unroll it, straighten it out, and make a bigger workspace: the column unfolds sideways 23 times, just like the first card did. How many hours in a day? Twenty four. A 12 by 24 table: 288 storage blocks for public and 288 for private.',
-   go:function(){
-     var stripVisible = intro && intro.group.visible;
-     cam.dist = 10; applyCamera();
-     function handover(){
-       sheetScene();
-       setRange('gore', 0);
-       if(stripVisible){
-         // the strip becomes column one, then unfolds sideways 23 times
-         setRange('master', 0);
-         P.uFold = 0; dirty = true;
-         animateVal(0, 23, 2600, function(v){ P.uFold = v; dirty = true; },
-           function(){ P.uFold = -1; dirty = true; });
-       } else {
-         settleSheet();   // arriving from later steps: settle back to flat
-       }
-     }
-     if(stripVisible){
-       // unbend the tube and shrink to sheet scale before handing over
-       animateVal(intro.tubeT, 0, 900, introTube);
-       introScale(0.143, 900);
-       after(980, handover);
-     } else {
-       handover();
-     }
-   }},
-  {t:'Step up a dimension', b:'We could roll this into a long tube again in 3D, like this. Instead we step up into the fourth dimension and build a horn torus with an infinity point. To do that, we need a couple of little tricks.',
-   go:function(){
-     sheetScene();
-     cam.dist = 10; applyCamera();
-     settleSheet(function(){
-       // roll up into the 3D tube, hold it a moment, then unroll and move on
-       animateRange('curl', 0.9, 1100);
-       after(2300, function(){ animateRange('curl', 0, 1100); });
-     });
-   }},
-  S_ONE_COLUMN,
-  S_OTHER_23
-].concat(TAIL);
-
-/* sequence 2: Flatland — up through the dimensions, no skipping */
-var SEQ_FLATLAND = [
-  {t:'A point', b:'Begin below the dimensions. A point has no width and no height, only identity: one address. This is the seed of the zero point.',
-   go:function(){
-     introScene(1);
-     introScale(0.14, 700);
-     introSpin = false;
-     cam.dist = 5; applyCamera();
-   }},
-  {t:'A line', b:'Sweep the point and you get a line: twelve blocks end to end, seen edge on. One dimension: along it there is only forward and back.',
-   go:function(){
-     introScene(2);
-     if(intro.tubeT > 0.01) animateVal(intro.tubeT, 0, 500, introTube);
-     introAccordion(1);
-     introScale(1, 700);
-     intro.group.rotation.y = Math.PI / 2 - 0.05;
-     cam.dist = 18; applyCamera();
-   }},
-  {t:'A plane', b:'Turn the line and sweep again: a plane. The twelve blocks face you now, each with a front and a back: two sides of one flat world.',
-   go:function(){
-     introScene(2);
-     introAccordion(1);
-     introScale(1, 500);
-     animateVal(intro.group.rotation.y, 0.2, 1300, function(v){ intro.group.rotation.y = v; });
-     cam.dist = 18; applyCamera();
-   }},
-  {t:'A wider plane', b:'Sweep sideways to twenty four columns: the 12 by 24 sheet, 288 blocks with a private face and a public face. A flatlander here knows left, right, up and down, and nothing else.',
-   go:function(){
-     var stripVisible = intro && intro.group.visible;
-     cam.dist = 10; applyCamera();
-     function handover(){
-       sheetScene();
-       setRange('gore', 0);
-       if(stripVisible){
-         setRange('master', 0);
-         P.uFold = 0; dirty = true;
-         animateVal(0, 23, 2200, function(v){ P.uFold = v; dirty = true; },
-           function(){ P.uFold = -1; dirty = true; });
-       } else settleSheet();
-     }
-     if(stripVisible){
-       animateVal(intro.group.rotation.y, 0.02, 500, function(v){ intro.group.rotation.y = v; });
-       introScale(0.143, 700);
-       after(760, handover);
-     } else handover();
-   }},
-  {t:'Through the third dimension', b:'Fold the plane through the third dimension: a cylinder. The flatlander feels nothing change, yet walking off one edge now returns them by the other. The world has closed on itself once.',
-   go:function(){
-     sheetScene();
-     cam.dist = 11; applyCamera();
-     if(P.uFold >= 0){ P.uFold = -1; dirty = true; }
-     if(P.foldSeq >= 0){ P.foldSeq = -1; setRange('master', 0); dirty = true; }
-     setRange('pinch', 0);
-     if(rangeVal('gore') > 0.01) animateRange('gore', 0, 400);
-     if(rangeVal('ring') > 0.01) animateRange('ring', 0, 900);   // back from the ring: open it
-     animateRange('curl', 1, 1500);
-   }},
-  {t:'Close the circle', b:'Bend the cylinder until its two mouths meet: a ring torus. Still an ordinary third dimensional doughnut, with a hole in the middle. The world has closed on itself twice.',
-   go:function(){
-     sheetScene();
-     cam.dist = 14; applyCamera();
-     if(rangeVal('pinch') > 0.01) animateRange('pinch', 0, 800);   // back from the horn: reopen the hole
-     animateRange('curl', 1, 500);
-     after(520, function(){ animateRange('ring', 1, 1500); });
-   }},
-  {t:'The infinity point', b:'Now the fourth dimensional move. Tighten the ring until the hole closes to a single point. Inside meets outside at the infinity point: information enters and leaves the world there. This is the horn torus.',
-   go:function(){
-     sheetScene();
-     cam.dist = 11; applyCamera();
-     animateRange('curl', 1, 400);
-     after(420, function(){ animateRange('ring', 1, 500); });
-     after(950, function(){ animateRange('pinch', 1, 1700); });
-     after(2700, function(){ setRange('master', 1); });
+     stageReset();
+     cam.dist = 13; applyCamera();
+     animateJourney(0, 22, function(){ animateJourney(100, 92); });
    }}
 ].concat(TAIL);
 
-/* sequence 3: The Orange — peel the finished fruit, then rebuild it */
+/* ---------------- Flatland: up through the dimensions ------------ */
+var SEQ_FLATLAND = [
+  J(0,  'A point', 'Begin below the dimensions. A point has no width and no height, only identity: one address. This is the seed of the zero point.',
+     function(){ animateVal(intro.group.scale.x, 0.16, 700, function(v){ intro.group.scale.setScalar(v); }); }),
+  J(6,  'A line', 'Sweep the point and it becomes a line of twelve blocks, seen edge on. One dimension: along it there is only forward and back.',
+     function(){ animateVal(intro.group.scale.x, 1, 700, function(v){ intro.group.scale.setScalar(v); }); }),
+  J(14, 'A plane', 'Turn the line and sweep again and you have a plane. Twelve blocks facing you, each with a front and a back: two sides of one flat world.'),
+  J(22, 'Curl the plane', 'A flatlander cannot see it happen, but the plane is bending through a direction they have no word for. Its two edges come together and join.'),
+  J(38, 'A wider world', 'The tube grows along its axis to twenty four columns. Walk off one edge and you return by the other: the world has closed on itself once, and nobody inside can point to where.'),
+  J(46, 'Close the loop again', 'Now the cylinder itself bends and its mouths meet: a ring torus. The world has closed on itself twice. This is as far as three dimensions will carry it.'),
+  J(54, 'The fourth move', 'Tighten the ring until the hole vanishes to a single point. Inside and outside now meet at one place, and everything enters and leaves through it. That is the infinity point.'),
+  J(70, 'What it cost', 'Unfold it and the price is visible: every column has become a needle, tapering to nothing at both ends.'),
+  J(78, 'Both readings', 'The same 288 blocks, breathing between the flat table and the folded world. Rectangles for reading, needles for closing.'),
+  J(100,'Fold it home', 'Twenty four needles, one shared point, and a world that carries its own centre with it.')
+].concat(TAIL);
+
+/* ---------------- The Orange: start whole, take it apart --------- */
 var SEQ_ORANGE = [
-  {t:'The finished fruit', b:'Start from the end this time: one finished horn torus, whole. Public skin on the outside, private flesh within, the infinity point at its core.',
-   go:function(){
-     sheetScene();
-     cam.dist = 10; applyCamera();
-     animateRange('gore', 1, 400);
-     var eff = effFold();
-     if(P.foldSeq >= 0 && eff < 24.5){
-       animateVal(eff, 25, Math.max(600, 90 * (25 - eff)), seqFold, function(){
-         P.foldSeq = -1;
-         setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-       });
-     } else if(P.foldSeq >= 0){
-       P.foldSeq = -1;
-       setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-     } else {
-       animateRange('master', 1, 1400);
-     }
-   }},
-  {t:'Peel it', b:'Peel the skin and lay it flat: twenty four wedge gores, like an orange peel pressed on the table. This is how a curved world becomes a flat map without tearing.',
-   go:function(){
-     sheetScene();
-     cam.dist = 10; applyCamera();
-     animateRange('gore', 1, 400);
-     if(P.foldSeq >= 0){
-       // arriving mid cascade: unwind wedge by wedge instead
-       animateVal(effFold(), 0, Math.max(700, 90 * effFold()), seqFold, function(){
-         P.foldSeq = -1; setRange('master', 0); dirty = true;
-       });
-     } else {
-       animateRange('master', 0, 1700);
-     }
-   }},
-  {t:'Press it square', b:'Press the wedges square and you get the working table: 12 rows by 24 columns, front and back, private and public. Every block addressable.',
-   go:function(){
-     sheetScene();
-     cam.dist = 10; applyCamera();
-     settleSheet();   // flattens whatever remains, then presses the gores square
-   }},
-  S_ONE_COLUMN,
-  S_OTHER_23
+  J(100,'The finished fruit', 'Start from the end this time. One horn torus, whole: public skin on the outside, private flesh within, the zero point at its core.'),
+  J(70, 'Peel it', 'Peel the skin and lay it flat. Twenty four wedge gores, exactly like an orange peel pressed on a table. This is how a curved world becomes a flat map without tearing.'),
+  J(74, 'Press it square', 'Press the gores square and you have the working table: twelve rows by twenty four columns, front and back, private and public, every block addressed.'),
+  J(46, 'Roll it back up', 'Reverse the peel and it gathers into a cylinder, then bends until its mouths meet: the ring torus, hole and all.'),
+  J(54, 'Close the hole', 'Tighten it once more and the hole shuts to the single point it came from.'),
+  J(90, 'One segment', 'Take a single segment out of it. Full width at the equator, tapering to a point at each end: one wedge of the fruit, and the shape every column has to take.'),
+  J(100,'Whole again', 'The rest fold home around it, tip by tip, onto the same point. The fruit is whole, and now you know its inside.')
 ].concat(TAIL);
 
 var SEQUENCES = {
@@ -2427,13 +2265,19 @@ function applyStep(i){
   });
   document.getElementById('stepPrev').disabled = stepIdx === 0;
   document.getElementById('stepNext').textContent = stepIdx === STEPS.length - 1 ? 'Explore ▶' : 'Next ▶';
-  s.go();
+  if(s.go){ s.go(); return; }
+  // a waypoint: move the journey number there, from wherever it is
+  stageReset();
+  cam.dist = s.j < 22 ? mix(6, 17, s.j / 22) : (s.j < 46 ? 13 : 12);
+  applyCamera();
+  if(s.extra) s.extra();
+  animateJourney(s.j);
 }
 function endGuide(){
   animToken++;
   clearStepTimers();
   hideIntro();
-  P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0; P.uFold = -1; dirty = true;
+  P.foldSeq = -1; P.colSpread = 24; P.auraFade = 1; dirty = true;
   setAura(true);
   document.body.classList.remove('guided');
   switchTab('view');
