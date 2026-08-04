@@ -458,6 +458,7 @@ var P = {
   mode:'field', bright:1, tint:0xffffff, spin:0.12,
   bg:'none', bgcolor:0x0e1014,
   shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
+  foldSeq:-1,   // ≥0: fold columns one at a time, in column units (taper leads fold by one)
   addrshell:4, addrcell:1, addrside:'out'
 };
 
@@ -1140,19 +1141,37 @@ function writePositions(arr, us, vs, ucs, vcs, count){
     var x, y, z;
 
     if(P.roll){
+      // Per-column fold: when P.foldSeq >= 0, each column curls into the
+      // torus on its own schedule (taper arrives one column-unit before
+      // the fold), with the ring bend held closed so every column lands
+      // in its own wedge slot around the shared centre point.
+      var aL = a, phiVL = phiV, rhoVL = rhoV, phiUL = phiU, rhoUL = rhoU,
+          bL = b, goreL = goreAmt;
+      if(P.foldSeq >= 0){
+        var colI = Math.min(W - 1, Math.floor(uc * W));
+        var tK = Math.max(0, Math.min(1, P.foldSeq - colI));
+        aL = Math.max(0, Math.min(1, P.foldSeq - colI - 1));
+        bL = 1;
+        phiVL = aL * TAU;
+        rhoVL = phiVL > 1e-6 ? H / phiVL : 0;
+        phiUL = TAU;
+        rhoUL = axialLen / TAU;
+        goreL = P.gore * tK * (1 - aL);
+      }
+
       // ---- stage 1: curl along v. The seam sits AT the horn, so an
       //      unrolled column is a lens pinched at both ends — a gore.
       var t0, g0;
-      if(phiV > 1e-6){
-        var av = (vn - 1) * phiV;
-        t0 = rhoV * Math.sin(av);
-        g0 = rhoV * (1 - Math.cos(av));
+      if(phiVL > 1e-6){
+        var av = (vn - 1) * phiVL;
+        t0 = rhoVL * Math.sin(av);
+        g0 = rhoVL * (1 - Math.cos(av));
       } else {
         t0 = (vn - 1) * H;
         g0 = 0;
       }
-      var dr = g0 - rV * a;                  // radial offset from the tube centre-line
-      y = -(t0 + (H * 0.5) * (1 - a));       // height, re-centred while flat
+      var dr = g0 - rV * aL;                 // radial offset from the tube centre-line
+      y = -(t0 + (H * 0.5) * (1 - aL));      // height, re-centred while flat
 
       // Width profile comes from where the row will FINISH radially, not where
       // it currently sits — otherwise the taper only exists once the sheet has
@@ -1162,16 +1181,16 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       // No clamp: if the target ever goes past the horn the profile crosses
       // zero and the wedge folds back, which is what a spindle actually does.
       // Clamping at zero would flatten a whole band of rows into nothing.
-      var kBase = 1 + goreAmt * (q - 1);         // spacing between gore centres
-      var kSpan = 1 + goreAmt * (f * q - 1);     // width within one gore
+      var kBase = 1 + goreL * (q - 1);           // spacing between gore centres
+      var kSpan = 1 + goreL * (f * q - 1);       // width within one gore
       var span = (uc - 0.5) * kBase + (un - uc) * kSpan;
 
       // ---- stage 2: bend the centre-line into a ring ----
-      if(phiU > 1e-6){
-        var psi = span * phiU;
-        var rpt = rhoU + dr;
+      if(phiUL > 1e-6){
+        var psi = span * phiUL;
+        var rpt = rhoUL + dr;
         x = rpt * Math.sin(psi);
-        z = rpt * Math.cos(psi) - rhoU + rhoFinal * b;
+        z = rpt * Math.cos(psi) - rhoUL + rhoFinal * bL;
       } else {
         x = span * axialLen;
         z = dr;
@@ -1267,6 +1286,7 @@ function tick(){
   requestAnimationFrame(tick);
   var dt = clock.getDelta();
   root.rotation.y += P.spin * dt * 0.5;
+  if(intro && intro.group.visible && introSpin) intro.group.rotation.y += dt * 0.7;
   if(dirty){ updateGeometry(); dirty = false; }
   updateShellTransforms();
   var rV = P.rows / TAU;
@@ -1866,6 +1886,96 @@ grip.addEventListener('keydown', function(e){
   if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSheet(); }
 });
 
+/* ---------- intro rig: one block, a dozen, a tube ---------- */
+var intro = null, introSpin = false;
+
+function cardTex(n, inside){
+  var c = document.createElement('canvas');
+  c.width = c.height = 220;
+  var x = c.getContext('2d');
+  var base = new THREE.Color(SHELL_COL[0]);
+  var bg = base.clone().lerp(new THREE.Color(inside ? 0x101216 : 0xffffff), inside ? 0.6 : 0.74);
+  x.fillStyle = '#' + bg.getHexString();
+  x.fillRect(0, 0, 220, 220);
+  x.strokeStyle = inside ? 'rgba(255,255,255,.25)' : 'rgba(0,0,0,.25)';
+  x.lineWidth = 3;
+  x.strokeRect(1.5, 1.5, 217, 217);
+  x.textAlign = 'center';
+  x.fillStyle = inside ? '#eef1f5' : '#15181d';
+  x.font = '600 64px ui-monospace, SFMono-Regular, Menlo, monospace';
+  x.fillText((inside ? 'I' : 'O') + (n + 1), 110, 104);
+  x.fillStyle = inside ? 'rgba(238,241,245,.75)' : 'rgba(21,24,29,.6)';
+  x.font = '500 19px ui-monospace, SFMono-Regular, Menlo, monospace';
+  x.fillText(inside ? 'private' : 'public', 110, 146);
+  x.fillText(inside ? 'encrypted' : 'permissioned', 110, 172);
+  var t = new THREE.CanvasTexture(c);
+  t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+
+function buildIntro(){
+  if(intro) return;
+  intro = {group:new THREE.Group(), inner:new THREE.Group(), hinges:[]};
+  intro.group.add(intro.inner);
+  var plane = new THREE.PlaneBufferGeometry(1, 1);
+  var parent = intro.inner, prev = null;
+  for(var i = 0; i < 12; i++){
+    var hinge = new THREE.Group();
+    if(i === 0){ hinge.position.set(0, 0.5, 0); parent.add(hinge); }
+    else { hinge.position.set(0, -1, 0); prev.add(hinge); }
+    var front = new THREE.Mesh(plane,
+      new THREE.MeshBasicMaterial({map:cardTex(i, false), side:THREE.FrontSide}));
+    front.position.y = -0.5;
+    var back = new THREE.Mesh(plane,
+      new THREE.MeshBasicMaterial({map:cardTex(i, true), side:THREE.FrontSide}));
+    back.position.y = -0.5;
+    back.rotation.y = Math.PI;
+    hinge.add(front); hinge.add(back);
+    intro.hinges.push(hinge);
+    prev = hinge;
+  }
+  root.add(intro.group);
+}
+function recentreIntro(){
+  var box = new THREE.Box3().setFromObject(intro.inner);
+  var c = box.getCenter(new THREE.Vector3());
+  intro.group.worldToLocal(c);
+  intro.inner.position.sub(c);
+}
+function introAccordion(t){
+  for(var i = 1; i < 12; i++){
+    intro.hinges[i].rotation.x = Math.PI * (1 - Math.max(0, Math.min(1, t * 11 - (i - 1))));
+  }
+  recentreIntro();
+}
+function introTube(t){
+  for(var i = 1; i < 12; i++) intro.hinges[i].rotation.x = -t * Math.PI / 6;
+  recentreIntro();
+}
+function showIntro(stage){
+  buildIntro();
+  intro.group.visible = true;
+  intro.hinges[1].visible = stage > 1;   // hides cards 2..12 as one subtree
+  intro.group.rotation.set(0, 0, 0);
+  intro.inner.position.set(0, 0, 0);
+}
+function hideIntro(){
+  if(intro) intro.group.visible = false;
+  introSpin = false;
+}
+
+function animateVal(from, to, ms, setFn, done){
+  var t0 = null;
+  function fr(t){
+    if(t0 === null) t0 = t;
+    var k = Math.min(1, (t - t0) / ms);
+    setFn(from + (to - from) * (k * k * (3 - 2 * k)));
+    if(k < 1) requestAnimationFrame(fr);
+    else if(done) done();
+  }
+  requestAnimationFrame(fr);
+}
+
 /* ---------- build guide: an aura for a person, step by step ---------- */
 function setRange(id, v){
   var el = document.getElementById(id);
@@ -1891,56 +2001,95 @@ function resetRays(){
   rebuildRayLines();
   clearRaySel();
 }
+function introScene(stage){
+  setAura(false); setSphere(false); setWire(false); resetRays(); clearSel();
+  P.foldSeq = -1;
+  showIntro(stage);
+}
+function sheetScene(){
+  hideIntro();
+  setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
+  P.foldSeq = -1; dirty = true;
+  setRange('focus', 1); setRange('arrange', 0); setRange('spin', 0.06);
+}
 var STEPS = [
-  {t:'One matrix', b:'Each box on this 12 by 24 matrix is a programmable object: 288 boxes, with a front and a back. This is the red base layer, laid out flat.',
+  {t:'One block', b:'This is an addressable block where you can store information for pattern matching and sorting priority. It has two sides with different permissions: one side is populated from an encrypted private database, the other from a less private, more public database that still takes permissions, so not everyone can access it.',
    go:function(){
-     setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
-     setRange('focus', 1); setRange('arrange', 0); setRange('spin', 0.06);
-     setRange('master', 0);
+     introScene(1);
+     introSpin = true;
+     cam.dist = 5; applyCamera();
+   }},
+  {t:'Here is eleven more', b:'Eleven more fold out of the first, end over end, like a wallet of photo cards. Here is a dozen: this is your first set.',
+   go:function(){
+     introScene(2);
+     intro.group.rotation.y = 0.45;
+     introAccordion(0);
+     animateVal(0, 1, 2400, introAccordion);
+     cam.dist = 18; applyCamera();
+   }},
+  {t:'Top and bottom', b:'The top and the bottom can be a beginning and an end, or we can connect them into a tube, so the private data stays on the inside and the public data goes on the outside.',
+   go:function(){
+     introScene(2);
+     intro.group.rotation.y = 0.45;
+     introAccordion(1);
+     animateVal(0, 1, 1800, introTube);
+     cam.dist = 9; applyCamera();
+   }},
+  {t:'A bigger workspace', b:'A tube is not much good for pattern matching yet, so unroll it and make a bigger workspace. How many hours in a day? Twenty four. A 12 by 24 table: 288 storage blocks for public and 288 for private.',
+   go:function(){
+     sheetScene();
+     setRange('gore', 0); setRange('master', 0);
      cam.dist = 10; applyCamera();
    }},
-  {t:'Fold it closed', b:'The sheet curls into a cylinder, the cylinder closes into a ring, and the ring pinches into a horn torus. The individual stages are under Morph whenever you want to scrub them.',
+  {t:'Step up a dimension', b:'We could roll this into a long tube again in 3D. Instead we step up into the fourth dimension and build a horn torus with an infinity point. To do that, we need a couple of little tricks.',
    go:function(){
-     setAura(true); setSphere(false); resetRays();
-     setRange('focus', 1); setRange('arrange', 0);
-     animateRange('master', 1, 1600);
+     sheetScene();
+     setRange('gore', 0); setRange('master', 0);
      cam.dist = 10; applyCamera();
    }},
-  {t:'Two faces', b:'Folded, the two sides of the sheet become two faces. The interior is the personal view, I, private and encrypted. The exterior is the observer view, O, public and permissioned. Same 1 to 288 numbers on both.',
+  {t:'The wedge trick', b:'Back to one column of 12. Instead of every face the same size, the ends taper to a needle point from the halfway edge. Fold that column into a circle and it looks like a wedge slice from an apple.',
    go:function(){
-     setAura(true); setSphere(false); resetRays();
-     setRange('focus', 1); setRange('master', 1);
-     setRange('addrshell', 1); setRange('addrcell', 1);
-     P.addrside = 'out';
-     findAddress();
+     sheetScene();
+     setRange('gore', 1); setRange('master', 0);
+     P.foldSeq = 0; dirty = true;
+     animateVal(0, 2, 1800, function(v){ P.foldSeq = v; dirty = true; });
+     cam.dist = 10; applyCamera();
    }},
-  {t:'The zero point', b:'Every vertex and every cell centre has a ray from the zero point, and every ray is a register waiting to be bound to content. New information enters the torus at the centre point; old information exits the same way.',
+  {t:'All 24 into one point', b:'Do the same to the other 23 columns and fold every one into the same point in the middle, one at a time. The horn torus builds: hollow inside where the private information is stored, solid on the outside where the public information sits. Information enters and leaves at that infinity point.',
    go:function(){
-     setAura(true); setSphere(false);
-     setRange('focus', 1); setRange('addrshell', 1);
-     P.rays = 'cell';
-     document.querySelectorAll('#rayseg button').forEach(function(x){
-       x.classList.toggle('on', x.dataset.rays === 'cell');
-     });
-     rebuildRayLines();
-     selectRay('Red FR1,L001');
+     sheetScene();
+     setRange('gore', 1);
+     P.foldSeq = 2; dirty = true;
+     animateVal(2, 25, 4200, function(v){ P.foldSeq = v; dirty = true; },
+       function(){
+         P.foldSeq = -1;
+         setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
+       });
+     cam.dist = 11; applyCamera();
    }},
   {t:'Seven layers', b:'Seven tori, one per chakra, red innermost to violet, nested on the one zero point. Each torus carries its own registers: Red R1,L001 and Violet R1,L001 are different registers on one shared direction.',
    go:function(){
+     hideIntro();
      resetRays(); clearSel();
      setAura(true); setSphere(false);
+     P.foldSeq = -1;
+     setRange('master', 1);
      setRange('focus', 0); setRange('arrange', 0);
      cam.dist = 17; applyCamera();
    }},
   {t:'On the body', b:'Arranged up the body: red root at the base, violet crown on top, one vortex per chakra, as worn by a person.',
    go:function(){
+     hideIntro();
      setAura(true); setSphere(false);
+     P.foldSeq = -1;
+     setRange('master', 1);
      setRange('focus', 0);
      animateRange('arrange', 1, 1400);
      cam.dist = 19; applyCamera();
    }},
   {t:'In the world', b:'The geosphere carries the Earth around the whole aura: maps of self, place and mind kept close together for intuitive navigation. Next, explore freely: every control stays live.',
    go:function(){
+     hideIntro();
      setAura(true); setSphere(true);
      cam.dist = 27; applyCamera();
    }}
@@ -1964,6 +2113,9 @@ function applyStep(i){
   s.go();
 }
 function endGuide(){
+  hideIntro();
+  P.foldSeq = -1; dirty = true;
+  setAura(true);
   document.body.classList.remove('guided');
   switchTab('view');
 }
