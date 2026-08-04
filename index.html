@@ -206,7 +206,7 @@
 <div id="dock" aria-label="Primary controls">
   <div class="dockrow" title="Master fold: flat sheets to nested tori">
     <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
-    <input id="master" type="range" min="0" max="1" step="0.001" value="1">
+    <input id="master" type="range" min="0" max="1" step="0.001" value="0">
     <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="5"/><ellipse cx="12" cy="12" rx="3.2" ry="1.6"/></svg>
   </div>
   <div class="dockrow" title="Arrange: nested on the pineal, or spread up the body">
@@ -339,9 +339,9 @@
     <div class="group">
       <h2>Stages</h2>
       <div class="row"><label for="curl">1 · Curl (v)</label>
-        <input id="curl" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+        <input id="curl" type="range" min="0" max="1" step="0.001" value="0"><output>0.00</output></div>
       <div class="row"><label for="ring">2 · Ring (u)</label>
-        <input id="ring" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
+        <input id="ring" type="range" min="0" max="1" step="0.001" value="0"><output>0.00</output></div>
       <div class="row"><label for="pinch">3 · Pinch</label>
         <input id="pinch" type="range" min="0" max="1" step="0.001" value="1"><output>1.00</output></div>
       <div class="row"><label for="gore">Gore</label>
@@ -452,7 +452,7 @@ if(typeof THREE === 'undefined'){
 }
 
 var P = {
-  master:1, curl:1, ring:1, pinch:1, gore:1, show:24,
+  master:0, curl:0, ring:0, pinch:1, gore:1, show:24,
   detail:3, seam:0, explode:0, roll:true,
   rows:12, cols:24, lock:true, wire:false,
   mode:'field', bright:1, tint:0xffffff, spin:0.12,
@@ -1005,9 +1005,12 @@ function updateShellTransforms(){
   var R = radius();
   var t = smoothstep(P.arrange);
   var flat = 1 - (P.roll ? P.curl : smoothstep(P.master));
+  // flat sheets spread in z so they don't overlap; centre the spread on
+  // the focused shell so an isolated sheet stays at the origin in view
+  var zc = P.focus > 0 ? P.focus - 1 : 3;
   for(var k=0;k<7;k++){
     var s = shellS(k), y = shellY(k);
-    var z = (k - 3) * (P.rows * 0.55) * flat * (1 - t);
+    var z = (k - zc) * (P.rows * 0.55) * flat * (1 - t);
     var sh = shells[k];
     sh.out.scale.setScalar(s); sh.inn.scale.setScalar(s);
     sh.out.position.set(0, y, z); sh.inn.position.set(0, y, z);
@@ -1041,7 +1044,7 @@ function updateShellTransforms(){
     lattice.visible = P.wire && P.aura;
     var fk = P.focus > 0 ? P.focus - 1 : 6;
     lattice.scale.setScalar(shellS(fk));
-    lattice.position.set(0, shellY(fk), (fk - 3) * (P.rows * 0.55) * flat * (1 - t));
+    lattice.position.set(0, shellY(fk), (fk - zc) * (P.rows * 0.55) * flat * (1 - t));
   }
 }
 
@@ -1893,7 +1896,7 @@ var STEPS = [
    go:function(){
      setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
      setRange('focus', 1); setRange('arrange', 0); setRange('spin', 0.06);
-     animateRange('master', 0, 700);
+     setRange('master', 0);
      cam.dist = 10; applyCamera();
    }},
   {t:'Fold it closed', b:'The sheet curls into a cylinder, the cylinder closes into a ring, and the ring pinches into a horn torus. The individual stages are under Morph whenever you want to scrub them.',
