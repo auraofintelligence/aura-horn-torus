@@ -5,6 +5,7 @@ An interactive demo of a horn torus lattice: a 12 × 24 grid of addressable cell
 Live page: https://auraofintelligence.github.io/aura-horn-torus/
 
 - [index.html](index.html) is the demo. One self-contained page, no build step.
+- [app.html](app.html) sketches the Aura Menu pages: quick navigation, timing and signals, social web setup, memory per location, tool inventory and algorithm preferences. Everything stays in your browser.
 - [tables.html](tables.html) renders the register tables: the Vert and Face vector map per torus, and the shared ray directions.
 - [geometry.html](geometry.html) explains the maths in plain words.
 - [about.html](about.html) covers what it is, provenance and licence.

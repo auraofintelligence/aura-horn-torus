@@ -181,6 +181,7 @@
 <nav id="menu" aria-label="Pages">
   <span class="mh">Pages</span>
   <a href="index.html">Demo</a>
+  <a href="app.html">App</a>
   <a href="tables.html">Tables</a>
   <a href="geometry.html">Geometry</a>
   <a href="about.html">About</a>
@@ -406,7 +407,7 @@
     </div>
 
     <p class="note" style="text-align:center;padding:10px 0 2px">
-      <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+      <a href="app.html">app</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
 
   </div>
 </section>
@@ -1949,7 +1950,8 @@ function introAccordion(t){
   recentreIntro();
 }
 function introTube(t){
-  for(var i = 1; i < 12; i++) intro.hinges[i].rotation.x = -t * Math.PI / 6;
+  // bend towards the back faces so the public O side stays on the outside
+  for(var i = 1; i < 12; i++) intro.hinges[i].rotation.x = t * Math.PI / 6;
   recentreIntro();
 }
 function showIntro(stage){
@@ -1965,8 +1967,9 @@ function hideIntro(){
 }
 
 function animateVal(from, to, ms, setFn, done){
-  var t0 = null;
+  var t0 = null, tok = animToken;
   function fr(t){
+    if(tok !== animToken) return;
     if(t0 === null) t0 = t;
     var k = Math.min(1, (t - t0) / ms);
     setFn(from + (to - from) * (k * k * (3 - 2 * k)));
@@ -1982,10 +1985,12 @@ function setRange(id, v){
   el.value = v;
   el.dispatchEvent(new Event('input'));
 }
+var animToken = 0, stepTimer = null;
 function animateRange(id, to, ms){
   var el = document.getElementById(id);
-  var from = parseFloat(el.value), t0 = null;
+  var from = parseFloat(el.value), t0 = null, tok = animToken;
   function stepFrame(t){
+    if(tok !== animToken) return;   // a newer step took over
     if(t0 === null) t0 = t;
     var k = Math.min(1, (t - t0) / ms);
     var e = k * k * (3 - 2 * k);
@@ -2041,11 +2046,14 @@ var STEPS = [
      setRange('gore', 0); setRange('master', 0);
      cam.dist = 10; applyCamera();
    }},
-  {t:'Step up a dimension', b:'We could roll this into a long tube again in 3D. Instead we step up into the fourth dimension and build a horn torus with an infinity point. To do that, we need a couple of little tricks.',
+  {t:'Step up a dimension', b:'We could roll this into a long tube again in 3D, like this. Instead we step up into the fourth dimension and build a horn torus with an infinity point. To do that, we need a couple of little tricks.',
    go:function(){
      sheetScene();
      setRange('gore', 0); setRange('master', 0);
      cam.dist = 10; applyCamera();
+     // roll up into the 3D tube, hold it a moment, then unroll and move on
+     animateRange('curl', 0.9, 1100);
+     stepTimer = setTimeout(function(){ animateRange('curl', 0, 1100); }, 2300);
    }},
   {t:'The wedge trick', b:'Back to one column of 12. Instead of every face the same size, the ends taper to a needle point from the halfway edge. Fold that column into a circle and it looks like a wedge slice from an apple.',
    go:function(){
@@ -2096,6 +2104,8 @@ var STEPS = [
 ];
 var stepIdx = 0;
 function applyStep(i){
+  animToken++;
+  if(stepTimer){ clearTimeout(stepTimer); stepTimer = null; }
   stepIdx = Math.max(0, Math.min(STEPS.length - 1, i));
   var s = STEPS[stepIdx];
   document.getElementById('stepNum').textContent = 'STEP ' + (stepIdx + 1) + ' / ' + STEPS.length;
@@ -2113,6 +2123,8 @@ function applyStep(i){
   s.go();
 }
 function endGuide(){
+  animToken++;
+  if(stepTimer){ clearTimeout(stepTimer); stepTimer = null; }
   hideIntro();
   P.foldSeq = -1; dirty = true;
   setAura(true);

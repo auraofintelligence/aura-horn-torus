@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App · Aura Horn Torus</title>
+<style>
+  :root{
+    --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
+    --panel:rgba(12,14,20,.62); --accent:#d8b36a; --glow:rgba(216,179,106,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);
+    background:radial-gradient(ellipse at 50% 20%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    line-height:1.6}
+  main{max-width:760px;margin:0 auto;padding:48px 20px 90px}
+  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 4px}
+  .crumb{font-size:13px;color:var(--ink-soft);margin:0 0 18px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  .honest{font-size:12.5px;color:var(--ink-soft);border-left:2px solid var(--accent);
+    padding-left:12px;margin:0 0 26px;line-height:1.55}
+  nav.secs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}
+  nav.secs a{padding:8px 13px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--ink);font-size:12.5px;text-decoration:none}
+  nav.secs a:hover{color:var(--accent);border-color:rgba(216,179,106,.5)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px 20px 16px;margin:0 0 22px;scroll-margin-top:20px}
+  h2{font-size:15px;margin:0 0 4px}
+  .sub{font-size:12.5px;color:var(--ink-soft);margin:0 0 14px}
+  button,input,select{font:500 12.5px/1.2 inherit;color:var(--ink)}
+  button{padding:9px 14px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);cursor:pointer}
+  button.on{background:rgba(216,179,106,.16);color:var(--accent);
+    border-color:rgba(216,179,106,.5);box-shadow:0 0 10px var(--glow)}
+  input,select{padding:9px 12px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05)}
+  input::placeholder{color:var(--ink-soft)}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .note{font-size:11.5px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
+  .note b{color:var(--accent);font-weight:600}
+  /* quick navigation grid */
+  #qngrid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:0 0 12px}
+  #qngrid .slot{position:relative;aspect-ratio:1;border:1px dashed var(--line);
+    border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:11px;color:var(--ink-soft);padding:4px}
+  #qngrid .slot.filled{border-style:solid;color:var(--ink);
+    border-color:rgba(216,179,106,.45);background:rgba(216,179,106,.08)}
+  #qngrid .slot .x{position:absolute;top:2px;right:5px;color:var(--ink-soft);
+    font-size:11px;display:none}
+  #qngrid .slot.filled .x{display:block}
+  /* facts grid */
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+  .fact{border:1px solid var(--line);border-radius:12px;padding:12px}
+  .fact b{display:block;font-size:19px;color:var(--accent);font-weight:650}
+  .fact span{font-size:11px;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase}
+  /* memory bars */
+  .bar{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .bar .lab{flex:0 0 130px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{flex:1;height:14px;border-radius:7px;background:rgba(255,255,255,.06);overflow:hidden}
+  .bar .fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#8a5a2b,var(--accent))}
+  .bar .gb{flex:0 0 64px;text-align:right;font:11.5px/1 ui-monospace,Menlo,monospace;color:var(--ink-soft)}
+  .bar .del{flex:0 0 auto;padding:4px 8px;font-size:11px}
+  /* algorithm switches */
+  .algos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px}
+  .algo{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px}
+  .sw{position:relative;width:36px;height:20px;border-radius:20px;background:rgba(255,255,255,.12);
+    border:0;cursor:pointer;flex:0 0 auto;padding:0}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;
+    background:#cfd4dd;transition:transform .18s}
+  .sw.on{background:rgba(216,179,106,.55)}
+  .sw.on::after{transform:translateX(16px);background:#fff}
+  /* tools */
+  .tool{border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}
+  .tool h3{margin:0;font-size:13px}
+  .tool p{margin:6px 0 0;font-size:12px;color:var(--ink-soft);display:none}
+  .tool.open p{display:block}
+  .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Aura Menu</h1>
+  <p class="crumb"><a href="index.html">← back to the demo</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+  <p class="honest">A working sketch of Aura Menu pages, for play. Everything you enter stays in this browser only: it is saved to local storage on your device and sent nowhere. Clear it any time with the reset button at the bottom.</p>
+
+  <nav class="secs">
+    <a href="#qn">Quick Navigation</a>
+    <a href="#ts">Timing &amp; Signals</a>
+    <a href="#sw">Social Web</a>
+    <a href="#mem">Memory</a>
+    <a href="#tools">Tool Inventory</a>
+    <a href="#alg">Algorithms</a>
+  </nav>
+
+  <section id="qn">
+    <h2>Quick Navigation</h2>
+    <p class="sub">Build your favourite pages here for quick access. Tap an empty slot, pick a destination; tap a filled slot to go there; the small × clears it.</p>
+    <div id="qngrid"></div>
+    <div class="row" id="qnpicker" style="display:none">
+      <select id="qnselect"></select>
+      <button id="qnassign" type="button">Assign</button>
+      <button id="qncancel" type="button">Cancel</button>
+    </div>
+    <p class="note">User built quick navigation menus, straight from the V7 wireframe.</p>
+  </section>
+
+  <section id="ts">
+    <h2>Timing &amp; Signals</h2>
+    <p class="sub">Birthdays, age calculator, countdowns. Enter a birthday and the signals compute themselves.</p>
+    <div class="row">
+      <input type="date" id="bday">
+      <button id="bdaysave" type="button">Save</button>
+    </div>
+    <div class="facts" id="tsfacts" style="display:none">
+      <div class="fact"><b id="fAge">–</b><span>years old</span></div>
+      <div class="fact"><b id="fDays">–</b><span>days to next birthday</span></div>
+      <div class="fact"><b id="fSign">–</b><span>star sign</span></div>
+      <div class="fact"><b id="fDow">–</b><span>day you were born</span></div>
+      <div class="fact"><b id="fHeart">–</b><span>heartbeats, at 70 a minute</span></div>
+      <div class="fact"><b id="fOrbits">–</b><span>trips around the sun</span></div>
+    </div>
+  </section>
+
+  <section id="sw">
+    <h2>Social Web Setup</h2>
+    <p class="sub">Choose which parts of your social web the Aura would organise. Toggles are preferences only; nothing connects from this page.</p>
+    <div class="chips" id="swchips"></div>
+    <div class="row" style="margin-top:12px">
+      <input id="swother" placeholder="Request a different platform">
+      <button id="swadd" type="button">Add</button>
+    </div>
+  </section>
+
+  <section id="mem">
+    <h2>Memory</h2>
+    <p class="sub">Add a network or device for storage, and see memory per location. Numbers are yours to invent.</p>
+    <div class="row">
+      <input id="memname" placeholder="Device or place, e.g. Home NAS">
+      <input id="memgb" type="number" min="1" placeholder="GB" style="width:90px">
+      <button id="memadd" type="button">Add</button>
+    </div>
+    <div id="membars"></div>
+    <p class="note" id="memtotal"></p>
+  </section>
+
+  <section id="tools">
+    <h2>Tool Inventory</h2>
+    <p class="sub">The kit the Matrix Programmer would draw on. Tap a tool to read what it is for. These are described, not yet built.</p>
+    <div class="tools" id="toolgrid"></div>
+    <p class="note">From the wireframe: build menus by moving your lists, timelines and data sets into your personal space, and then into the aura layers to form programs.</p>
+  </section>
+
+  <section id="alg">
+    <h2>Algorithms</h2>
+    <p class="sub">Planned capabilities from the V7 prototype. These switches record a preference and nothing more: no camera, no tracking, no analysis runs on this page.</p>
+    <div class="algos" id="algogrid"></div>
+  </section>
+
+  <p class="note" style="text-align:center">
+    <button id="resetall" type="button">Reset everything on this page</button>
+  </p>
+</main>
+
+<script>
+(function(){
+'use strict';
+var LS = 'aura.app.';
+function load(k, d){ try{ var v = localStorage.getItem(LS + k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
+function save(k, v){ try{ localStorage.setItem(LS + k, JSON.stringify(v)); }catch(e){} }
+
+/* ---- quick navigation ---- */
+var DESTS = [
+  {n:'Demo', h:'index.html'},
+  {n:'Tables', h:'tables.html'},
+  {n:'Geometry', h:'geometry.html'},
+  {n:'About', h:'about.html'},
+  {n:'Timing & Signals', h:'#ts'},
+  {n:'Social Web', h:'#sw'},
+  {n:'Memory', h:'#mem'},
+  {n:'Tool Inventory', h:'#tools'},
+  {n:'Algorithms', h:'#alg'}
+];
+var qn = load('qn', new Array(25).fill(null));
+var qnGrid = document.getElementById('qngrid');
+var picker = document.getElementById('qnpicker');
+var pickSlot = -1;
+var sel = document.getElementById('qnselect');
+DESTS.forEach(function(d, i){
+  var o = document.createElement('option');
+  o.value = i; o.textContent = d.n;
+  sel.appendChild(o);
+});
+function renderQn(){
+  qnGrid.innerHTML = '';
+  qn.forEach(function(v, i){
+    var s = document.createElement('div');
+    s.className = 'slot' + (v !== null ? ' filled' : '');
+    s.textContent = v !== null ? DESTS[v].n : '';
+    var x = document.createElement('span');
+    x.className = 'x'; x.textContent = '×';
+    x.addEventListener('click', function(e){
+      e.stopPropagation();
+      qn[i] = null; save('qn', qn); renderQn();
+    });
+    s.appendChild(x);
+    s.addEventListener('click', function(){
+      if(qn[i] !== null){ location.href = DESTS[qn[i]].h; return; }
+      pickSlot = i; picker.style.display = 'flex';
+    });
+    qnGrid.appendChild(s);
+  });
+}
+document.getElementById('qnassign').addEventListener('click', function(){
+  if(pickSlot >= 0){ qn[pickSlot] = parseInt(sel.value, 10); save('qn', qn); }
+  picker.style.display = 'none'; pickSlot = -1; renderQn();
+});
+document.getElementById('qncancel').addEventListener('click', function(){
+  picker.style.display = 'none'; pickSlot = -1;
+});
+renderQn();
+
+/* ---- timing and signals ---- */
+var SIGNS = [
+  ['Capricorn', 120], ['Aquarius', 219], ['Pisces', 321], ['Aries', 420],
+  ['Taurus', 521], ['Gemini', 621], ['Cancer', 723], ['Leo', 823],
+  ['Virgo', 923], ['Libra', 1023], ['Scorpio', 1122], ['Sagittarius', 1222], ['Capricorn', 1231]
+];
+function starSign(d){
+  var md = (d.getMonth() + 1) * 100 + d.getDate();
+  for(var i = 0; i < SIGNS.length; i++) if(md <= SIGNS[i][1]) return SIGNS[i][0];
+  return 'Capricorn';
+}
+function showSignals(iso){
+  var d = new Date(iso + 'T00:00:00');
+  if(isNaN(d)) return;
+  var now = new Date();
+  var age = now.getFullYear() - d.getFullYear();
+  var next = new Date(now.getFullYear(), d.getMonth(), d.getDate());
+  if(next < now) next = new Date(now.getFullYear() + 1, d.getMonth(), d.getDate());
+  else if(now.getMonth() > d.getMonth() || (now.getMonth() === d.getMonth() && now.getDate() >= d.getDate())){} else age--;
+  var days = Math.ceil((next - now) / 86400000);
+  var lived = Math.floor((now - d) / 86400000);
+  document.getElementById('fAge').textContent = age;
+  document.getElementById('fDays').textContent = days === 365 || days === 366 ? 'today!' : days;
+  document.getElementById('fSign').textContent = starSign(d);
+  document.getElementById('fDow').textContent = d.toLocaleDateString('en-AU', {weekday:'long'});
+  document.getElementById('fHeart').textContent = (lived * 1440 * 70 / 1e9).toFixed(1) + ' billion';
+  document.getElementById('fOrbits').textContent = (lived / 365.25).toFixed(1);
+  document.getElementById('tsfacts').style.display = 'grid';
+}
+var savedBday = load('bday', null);
+if(savedBday){ document.getElementById('bday').value = savedBday; showSignals(savedBday); }
+document.getElementById('bdaysave').addEventListener('click', function(){
+  var v = document.getElementById('bday').value;
+  if(!v) return;
+  save('bday', v); showSignals(v);
+});
+
+/* ---- social web ---- */
+var PLATFORMS = ['Facebook','X / Twitter','Instagram','TikTok','LinkedIn','Pinterest',
+  'YouTube','Family Tree','Dating Apps','Trello','A Small World','MyHeritage'];
+var swState = load('sw', {on:[], extra:[]});
+var swBox = document.getElementById('swchips');
+function renderSw(){
+  swBox.innerHTML = '';
+  PLATFORMS.concat(swState.extra).forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = p;
+    b.classList.toggle('on', swState.on.indexOf(p) !== -1);
+    b.addEventListener('click', function(){
+      var i = swState.on.indexOf(p);
+      if(i === -1) swState.on.push(p); else swState.on.splice(i, 1);
+      save('sw', swState); renderSw();
+    });
+    swBox.appendChild(b);
+  });
+}
+document.getElementById('swadd').addEventListener('click', function(){
+  var v = document.getElementById('swother').value.trim();
+  if(!v || swState.extra.indexOf(v) !== -1) return;
+  swState.extra.push(v); swState.on.push(v);
+  document.getElementById('swother').value = '';
+  save('sw', swState); renderSw();
+});
+renderSw();
+
+/* ---- memory ---- */
+var mem = load('mem', [{n:'This browser', gb:1}]);
+function renderMem(){
+  var box = document.getElementById('membars');
+  box.innerHTML = '';
+  var max = Math.max.apply(null, mem.map(function(m){ return m.gb; }).concat([1]));
+  var total = 0;
+  mem.forEach(function(m, i){
+    total += m.gb;
+    var row = document.createElement('div');
+    row.className = 'bar';
+    row.innerHTML = '<span class="lab"></span><span class="track"><span class="fill"></span></span>' +
+      '<span class="gb"></span>';
+    row.querySelector('.lab').textContent = m.n;
+    row.querySelector('.fill').style.width = (m.gb / max * 100) + '%';
+    row.querySelector('.gb').textContent = m.gb + ' GB';
+    var del = document.createElement('button');
+    del.className = 'del'; del.type = 'button'; del.textContent = '×';
+    del.addEventListener('click', function(){ mem.splice(i, 1); save('mem', mem); renderMem(); });
+    row.appendChild(del);
+    box.appendChild(row);
+  });
+  document.getElementById('memtotal').textContent =
+    'Memory storage per location · ' + total + ' GB across ' + mem.length +
+    (mem.length === 1 ? ' location' : ' locations') + '.';
+}
+document.getElementById('memadd').addEventListener('click', function(){
+  var n = document.getElementById('memname').value.trim();
+  var gb = parseInt(document.getElementById('memgb').value, 10);
+  if(!n || !gb || gb < 1) return;
+  mem.push({n:n, gb:gb});
+  document.getElementById('memname').value = '';
+  document.getElementById('memgb').value = '';
+  save('mem', mem); renderMem();
+});
+renderMem();
+
+/* ---- tool inventory ---- */
+var TOOLS = [
+  ['Lists', 'Favourites, wish lists, bucket lists, public life goals. The raw material of the matrix.'],
+  ['Timelines', 'Schedules, countdowns, daily planner, habit tracking. Time as a first-class signal.'],
+  ['Social Web', 'Your accounts and circles, organised on your terms with your permissions.'],
+  ['Memory Palace', 'Places you know, used as the shelving for things you want to keep.'],
+  ['Matrix Programmer', 'The 12 by 24 registers themselves: assign each box a face, a question, an identity theme.'],
+  ['Enter the Matrix', 'Jump into the torus demo and walk the registers.'],
+  ['VR 360', 'The same aura worn in a headset or on glasses, layers overlaid on the world.'],
+  ['Floating Menus', 'Menus you build yourself and place in your own space.']
+];
+var tg = document.getElementById('toolgrid');
+TOOLS.forEach(function(t){
+  var d = document.createElement('div');
+  d.className = 'tool';
+  d.innerHTML = '<h3></h3><p></p>';
+  d.querySelector('h3').textContent = t[0];
+  d.querySelector('p').textContent = t[1];
+  d.addEventListener('click', function(){
+    if(t[0] === 'Enter the Matrix'){ location.href = 'index.html'; return; }
+    d.classList.toggle('open');
+  });
+  tg.appendChild(d);
+});
+
+/* ---- algorithms ---- */
+var ALGOS = ['Gaze Tracking','Face Recognition','Object Detection','Hand Tracking',
+  'Recommendations','Nearby Friends','Navigation Pathfinder','Multi-Stop Journey Planner',
+  'Anomaly Detection','Sentiment Analysis'];
+var alg = load('alg', []);
+var ag = document.getElementById('algogrid');
+function renderAlg(){
+  ag.innerHTML = '';
+  ALGOS.forEach(function(a){
+    var row = document.createElement('div');
+    row.className = 'algo';
+    var lab = document.createElement('span');
+    lab.textContent = a;
+    var sw = document.createElement('button');
+    sw.className = 'sw' + (alg.indexOf(a) !== -1 ? ' on' : '');
+    sw.type = 'button';
+    sw.setAttribute('aria-label', a);
+    sw.addEventListener('click', function(){
+      var i = alg.indexOf(a);
+      if(i === -1) alg.push(a); else alg.splice(i, 1);
+      save('alg', alg); renderAlg();
+    });
+    row.appendChild(lab); row.appendChild(sw);
+    ag.appendChild(row);
+  });
+}
+renderAlg();
+
+/* ---- reset ---- */
+document.getElementById('resetall').addEventListener('click', function(){
+  ['qn','bday','sw','mem','alg'].forEach(function(k){ localStorage.removeItem(LS + k); });
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>
