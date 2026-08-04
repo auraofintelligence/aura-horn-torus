@@ -218,7 +218,15 @@
 </div>
 
 <div id="steps" aria-label="Build guide">
-  <div id="stepHead"><span id="stepNum"></span><strong id="stepTitle"></strong></div>
+  <div id="stepHead"><span id="stepNum"></span><strong id="stepTitle"></strong>
+    <select id="seqSel" title="Choose a narrative sequence"
+      style="margin-left:auto;font:500 11px/1 inherit;color:var(--ink);
+      background:rgba(255,255,255,.05);border:1px solid var(--line);
+      border-radius:8px;padding:5px 6px">
+      <option value="wallet">The Wallet</option>
+      <option value="flatland">Flatland</option>
+      <option value="orange">The Orange</option>
+    </select></div>
   <p id="stepBlurb"></p>
   <div id="stepBar">
     <button id="stepPrev" type="button">◀ Back</button>
@@ -462,6 +470,7 @@ var P = {
   bg:'none', bgcolor:0x0e1014,
   shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
   foldSeq:-1,   // ≥0: fold columns one at a time, in column units (taper leads fold by one)
+  colFocus:-1, colFocusK:0,   // focus one column: the rest slide into it and shrink away
   addrshell:4, addrcell:1, addrside:'out'
 };
 
@@ -1149,9 +1158,9 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       // the fold), with the ring bend held closed so every column lands
       // in its own wedge slot around the shared centre point.
       var aL = a, phiVL = phiV, rhoVL = rhoV, phiUL = phiU, rhoUL = rhoU,
-          bL = b, goreL = goreAmt;
+          bL = b, goreL = goreAmt, ucD = uc, wShrink = 1;
+      var colI = Math.min(W - 1, Math.floor(uc * W));
       if(P.foldSeq >= 0){
-        var colI = Math.min(W - 1, Math.floor(uc * W));
         var tK = Math.max(0, Math.min(1, P.foldSeq - colI));
         aL = Math.max(0, Math.min(1, P.foldSeq - colI - 1));
         bL = 1;
@@ -1160,6 +1169,13 @@ function writePositions(arr, us, vs, ucs, vcs, count){
         phiUL = TAU;
         rhoUL = axialLen / TAU;
         goreL = P.gore * tK * (1 - aL);
+      }
+      // column focus: every other column slides into the focused one and
+      // shrinks away, leaving a single column of 12 on stage
+      if(P.colFocus >= 0 && P.colFocusK > 0 && colI !== P.colFocus){
+        var kf = P.colFocusK;
+        ucD = uc + (((P.colFocus + 0.5) / W) - uc) * kf;
+        wShrink = 1 - kf;
       }
 
       // ---- stage 1: curl along v. The seam sits AT the horn, so an
@@ -1186,7 +1202,7 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       // Clamping at zero would flatten a whole band of rows into nothing.
       var kBase = 1 + goreL * (q - 1);           // spacing between gore centres
       var kSpan = 1 + goreL * (f * q - 1);       // width within one gore
-      var span = (uc - 0.5) * kBase + (un - uc) * kSpan;
+      var span = (ucD - 0.5) * kBase + (un - uc) * kSpan * wShrink;
 
       // ---- stage 2: bend the centre-line into a ring ----
       if(phiUL > 1e-6){
@@ -1961,6 +1977,7 @@ function showIntro(stage){
   intro.group.visible = true;
   intro.hinges[1].visible = stage > 1;   // hides cards 2..12 as one subtree
   intro.group.rotation.set(0, 0, 0);
+  intro.group.scale.setScalar(1);
   intro.inner.position.set(0, 0, 0);
 }
 function hideIntro(){
@@ -1987,7 +2004,12 @@ function setRange(id, v){
   el.value = v;
   el.dispatchEvent(new Event('input'));
 }
-var animToken = 0, stepTimer = null;
+var animToken = 0, stepTimers = [];
+function after(ms, fn){
+  var tok = animToken;
+  stepTimers.push(setTimeout(function(){ if(tok === animToken) fn(); }, ms));
+}
+function clearStepTimers(){ stepTimers.forEach(clearTimeout); stepTimers = []; }
 function animateRange(id, to, ms){
   var el = document.getElementById(id);
   var from = parseFloat(el.value), t0 = null, tok = animToken;
@@ -2010,16 +2032,84 @@ function resetRays(){
 }
 function introScene(stage){
   setAura(false); setSphere(false); setWire(false); resetRays(); clearSel();
-  P.foldSeq = -1;
+  P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0;
   showIntro(stage);
 }
 function sheetScene(){
   hideIntro();
   setAura(true); setSphere(false); setWire(false); resetRays(); clearSel();
-  P.foldSeq = -1; dirty = true;
+  P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0; dirty = true;
   setRange('focus', 1); setRange('arrange', 0); setRange('spin', 0.06);
+  setRange('pinch', 1);
 }
-var STEPS = [
+function seqFold(v){ P.foldSeq = v; dirty = true; }
+function seqFocusK(v){ P.colFocusK = v; dirty = true; }
+
+/* shared steps */
+var S_ONE_COLUMN = {t:'Back to one column', b:'Back to one column of 12: the rest of the sheet steps aside. Instead of every face the same size, the ends taper to a needle point from the halfway edge. Fold that column into a circle and it looks like a wedge slice from an apple.',
+  go:function(){
+    sheetScene();
+    setRange('gore', 1); setRange('master', 0);
+    P.colFocus = 0; P.colFocusK = 0; P.foldSeq = -1; dirty = true;
+    cam.dist = 9; applyCamera();
+    // 1: the other 23 columns retreat quickly into this one
+    animateVal(0, 1, 800, seqFocusK, function(){
+      // 2: taper to the needle point
+      after(350, function(){
+        P.foldSeq = 0; dirty = true;
+        animateVal(0, 1, 900, seqFold, function(){
+          // 3: fold the column into its circle: the apple-slice wedge
+          after(500, function(){ animateVal(1, 2, 1100, seqFold); });
+        });
+      });
+    });
+  }};
+var S_OTHER_23 = {t:'All 24 into one point', b:'Unfold the sheet again and do the same to the other 23 columns, folding every one into the same point in the middle, one at a time. The horn torus builds: hollow inside where the private information is stored, solid on the outside where the public information sits. Information enters and leaves at that infinity point.',
+  go:function(){
+    sheetScene();
+    setRange('gore', 1); setRange('master', 0);
+    P.colFocus = 0; P.colFocusK = 1; P.foldSeq = 2; dirty = true;
+    cam.dist = 11; applyCamera();
+    // the sheet returns, then the cascade folds all 24 wedges home
+    animateVal(1, 0, 800, seqFocusK, function(){
+      P.colFocus = -1; dirty = true;
+      animateVal(2, 25, 4200, seqFold, function(){
+        P.foldSeq = -1;
+        setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
+      });
+    });
+  }};
+var S_SEVEN = {t:'Seven layers', b:'Seven tori, one per chakra, red innermost to violet, nested on the one zero point. Each torus carries its own registers: Red R1,L001 and Violet R1,L001 are different registers on one shared direction.',
+  go:function(){
+    hideIntro();
+    resetRays(); clearSel();
+    setAura(true); setSphere(false);
+    P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0;
+    setRange('pinch', 1);
+    setRange('master', 1);
+    setRange('focus', 0); setRange('arrange', 0);
+    cam.dist = 17; applyCamera();
+  }};
+var S_BODY = {t:'On the body', b:'Arranged up the body: red root at the base, violet crown on top, one vortex per chakra, as worn by a person.',
+  go:function(){
+    hideIntro();
+    setAura(true); setSphere(false);
+    P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0;
+    setRange('master', 1);
+    setRange('focus', 0);
+    animateRange('arrange', 1, 1400);
+    cam.dist = 19; applyCamera();
+  }};
+var S_WORLD = {t:'In the world', b:'The geosphere carries the Earth around the whole aura: maps of self, place and mind kept close together for intuitive navigation. Next, explore freely: every control stays live.',
+  go:function(){
+    hideIntro();
+    setAura(true); setSphere(true);
+    cam.dist = 27; applyCamera();
+  }};
+var TAIL = [S_SEVEN, S_BODY, S_WORLD];
+
+/* sequence 1: The Wallet — Luke's original narration */
+var SEQ_WALLET = [
   {t:'One block', b:'This is an addressable block where you can store information for pattern matching and sorting priority. It has two sides with different permissions: one side is populated from an encrypted private database, the other from a less private, more public database that still takes permissions, so not everyone can access it.',
    go:function(){
      introScene(1);
@@ -2055,59 +2145,106 @@ var STEPS = [
      cam.dist = 10; applyCamera();
      // roll up into the 3D tube, hold it a moment, then unroll and move on
      animateRange('curl', 0.9, 1100);
-     stepTimer = setTimeout(function(){ animateRange('curl', 0, 1100); }, 2300);
+     after(2300, function(){ animateRange('curl', 0, 1100); });
    }},
-  {t:'The wedge trick', b:'Back to one column of 12. Instead of every face the same size, the ends taper to a needle point from the halfway edge. Fold that column into a circle and it looks like a wedge slice from an apple.',
+  S_ONE_COLUMN,
+  S_OTHER_23
+].concat(TAIL);
+
+/* sequence 2: Flatland — up through the dimensions, no skipping */
+var SEQ_FLATLAND = [
+  {t:'A point', b:'Begin below the dimensions. A point has no width and no height, only identity: one address. This is the seed of the zero point.',
+   go:function(){
+     introScene(1);
+     intro.group.scale.setScalar(0.14);
+     introSpin = false;
+     cam.dist = 5; applyCamera();
+   }},
+  {t:'A line', b:'Sweep the point and you get a line: twelve blocks end to end, seen edge on. One dimension: along it there is only forward and back.',
+   go:function(){
+     introScene(2);
+     introAccordion(1);
+     intro.group.rotation.y = Math.PI / 2 - 0.05;
+     cam.dist = 18; applyCamera();
+   }},
+  {t:'A plane', b:'Turn the line and sweep again: a plane. The twelve blocks face you now, each with a front and a back: two sides of one flat world.',
+   go:function(){
+     introScene(2);
+     introAccordion(1);
+     intro.group.rotation.y = Math.PI / 2 - 0.05;
+     animateVal(Math.PI / 2 - 0.05, 0.2, 1300, function(v){ intro.group.rotation.y = v; });
+     cam.dist = 18; applyCamera();
+   }},
+  {t:'A wider plane', b:'Sweep sideways to twenty four columns: the 12 by 24 sheet, 288 blocks with a private face and a public face. A flatlander here knows left, right, up and down, and nothing else.',
    go:function(){
      sheetScene();
-     setRange('gore', 1); setRange('master', 0);
-     P.foldSeq = 0; dirty = true;
-     animateVal(0, 2, 1800, function(v){ P.foldSeq = v; dirty = true; });
+     setRange('gore', 0); setRange('master', 0);
      cam.dist = 10; applyCamera();
    }},
-  {t:'All 24 into one point', b:'Do the same to the other 23 columns and fold every one into the same point in the middle, one at a time. The horn torus builds: hollow inside where the private information is stored, solid on the outside where the public information sits. Information enters and leaves at that infinity point.',
+  {t:'Through the third dimension', b:'Fold the plane through the third dimension: a cylinder. The flatlander feels nothing change, yet walking off one edge now returns them by the other. The world has closed on itself once.',
    go:function(){
      sheetScene();
-     setRange('gore', 1);
-     P.foldSeq = 2; dirty = true;
-     animateVal(2, 25, 4200, function(v){ P.foldSeq = v; dirty = true; },
-       function(){
-         P.foldSeq = -1;
-         setRange('curl', 1); setRange('ring', 1); setRange('master', 1);
-       });
+     setRange('gore', 0); setRange('master', 0);
+     setRange('pinch', 0); setRange('ring', 0);
+     animateRange('curl', 1, 1500);
      cam.dist = 11; applyCamera();
    }},
-  {t:'Seven layers', b:'Seven tori, one per chakra, red innermost to violet, nested on the one zero point. Each torus carries its own registers: Red R1,L001 and Violet R1,L001 are different registers on one shared direction.',
+  {t:'Close the circle', b:'Bend the cylinder until its two mouths meet: a ring torus. Still an ordinary third dimensional doughnut, with a hole in the middle. The world has closed on itself twice.',
    go:function(){
-     hideIntro();
-     resetRays(); clearSel();
-     setAura(true); setSphere(false);
-     P.foldSeq = -1;
-     setRange('master', 1);
-     setRange('focus', 0); setRange('arrange', 0);
-     cam.dist = 17; applyCamera();
+     sheetScene();
+     setRange('gore', 0); setRange('master', 0);
+     setRange('pinch', 0); setRange('curl', 1);
+     animateRange('ring', 1, 1500);
+     cam.dist = 14; applyCamera();
    }},
-  {t:'On the body', b:'Arranged up the body: red root at the base, violet crown on top, one vortex per chakra, as worn by a person.',
+  {t:'The infinity point', b:'Now the fourth dimensional move. Tighten the ring until the hole closes to a single point. Inside meets outside at the infinity point: information enters and leaves the world there. This is the horn torus.',
    go:function(){
-     hideIntro();
-     setAura(true); setSphere(false);
-     P.foldSeq = -1;
-     setRange('master', 1);
-     setRange('focus', 0);
-     animateRange('arrange', 1, 1400);
-     cam.dist = 19; applyCamera();
-   }},
-  {t:'In the world', b:'The geosphere carries the Earth around the whole aura: maps of self, place and mind kept close together for intuitive navigation. Next, explore freely: every control stays live.',
-   go:function(){
-     hideIntro();
-     setAura(true); setSphere(true);
-     cam.dist = 27; applyCamera();
+     sheetScene();
+     setRange('gore', 0); setRange('master', 0);
+     setRange('curl', 1); setRange('ring', 1); setRange('pinch', 0);
+     animateRange('pinch', 1, 1700);
+     after(1800, function(){ setRange('master', 1); });
+     cam.dist = 11; applyCamera();
    }}
-];
+].concat(TAIL);
+
+/* sequence 3: The Orange — peel the finished fruit, then rebuild it */
+var SEQ_ORANGE = [
+  {t:'The finished fruit', b:'Start from the end this time: one finished horn torus, whole. Public skin on the outside, private flesh within, the infinity point at its core.',
+   go:function(){
+     sheetScene();
+     setRange('gore', 1); setRange('master', 1);
+     cam.dist = 10; applyCamera();
+   }},
+  {t:'Peel it', b:'Peel the skin and lay it flat: twenty four wedge gores, like an orange peel pressed on the table. This is how a curved world becomes a flat map without tearing.',
+   go:function(){
+     sheetScene();
+     setRange('gore', 1); setRange('master', 1);
+     animateRange('master', 0, 1700);
+     cam.dist = 10; applyCamera();
+   }},
+  {t:'Press it square', b:'Press the wedges square and you get the working table: 12 rows by 24 columns, front and back, private and public. Every block addressable.',
+   go:function(){
+     sheetScene();
+     setRange('master', 0); setRange('gore', 1);
+     animateRange('gore', 0, 1000);
+     cam.dist = 10; applyCamera();
+   }},
+  S_ONE_COLUMN,
+  S_OTHER_23
+].concat(TAIL);
+
+var SEQUENCES = {
+  wallet:   {label:'The Wallet',  steps:SEQ_WALLET},
+  flatland: {label:'Flatland',    steps:SEQ_FLATLAND},
+  orange:   {label:'The Orange',  steps:SEQ_ORANGE}
+};
+var curSeqKey = 'wallet';
+var STEPS = SEQUENCES[curSeqKey].steps;
 var stepIdx = 0;
 function applyStep(i){
   animToken++;
-  if(stepTimer){ clearTimeout(stepTimer); stepTimer = null; }
+  clearStepTimers();
   stepIdx = Math.max(0, Math.min(STEPS.length - 1, i));
   var s = STEPS[stepIdx];
   document.getElementById('stepNum').textContent = 'STEP ' + (stepIdx + 1) + ' / ' + STEPS.length;
@@ -2126,9 +2263,9 @@ function applyStep(i){
 }
 function endGuide(){
   animToken++;
-  if(stepTimer){ clearTimeout(stepTimer); stepTimer = null; }
+  clearStepTimers();
   hideIntro();
-  P.foldSeq = -1; dirty = true;
+  P.foldSeq = -1; P.colFocus = -1; P.colFocusK = 0; dirty = true;
   setAura(true);
   document.body.classList.remove('guided');
   switchTab('view');
@@ -2138,6 +2275,11 @@ document.getElementById('stepNext').addEventListener('click', function(){
   if(stepIdx === STEPS.length - 1) endGuide(); else applyStep(stepIdx + 1);
 });
 document.getElementById('stepSkip').addEventListener('click', endGuide);
+document.getElementById('seqSel').addEventListener('change', function(){
+  curSeqKey = this.value;
+  STEPS = SEQUENCES[curSeqKey].steps;
+  applyStep(0);
+});
 document.getElementById('menuGuide').addEventListener('click', function(){
   menuEl.classList.remove('open');
   document.body.classList.add('guided');
