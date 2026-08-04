@@ -63,9 +63,28 @@
     border-radius:9px;background:transparent}
   .note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
   .note a{color:var(--accent);text-decoration:none}
-  #placeq{flex:1;min-width:0;padding:9px 12px;border-radius:9px;border:1px solid var(--line);
+  #placeq,#rayjump{flex:1;min-width:0;padding:9px 12px;border-radius:9px;border:1px solid var(--line);
     background:rgba(255,255,255,.05);color:var(--ink);font:500 12.5px/1.2 inherit}
-  #placeq::placeholder{color:var(--ink-soft)}
+  #placeq::placeholder,#rayjump::placeholder{color:var(--ink-soft)}
+  #raytrail button{padding:6px 10px;font-size:11px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  #menuBtn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:30;
+    width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);cursor:pointer}
+  #menuBtn svg{width:17px;height:17px;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+  #menu{position:fixed;top:calc(58px + env(safe-area-inset-top));right:16px;z-index:29;
+    display:none;flex-direction:column;min-width:180px;padding:8px;
+    background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);border-radius:14px}
+  #menu.open{display:flex}
+  #menu a,#menu button{display:block;width:100%;text-align:left;padding:10px 12px;margin:0;
+    border:0;border-radius:9px;background:none;color:var(--ink);font:500 13px/1 inherit;
+    text-decoration:none;cursor:pointer}
+  #menu a:hover,#menu button:hover{background:rgba(255,255,255,.06)}
+  #menu .mh{font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-soft);padding:8px 12px 4px}
+  #hud{padding-right:64px}
   #err{position:fixed;left:14px;right:14px;top:calc(76px + env(safe-area-inset-top));z-index:40;
     display:none;padding:13px 15px;border-radius:12px;background:rgba(44,17,20,.9);
     border:1px solid #5c2b2b;color:#f0b9b9;font-size:12.5px;line-height:1.5;
@@ -136,6 +155,20 @@
   <div><h1>Horn Torus Lattice</h1><p id="sub">12 × 24 · 288 cells</p></div>
   <div id="eqn"></div>
 </div>
+
+<button id="menuBtn" aria-label="Menu" aria-expanded="false" type="button">
+  <svg viewBox="0 0 24 24" fill="none"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+</button>
+<nav id="menu" aria-label="Pages">
+  <span class="mh">Pages</span>
+  <a href="index.html">Demo</a>
+  <a href="tables.html">Tables</a>
+  <a href="geometry.html">Geometry</a>
+  <a href="about.html">About</a>
+  <span class="mh">View</span>
+  <button id="menuReframe" type="button">Reframe view</button>
+  <button id="menuSave" type="button">Save PNG</button>
+</nav>
 
 <nav id="rail" aria-label="Shell focus">
   <button class="dot sphere on" id="railSphere" title="Geosphere and Earth" type="button"></button>
@@ -253,6 +286,11 @@
         <button id="raydown" type="button" title="Ring down">▼ ring</button>
         <button id="raykind" type="button" title="Swap vertex and centre register">V⇄F</button>
       </div>
+      <div class="btns">
+        <input id="rayjump" placeholder="Jump: R4,L082 or FR2,L026" autocomplete="off">
+        <button id="rayjumpgo" type="button">Go</button>
+      </div>
+      <div class="btns" id="raytrail"></div>
       <p class="note" id="raynote">No register selected. Light a group, then step with these buttons or the arrow keys. A ray passes through the matching point on every shell.</p>
       <p class="note">Rays run from the zero point out to the lattice: one register per vertex, one per cell centre. Off by default; Clear returns the bare shell.</p>
     </div>
@@ -359,7 +397,7 @@
     </div>
 
     <p class="note" style="text-align:center;padding:10px 0 2px">
-      <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+      <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
 
   </div>
 </section>
@@ -1432,7 +1470,19 @@ function rebuildRayLines(){
 }
 
 /* single-register navigation: select one ray, read it, step the lattice */
-var selRayId = null, rayHi = null;
+var selRayId = null, rayHi = null, rayTrail = [];
+function renderTrail(){
+  var box = document.getElementById('raytrail');
+  box.innerHTML = '';
+  rayTrail.forEach(function(id){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = id;
+    b.classList.toggle('on', id === selRayId);
+    b.addEventListener('click', function(){ selectRay(id); });
+    box.appendChild(b);
+  });
+}
 function selectRay(id){
   var d = rayIndex[id];
   if(!d) return;
@@ -1458,10 +1508,19 @@ function selectRay(id){
     cam.phi = Math.acos(Math.max(-1, Math.min(1, wy / len)));
     applyCamera();
   }
+  // breadcrumb trail of the walk, newest last, capped at eight
+  if(rayTrail[rayTrail.length - 1] !== id){
+    rayTrail = rayTrail.filter(function(t){ return t !== id; });
+    rayTrail.push(id);
+    if(rayTrail.length > 8) rayTrail.shift();
+  }
+  renderTrail();
 }
 function clearRaySel(){
   if(rayHi){ root.remove(rayHi); rayHi.geometry.dispose(); rayHi.material.dispose(); rayHi = null; }
   selRayId = null;
+  rayTrail = [];
+  renderTrail();
   var n = document.getElementById('raynote');
   if(n) n.textContent = 'No register selected. Light a group, then step with these buttons or the arrow keys. A ray passes through the matching point on every shell.';
 }
@@ -1709,6 +1768,45 @@ window.addEventListener('keydown', function(e){
   if(P.rays === 'off' && !selRayId) return;
   var map = {ArrowLeft:[0,-1], ArrowRight:[0,1], ArrowUp:[1,0], ArrowDown:[-1,0]};
   if(map[e.key]){ e.preventDefault(); stepRay(map[e.key][0], map[e.key][1], false); }
+});
+
+/* jump to a register by code, scoped to the chosen torus unless named */
+function jumpToRegister(){
+  var q = document.getElementById('rayjump').value.trim();
+  var m = q.match(/^(?:(red|orange|yellow|green|blue|indigo|violet)\s+)?(FR|R)\s*(\d+)\s*[,\s]\s*L?\s*(\d+)$/i);
+  var note = document.getElementById('raynote');
+  if(!m){ note.textContent = 'Could not read "' + q + '". Try R4,L082 or FR2,L026, with an optional torus name in front.'; return; }
+  var shell = m[1] ? SHELL_NAME.map(function(n){ return n.toLowerCase(); }).indexOf(m[1].toLowerCase())
+                   : rayShellIdxNow();
+  var id = SHELL_NAME[shell] + ' ' + m[2].toUpperCase() + parseInt(m[3],10) + ',L' + pad3(parseInt(m[4],10));
+  if(!rayIndex[id]){ note.textContent = 'No register ' + id + ' on this lattice.'; return; }
+  selectRay(id);
+}
+document.getElementById('rayjumpgo').addEventListener('click', jumpToRegister);
+document.getElementById('rayjump').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); jumpToRegister(); }
+});
+
+/* menu */
+var menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  var open = menuEl.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+document.addEventListener('click', function(e){
+  if(menuEl.classList.contains('open') && !menuEl.contains(e.target)){
+    menuEl.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+document.getElementById('menuReframe').addEventListener('click', function(){
+  menuEl.classList.remove('open');
+  reframe();
+});
+document.getElementById('menuSave').addEventListener('click', function(){
+  menuEl.classList.remove('open');
+  document.getElementById('save').click();
 });
 
 document.getElementById('goplace').addEventListener('click', goPlace);

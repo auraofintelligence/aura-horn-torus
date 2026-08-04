@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tables · Aura Horn Torus</title>
+<style>
+  :root{
+    --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
+    --panel:rgba(12,14,20,.62); --accent:#d8b36a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);
+    background:radial-gradient(ellipse at 50% 20%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    line-height:1.6}
+  main{max-width:900px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 4px}
+  .crumb{font-size:13px;color:var(--ink-soft);margin:0 0 28px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  h2{font-size:16px;margin:36px 0 8px}
+  p{margin:0 0 14px;font-size:14px;color:#c9cfda}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+  .chips button{padding:8px 14px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--ink);font:500 12.5px/1 inherit;cursor:pointer}
+  .chips button.on{color:var(--accent);border-color:rgba(216,179,106,.5);
+    background:rgba(216,179,106,.14)}
+  .chips .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;
+    vertical-align:-1px}
+  .twrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);margin:0 0 10px;max-height:70vh;overflow-y:auto}
+  table{border-collapse:collapse;width:100%;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+  th,td{padding:6px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+  th{position:sticky;top:0;background:#12141c;color:var(--ink-soft);font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;font-size:10.5px}
+  tr.rowhead td{color:var(--accent);font-weight:600;background:rgba(216,179,106,.06)}
+  td.dim{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Register tables</h1>
+  <p class="crumb"><a href="index.html">← back to the demo</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+
+  <h2>Vert &amp; Face vector map</h2>
+  <p>One full register set per torus. Each facet references its centre ray and its four corner vertex rays; columns wrap in u, and ring 13 wraps back to R1 in v. The seam ring R1's registers coincide at the horn point but keep their own identities. Every register carries an empty binding, reserved for the later system that binds rays to content and operations.</p>
+  <div class="chips" id="torusChips"></div>
+  <div class="twrap"><table id="facetTable"></table></div>
+
+  <h2>Ray directions</h2>
+  <p>Unit vectors from the zero point, shared by every torus: register codes differ per torus, directions do not. The y axis is the horn axis. Also in the repo as <a href="data/ray-directions-12x24.csv" style="color:var(--accent);text-decoration:none">data/ray-directions-12x24.csv</a>.</p>
+  <div class="twrap"><table id="dirTable"></table></div>
+</main>
+
+<script>
+(function(){
+'use strict';
+var ROWS = 12, COLS = 24, TAU = Math.PI * 2;
+var NAMES = ['Red','Orange','Yellow','Green','Blue','Indigo','Violet'];
+var COLS_HEX = ['#e23a2e','#f2801f','#f0c414','#35a24f','#2f6fed','#5546c8','#9a4fd6'];
+var torus = 0;
+
+function p3(n){ return ('00' + n).slice(-3); }
+function vcode(ring, c){ return 'R' + ring + ',L' + p3((ring - 1) * COLS + c + 1); }
+function fcode(row, c){ return 'FR' + row + ',L' + p3((row - 1) * COLS + c + 1); }
+
+function facetRows(){
+  var out = [];
+  for(var r = 0; r < ROWS; r++){
+    out.push({head:'Row ' + (r + 1) + ' of ' + ROWS});
+    for(var c = 0; c < COLS; c++){
+      var topRing = r + 1;
+      var botRing = (r + 1) % ROWS + 1;
+      out.push({
+        facet: r * COLS + c + 1,
+        centre: fcode(r + 1, c),
+        tl: vcode(topRing, c),
+        tr: vcode(topRing, (c + 1) % COLS),
+        bl: vcode(botRing, c),
+        br: vcode(botRing, (c + 1) % COLS)
+      });
+    }
+  }
+  return out;
+}
+
+function renderFacets(){
+  var pre = NAMES[torus] + ' ';
+  var html = '<thead><tr><th>Facet</th><th>Centre</th><th>Top left</th><th>Top right</th><th>Bottom left</th><th>Bottom right</th></tr></thead><tbody>';
+  facetRows().forEach(function(row){
+    if(row.head){ html += '<tr class="rowhead"><td colspan="6">' + row.head + '</td></tr>'; return; }
+    html += '<tr><td>' + row.facet + '</td><td>' + pre + row.centre + '</td><td>' +
+      pre + row.tl + '</td><td>' + pre + row.tr + '</td><td>' +
+      pre + row.bl + '</td><td>' + pre + row.br + '</td></tr>';
+  });
+  document.getElementById('facetTable').innerHTML = html + '</tbody>';
+}
+
+function dirAt(u, v){
+  var w = v * TAU, psi = (u - 0.5) * TAU;
+  var q = 1 - Math.cos(w);
+  var x = q * Math.sin(psi), y = -Math.sin(w), z = q * Math.cos(psi);
+  var len = Math.sqrt(x*x + y*y + z*z);
+  if(len < 1e-12) return null;
+  return [x/len, y/len, z/len];
+}
+function f6(n){ return n.toFixed(6); }
+function renderDirs(){
+  var html = '<thead><tr><th>Code</th><th>Kind</th><th>Ring</th><th>Col</th><th>u</th><th>v</th><th>x</th><th>y</th><th>z</th></tr></thead><tbody>';
+  for(var ring = 1; ring <= ROWS; ring++){
+    for(var c = 0; c < COLS; c++){
+      var u = c / COLS, v = (ring - 1) / ROWS;
+      var d = dirAt(u, v);
+      html += '<tr><td>' + vcode(ring, c) + '</td><td class="dim">vertex</td><td>' + ring +
+        '</td><td>' + (c + 1) + '</td><td class="dim">' + f6(u) + '</td><td class="dim">' + f6(v) + '</td>' +
+        (d ? '<td>' + f6(d[0]) + '</td><td>' + f6(d[1]) + '</td><td>' + f6(d[2]) + '</td>'
+           : '<td colspan="3" class="dim">horn: shared axis 0, 1, 0</td>') + '</tr>';
+    }
+  }
+  for(var r = 0; r < ROWS; r++){
+    for(var c2 = 0; c2 < COLS; c2++){
+      var u2 = (c2 + 0.5) / COLS, v2 = (r + 0.5) / ROWS;
+      var d2 = dirAt(u2, v2);
+      html += '<tr><td>' + fcode(r + 1, c2) + '</td><td class="dim">centre</td><td>' + (r + 1) +
+        '</td><td>' + (c2 + 1) + '</td><td class="dim">' + f6(u2) + '</td><td class="dim">' + f6(v2) + '</td>' +
+        '<td>' + f6(d2[0]) + '</td><td>' + f6(d2[1]) + '</td><td>' + f6(d2[2]) + '</td></tr>';
+    }
+  }
+  document.getElementById('dirTable').innerHTML = html + '</tbody>';
+}
+
+var chips = document.getElementById('torusChips');
+NAMES.forEach(function(n, i){
+  var b = document.createElement('button');
+  b.innerHTML = '<span class="dot" style="background:' + COLS_HEX[i] + '"></span>' + n;
+  b.classList.toggle('on', i === torus);
+  b.addEventListener('click', function(){
+    torus = i;
+    chips.querySelectorAll('button').forEach(function(x, j){ x.classList.toggle('on', j === i); });
+    renderFacets();
+  });
+  chips.appendChild(b);
+});
+
+renderFacets();
+renderDirs();
+})();
+</script>
+</body>
+</html>
