@@ -426,6 +426,9 @@
         <button data-cam="axis" type="button">Down the axis</button>
         <button data-cam="inside" type="button">Inside</button>
       </div>
+      <div class="btns">
+        <button id="camfollow" type="button" class="on">Follow the story</button>
+      </div>
       <div class="btns" id="camslots"></div>
       <p class="note">Tap a slot to recall it. Hold, or use Save, to store the current view in that slot.</p>
       <div class="btns">
@@ -2414,6 +2417,12 @@ function animateJourney(to, msPerUnit, done){
 function J(j, t, b, extra, pace){ return {j:j, t:t, b:b, extra:extra, pace:pace}; }
 function stageReset(){
   buildIntro();
+  // the story directs the camera again: a preset left locked from earlier
+  // would show the flat map edge on, which reads as a comb of spikes
+  drive.camLock = false;
+  drive.insideCam = false;
+  document.querySelectorAll('#campresets button').forEach(function(x){ x.classList.remove('on'); });
+  if(document.getElementById('camfollow')) document.getElementById('camfollow').classList.add('on');
   setSphere(false); setWire(false); resetRays(); clearSel();
   setP('focus', 'focus', 1, 0); sync('focus', '1');
   if(rangeVal('arrange') > 0.01) animateRange('arrange', 0, 700);
@@ -2590,6 +2599,7 @@ document.querySelectorAll('#campresets button').forEach(function(b){
     document.querySelectorAll('#campresets button').forEach(function(x){
       x.classList.toggle('on', x === b);
     });
+    document.getElementById('camfollow').classList.remove('on');
   });
 });
 function renderSlots(){
@@ -2608,6 +2618,13 @@ function renderSlots(){
   });
   if(!drive.slots.length) box.textContent = '';
 }
+document.getElementById('camfollow').addEventListener('click', function(){
+  drive.camLock = false;
+  drive.insideCam = false;
+  this.classList.add('on');
+  document.querySelectorAll('#campresets button').forEach(function(x){ x.classList.remove('on'); });
+  journeyCam(journeyJ); fitCamera();
+});
 document.getElementById('camsave').addEventListener('click', function(){
   if(drive.slots.length >= 6) drive.slots.shift();
   drive.slots.push({theta:cam.theta, phi:cam.phi, dist:cam.dist});
