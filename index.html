@@ -255,6 +255,9 @@
       <button class="tab" data-tab="grid" type="button">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Grid</button>
+      <button class="tab" data-tab="drive" type="button">
+        <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/><line x1="3" y1="4" x2="3" y2="20"/></svg>
+        Drive</button>
       <button class="tab" data-tab="look" type="button">
         <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2"/><line x1="4" y1="13" x2="20" y2="13"/><circle cx="15" cy="13" r="2.2"/><line x1="4" y1="19" x2="20" y2="19"/><circle cx="11" cy="19" r="2.2"/></svg>
         Look</button>
@@ -386,6 +389,62 @@
         <button id="lock" class="on">Lock 2:1</button>
       </div>
       <p class="note">Rows must divide evenly so a vertex row lands on the horn. 2:1 keeps cells square at the equator.</p>
+    </div>
+
+    </div>
+
+    <div class="panel" data-panel="drive">
+
+    <div class="group">
+      <h2>Journey</h2>
+      <div class="row"><label for="jscrub">Position</label>
+        <input id="jscrub" type="range" min="0" max="100" step="0.1" value="0"><output>0</output></div>
+      <div class="btns">
+        <button id="jrev" type="button" title="Play in reverse">◀◀</button>
+        <button id="jplay" type="button" title="Play forward">▶</button>
+        <button id="jstop" type="button" title="Pause">❚❚</button>
+        <button id="jstart" type="button" title="To the start">⏮</button>
+        <button id="jend" type="button" title="To the end">⏭</button>
+      </div>
+      <div class="row"><label for="jspeed">Speed</label>
+        <input id="jspeed" type="range" min="0.1" max="4" step="0.1" value="1"><output>1.0</output></div>
+      <div class="btns">
+        <button id="jloop" type="button">Loop</button>
+        <button id="jping" type="button">Ping pong</button>
+        <button id="jfit" type="button" class="on">Auto frame</button>
+      </div>
+      <p class="note" id="jphase"></p>
+      <div class="btns" id="jmarks"></div>
+    </div>
+
+    <div class="group">
+      <h2>Cameras</h2>
+      <div class="btns" id="campresets">
+        <button data-cam="three" type="button">Three quarter</button>
+        <button data-cam="front" type="button">Front</button>
+        <button data-cam="top" type="button">Top</button>
+        <button data-cam="axis" type="button">Down the axis</button>
+        <button data-cam="inside" type="button">Inside</button>
+      </div>
+      <div class="btns" id="camslots"></div>
+      <p class="note">Tap a slot to recall it. Hold, or use Save, to store the current view in that slot.</p>
+      <div class="btns">
+        <button id="camsave" type="button">Save to next slot</button>
+        <button id="camclear" type="button">Clear slots</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Chain</h2>
+      <p class="note">String addressable identities into an order: a line, a loop, or the body of a function. Select a register or a cell, then Add.</p>
+      <div class="btns">
+        <button id="chainadd" type="button">Add current</button>
+        <button id="chainplay" type="button">Run</button>
+        <button id="chainloop" type="button">Loop</button>
+        <button id="chainclear" type="button">Clear</button>
+      </div>
+      <div class="btns" id="chainlist"></div>
+      <p class="note" id="chainnote">Chain is empty.</p>
     </div>
 
     </div>
@@ -992,7 +1051,21 @@ function buildShells(){
   makeRayDefs();
   rebuildRayLines();
   window.__htl = {shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
-    P:P, journey:function(j){ applyJourney(j); updateGeometry(); }};
+    P:P, renderer:renderer, drive:drive, cam:cam,
+    diag:function(){ return {r:stageRadius(), focus:P.focus, dist:cam.dist,
+      fit:drive.fit, lock:drive.camLock, scale:shellS(P.focus > 0 ? P.focus - 1 : 6)}; },
+    journey:function(j){ applyJourney(j); updateGeometry(); },
+    /* deterministic frame grab: pose, transform, render, read back.
+       Works with the tab hidden, because nothing waits on rAF. */
+    frame:function(j, cd, rotY){
+      applyJourney(j);
+      updateGeometry();
+      root.rotation.y = rotY === undefined ? 0.5 : rotY;
+      if(cd){ cam.dist = cd; applyCamera(); }
+      updateShellTransforms();
+      renderer.render(scene, camera);
+      return renderer.domElement;
+    }};
 
   document.getElementById('sub').textContent =
     '7 shells · ' + rows + ' × ' + cols + ' · ' + (cells * 2 * 7) + ' addresses';
@@ -1315,6 +1388,19 @@ function tick(){
   var dt = clock.getDelta();
   root.rotation.y += P.spin * dt * 0.5;
   if(intro && intro.group.visible && introSpin) intro.group.rotation.y += dt * 0.7;
+  if(drive.playing){
+    var nj = journeyJ + drive.dir * drive.speed * dt * 11;
+    if(nj >= 100){
+      if(drive.ping){ nj = 100; drive.dir = -1; }
+      else if(drive.loop){ nj = 0; }
+      else { nj = 100; drive.playing = false; }
+    } else if(nj <= 0){
+      if(drive.ping){ nj = 0; drive.dir = 1; }
+      else if(drive.loop){ nj = 100; }
+      else { nj = 0; drive.playing = false; }
+    }
+    applyJourney(nj);
+  }
   if(dirty){ updateGeometry(); dirty = false; }
   updateShellTransforms();
   var rV = P.rows / TAU;
@@ -2073,6 +2159,8 @@ function setP(id, key, v, dp){
   if(el){ el.value = v; sync(id, dp === 0 ? String(v) : v.toFixed(dp)); }
 }
 
+var drive = {playing:false, dir:1, speed:1, loop:false, ping:false,
+             fit:true, camLock:false, insideCam:false, slots:[], chain:[], chainLoop:false};
 var journeyJ = 0;
 function applyJourney(J){
   journeyJ = J;
@@ -2139,6 +2227,75 @@ function applyJourney(J){
     P.colSpread = 24;
   }
   dirty = true;
+  journeyCam(J);
+  updateGeometry();
+  updateShellTransforms();
+  fitCamera();
+  syncDrive();
+}
+
+/* ---- what phase are we in, in words ---- */
+var PHASES = [
+  [0,6,'the block turns'], [6,14,'eleven unfold'], [14,22,'the strip closes to a tube'],
+  [22,26,'cards hand over to the lattice'], [26,38,'the tube lengthens to 24'],
+  [38,46,'the cylinder bends into a ring'], [46,54,'the hole closes to the point'],
+  [54,64,'the ring opens again'], [64,70,'it flattens, needles appear'],
+  [70,78,'the matrix breathes'], [78,84,'one column is isolated'],
+  [84,90,'the needle folds to its wedge'], [90,100,'the 23 fold home']
+];
+function phaseName(J){
+  for(var i = 0; i < PHASES.length; i++)
+    if(J >= PHASES[i][0] && J <= PHASES[i][1]) return PHASES[i][2];
+  return '';
+}
+function syncDrive(){
+  var s = document.getElementById('jscrub');
+  if(!s) return;
+  s.value = journeyJ;
+  sync('jscrub', journeyJ.toFixed(1));
+  document.getElementById('jphase').textContent =
+    'J ' + journeyJ.toFixed(1) + ' · ' + phaseName(journeyJ);
+}
+
+/* ---- camera: angle and distance both matter, and both follow the stage ----
+   The stage changes shape completely across the journey, so a fixed distance
+   either buries the object or lets it overflow. Fit to what is actually there,
+   and hold an angle that reads the current shape rather than flattening it. */
+var CAMS = {
+  three:  {theta:0.62, phi:1.05},
+  front:  {theta:0,    phi:1.5708},
+  top:    {theta:0,    phi:0.14},
+  axis:   {theta:1.5708, phi:1.5708},
+  inside: {theta:0.62, phi:1.5708, inside:true}
+};
+function stageRadius(){
+  if(intro && intro.group.visible){
+    var b = new THREE.Box3().setFromObject(intro.group);
+    var s = b.getSize(new THREE.Vector3());
+    return Math.max(s.x, s.y, s.z) * 0.62 || 3;
+  }
+  if(!geo || !geo.boundingSphere) return 10;
+  var k = P.focus > 0 ? shellS(P.focus - 1) : 1;
+  return Math.max(0.25, geo.boundingSphere.radius * k);
+}
+function fitCamera(){
+  if(!drive.fit) return;
+  var r = stageRadius();
+  var want = (r * 1.5) / Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  cam.dist = drive.insideCam ? Math.max(0.4, r * 0.35) : want;
+  applyCamera();
+}
+/* the angle that reads each phase: flat things face on, round things at an
+   angle so the hole and the horn are visible rather than seen end on */
+function journeyCam(J){
+  if(drive.camLock) return;
+  var a;
+  if(J < 22)      a = CAMS.three;                 // cards
+  else if(J < 38) a = {theta:0.62, phi:1.25};     // cylinder, slight tilt
+  else if(J < 58) a = {theta:0.62, phi:1.02};     // ring and horn, three quarter
+  else if(J < 84) a = {theta:0.06, phi:1.5};      // flat sheet, face on
+  else            a = {theta:0.62, phi:1.05};     // wedges landing
+  cam.theta = a.theta; cam.phi = a.phi;
 }
 
 /* speed is constant in J, so every step moves at the same pace */
@@ -2174,7 +2331,6 @@ var S_SEVEN = {t:'Seven layers', b:'One aura is seven of these, nested on the on
       setP('focus', 'focus', 0, 0); sync('focus', 'all');
     });
     animateRange('spin', 0.12, 800);
-    cam.dist = 17; applyCamera();
   }};
 var S_BODY = {t:'On the body', b:'Spread up the body: red root at the base, violet crown on top, one vortex where each chakra sits, as worn by a person.',
   go:function(){
@@ -2182,14 +2338,13 @@ var S_BODY = {t:'On the body', b:'Spread up the body: red root at the base, viol
     applyJourney(100);
     setP('focus', 'focus', 0, 0); sync('focus', 'all');
     animateRange('arrange', 1, 1600);
-    cam.dist = 19; applyCamera();
   }};
 var S_WORLD = {t:'In the world', b:'The geosphere carries the Earth around the whole aura, so maps of self, place and mind stay close together. Next, explore freely: every control stays live.',
   go:function(){
     hideIntro(); P.auraFade = 1; setAura(true); setSphere(true);
     applyJourney(100);
     setP('focus', 'focus', 0, 0); sync('focus', 'all');
-    cam.dist = 27; applyCamera();
+    drive.camLock = false;
   }};
 var TAIL = [S_SEVEN, S_BODY, S_WORLD];
 
@@ -2208,7 +2363,6 @@ var SEQ_WALLET = [
   {t:'The whole breath', b:'Once more from the beginning, quickly, so it lands as one gesture rather than a series of lessons: one block, twelve, a tube, twenty four, the ring, the horn.',
    go:function(){
      stageReset();
-     cam.dist = 13; applyCamera();
      animateJourney(0, 22, function(){ animateJourney(100, 92); });
    }}
 ].concat(TAIL);
@@ -2266,10 +2420,9 @@ function applyStep(i){
   document.getElementById('stepPrev').disabled = stepIdx === 0;
   document.getElementById('stepNext').textContent = stepIdx === STEPS.length - 1 ? 'Explore ▶' : 'Next ▶';
   if(s.go){ s.go(); return; }
-  // a waypoint: move the journey number there, from wherever it is
+  // a waypoint: move the journey number there, from wherever it is.
+  // Framing is handled by the journey itself, so nothing is hardcoded here.
   stageReset();
-  cam.dist = s.j < 22 ? mix(6, 17, s.j / 22) : (s.j < 46 ? 13 : 12);
-  applyCamera();
   if(s.extra) s.extra();
   animateJourney(s.j);
 }
@@ -2287,6 +2440,161 @@ document.getElementById('stepNext').addEventListener('click', function(){
   if(stepIdx === STEPS.length - 1) endGuide(); else applyStep(stepIdx + 1);
 });
 document.getElementById('stepSkip').addEventListener('click', endGuide);
+/* ================= drive: you hold the wheel ==================== */
+function stopGuideAnims(){ animToken++; clearStepTimers(); }
+function driveTo(j){
+  stopGuideAnims();
+  applyJourney(clamp01(j / 100) * 100);
+}
+document.getElementById('jscrub').addEventListener('input', function(){
+  drive.playing = false;
+  driveTo(parseFloat(this.value));
+});
+document.getElementById('jplay').addEventListener('click', function(){
+  stopGuideAnims(); drive.dir = 1; drive.playing = true;
+});
+document.getElementById('jrev').addEventListener('click', function(){
+  stopGuideAnims(); drive.dir = -1; drive.playing = true;
+});
+document.getElementById('jstop').addEventListener('click', function(){ drive.playing = false; });
+document.getElementById('jstart').addEventListener('click', function(){ drive.playing = false; driveTo(0); });
+document.getElementById('jend').addEventListener('click', function(){ drive.playing = false; driveTo(100); });
+document.getElementById('jspeed').addEventListener('input', function(){
+  drive.speed = parseFloat(this.value);
+  sync('jspeed', drive.speed.toFixed(1));
+});
+document.getElementById('jloop').addEventListener('click', function(){
+  drive.loop = !drive.loop; this.classList.toggle('on', drive.loop);
+});
+document.getElementById('jping').addEventListener('click', function(){
+  drive.ping = !drive.ping; this.classList.toggle('on', drive.ping);
+});
+document.getElementById('jfit').addEventListener('click', function(){
+  drive.fit = !drive.fit; this.classList.toggle('on', drive.fit);
+});
+/* jump straight to any phase boundary */
+var marks = document.getElementById('jmarks');
+PHASES.forEach(function(p){
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = p[0];
+  b.title = p[2];
+  b.addEventListener('click', function(){ drive.playing = false; driveTo(p[0]); });
+  marks.appendChild(b);
+});
+
+/* cameras */
+document.querySelectorAll('#campresets button').forEach(function(b){
+  b.addEventListener('click', function(){
+    var c = CAMS[b.dataset.cam];
+    drive.camLock = true;
+    drive.insideCam = !!c.inside;
+    cam.theta = c.theta; cam.phi = c.phi;
+    fitCamera(); applyCamera();
+    document.querySelectorAll('#campresets button').forEach(function(x){
+      x.classList.toggle('on', x === b);
+    });
+  });
+});
+function renderSlots(){
+  var box = document.getElementById('camslots');
+  box.innerHTML = '';
+  drive.slots.forEach(function(s, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'Cam ' + (i + 1);
+    b.addEventListener('click', function(){
+      drive.camLock = true;
+      cam.theta = s.theta; cam.phi = s.phi; cam.dist = s.dist;
+      applyCamera();
+    });
+    box.appendChild(b);
+  });
+  if(!drive.slots.length) box.textContent = '';
+}
+document.getElementById('camsave').addEventListener('click', function(){
+  if(drive.slots.length >= 6) drive.slots.shift();
+  drive.slots.push({theta:cam.theta, phi:cam.phi, dist:cam.dist});
+  renderSlots();
+});
+document.getElementById('camclear').addEventListener('click', function(){
+  drive.slots = []; renderSlots();
+  drive.camLock = false;
+  document.querySelectorAll('#campresets button').forEach(function(x){ x.classList.remove('on'); });
+});
+
+/* chain: string addressable identities into an order */
+function currentIdentity(){
+  if(selRayId) return {t:'ray', id:selRayId};
+  if(sel) return {t:'cell', k:sel.k, cell:sel.cell, inside:sel.inside,
+    id:(sel.inside ? 'I' : 'O') + (sel.cell + 1) + ' ' + SHELL_NAME[sel.k]};
+  return null;
+}
+function renderChain(){
+  var box = document.getElementById('chainlist');
+  box.innerHTML = '';
+  drive.chain.forEach(function(item, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.style.fontFamily = 'ui-monospace,Menlo,monospace';
+    b.style.fontSize = '11px';
+    b.textContent = (i + 1) + '· ' + item.id;
+    b.title = 'Tap to remove';
+    b.addEventListener('click', function(){
+      drive.chain.splice(i, 1); renderChain();
+    });
+    box.appendChild(b);
+  });
+  document.getElementById('chainnote').textContent = drive.chain.length
+    ? drive.chain.length + ' in the chain. Run visits each in order' +
+      (drive.chainLoop ? ', looping.' : '.')
+    : 'Chain is empty.';
+}
+document.getElementById('chainadd').addEventListener('click', function(){
+  var it = currentIdentity();
+  if(!it){
+    document.getElementById('chainnote').textContent =
+      'Nothing selected yet. Tap a cell or a ray, or use Find.';
+    return;
+  }
+  drive.chain.push(it);
+  renderChain();
+});
+document.getElementById('chainclear').addEventListener('click', function(){
+  drive.chain = []; renderChain();
+});
+document.getElementById('chainloop').addEventListener('click', function(){
+  drive.chainLoop = !drive.chainLoop;
+  this.classList.toggle('on', drive.chainLoop);
+  renderChain();
+});
+var chainTimer = null;
+function visitChain(i){
+  if(!drive.chain.length) return;
+  if(i >= drive.chain.length){
+    if(!drive.chainLoop) return;
+    i = 0;
+  }
+  var it = drive.chain[i];
+  if(it.t === 'ray') selectRay(it.id);
+  else {
+    setP('addrshell', 'addrshell', it.k + 1, 0);
+    setP('addrcell', 'addrcell', it.cell + 1, 0);
+    P.addrside = it.inside ? 'in' : 'out';
+    findAddress();
+  }
+  document.getElementById('chainnote').textContent =
+    'Running ' + (i + 1) + ' of ' + drive.chain.length + ' · ' + it.id;
+  chainTimer = setTimeout(function(){ visitChain(i + 1); }, 1400);
+}
+document.getElementById('chainplay').addEventListener('click', function(){
+  if(chainTimer){ clearTimeout(chainTimer); chainTimer = null; }
+  drive.camLock = true;
+  visitChain(0);
+});
+renderChain();
+renderSlots();
+
 document.getElementById('seqSel').addEventListener('change', function(){
   curSeqKey = this.value;
   STEPS = SEQUENCES[curSeqKey].steps;
