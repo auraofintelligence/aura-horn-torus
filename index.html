@@ -1208,7 +1208,7 @@ function smoothstep(x){
   return x * x * (3 - 2 * x);
 }
 
-var waveShift = 0;   // measured recentring for the travelling unfold
+var waveStartLock = -1;   // column the unfold peel begins from
 function writePositions(arr, us, vs, ucs, vcs, count, isMesh){
   var W = P.cols, H = P.rows;
   var a = P.curl, b = P.ring, c = P.pinch;
@@ -1263,6 +1263,12 @@ function writePositions(arr, us, vs, ucs, vcs, count, isMesh){
      column sits where you are looking instead of sliding off to one side */
   var spreadShift = P.colSpread < W ? 0.5 - (P.colSpread * 0.5) / W : 0;
   var WAVE = 5;   // how many columns are mid-move at once: the concertina
+  // lock the starting column as the wave begins, so orbiting part way
+  // through cannot re-order the peel under the viewer's eye
+  if(P.unfoldWave <= 0.02 || waveStartLock < 0)
+    waveStartLock = Math.round(((0.5 + cam.theta / TAU) * W) - 0.5);
+  if(P.unfoldWave < 0) waveStartLock = -1;
+  var waveStart = waveStartLock < 0 ? 0 : waveStartLock;
 
 
   for(var i=0;i<count;i++){
@@ -1301,7 +1307,11 @@ function writePositions(arr, us, vs, ucs, vcs, count, isMesh){
       // uncurling and releasing from the ring in one move, while the
       // columns ahead of it are still closed. A concertina, or keys.
       if(P.unfoldWave >= 0){
-        var open = clamp01((P.unfoldWave * (W + WAVE) - colI) / WAVE);
+        // start at whichever column is facing the viewer, so the torus opens
+        // towards them and uncovers the zero point rather than peeling away
+        // behind its own far side
+        var ci2 = ((colI - waveStart) % W + W) % W;
+        var open = clamp01((P.unfoldWave * (W + WAVE) - ci2) / WAVE);
         var pShut = rollPos(1, 1, 0, un, vn, uc, ucD, wShrink);
         var pOpen = rollPos(0, 0, P.gore, un, vn, uc, ucD, wShrink);
         var e = open * open * (3 - 2 * open);
@@ -1374,23 +1384,9 @@ function writePositions(arr, us, vs, ucs, vcs, count, isMesh){
     arr[i*3] = x; arr[i*3+1] = y; arr[i*3+2] = z;
   }
 
-  /* While the wave crosses, the opened columns lie out along the row and
-     the shut ones are still gathered at the centre, so the shape is
-     lopsided and would slide sideways and back. Measure where it actually
-     sits and take that off, so it opens on the spot. The mesh measures,
-     the lattice reuses the same figure so the two stay locked together. */
-  if(P.unfoldWave >= 0){
-    if(isMesh){
-      var mn = Infinity, mx = -Infinity;
-      for(var m = 0; m < count; m++){
-        var xv = arr[m*3];
-        if(xv < mn) mn = xv;
-        if(xv > mx) mx = xv;
-      }
-      waveShift = (mn + mx) / 2;
-    }
-    for(var n2 = 0; n2 < count; n2++) arr[n2*3] -= waveShift;
-  }
+  /* No recentring here on purpose. The still closed horn sits at the origin
+     and the camera looks at the origin, so leaving the shape alone keeps the
+     horn dead centre of frame while the needles lay out around it. */
 }
 
 function updateGeometry(){
@@ -2239,7 +2235,11 @@ function applyJourney(J){
   var introFade = 1 - seg(J, 22, 26);
   intro.group.visible = introFade > 0.004;
   if(intro.group.visible){
-    intro.group.scale.setScalar(1);
+    /* The journey runs on the innermost shell, which is drawn at a seventh
+       scale so the other six can nest around it later. Build the cards at
+       that same scale, otherwise a large ring of cards dissolves into a
+       small ring of lattice and you see a stray circle fade through. */
+    intro.group.scale.setScalar(shellS(0));
     intro.group.rotation.set(0,
       J < 6 ? mix(0, Math.PI, es(J, 0, 6)) : mix(Math.PI, 0.45, es(J, 6, 14)), 0);
     introPose(es(J, 6, 14), es(J, 14, 22));
@@ -2369,7 +2369,10 @@ function stageRadius(){
   }
   if(!geo || !geo.boundingSphere) return 10;
   var k = P.focus > 0 ? shellS(P.focus - 1) : 1;
-  return Math.max(0.25, geo.boundingSphere.radius * k);
+  // the camera looks at the origin, so what matters is how far the geometry
+  // reaches from there, not how wide its own drifting bounds are
+  var bs = geo.boundingSphere;
+  return Math.max(0.25, (bs.center.length() + bs.radius) * k);
 }
 function fitCamera(){
   if(!drive.fit) return;
@@ -2408,7 +2411,7 @@ function animateJourney(to, msPerUnit, done){
 }
 
 /* a step is a waypoint: title, blurb, and where the number lands */
-function J(j, t, b, extra){ return {j:j, t:t, b:b, extra:extra}; }
+function J(j, t, b, extra, pace){ return {j:j, t:t, b:b, extra:extra, pace:pace}; }
 function stageReset(){
   buildIntro();
   setSphere(false); setWire(false); resetRays(); clearSel();
@@ -2449,8 +2452,8 @@ var SEQ_WALLET = [
   J(38, 'Lengthen it', 'One ring of twelve is thin workspace, so the tube grows along its own axis, column by column, until there are twenty four. How many hours in a day? Twenty four. Twelve rows by twenty four: 288 public blocks and 288 private.'),
   J(46, 'Close the loop', 'Bend the whole cylinder around until its two mouths meet and join. That is a ring torus: an ordinary third dimensional doughnut, with a hole straight through the middle.'),
   J(54, 'Shrink to the horn', 'Now tighten the ring. The hole narrows, and keeps narrowing, until it closes completely to a single point. This is the horn torus, and that point is the zero point where inside meets outside.'),
-  J(70, 'Unfold it and look', 'Open the whole thing back out flat to see what the closing demanded. The columns are not rectangles any more. Each one is a needle: full width at the equator, tapering to a point at both ends.'),
-  J(78, 'The matrix breathes', 'Watch all 288 blocks pass between the two readings of themselves: plain rectangles, and needles. Same blocks, same addresses, one shape holding the flat table and the other holding the horn.'),
+  J(70, 'Unfold it and look', 'Open the whole thing back out flat to see what the closing demanded. The torus opens towards you, column by column, and each one that lifts away is no longer a rectangle. It is a needle: full width at the equator, tapering to a point at both ends.', null, 330),
+  J(78, 'The matrix breathes', 'Watch all 288 blocks pass between the two readings of themselves: plain rectangles, and needles. Same blocks, same addresses, one shape holding the flat table and the other holding the horn.', null, 300),
   J(90, 'Why a needle', 'One column alone shows the reason. At the zero point all twenty four columns occupy the same place, and only zero width fits there. Any column with width left over would overlap its neighbours. So the ends must come to a point: the taper is what the zero point costs.'),
   J(100,'Fold them home', 'Now the other twenty three return, each already tapered, each tip landing on that same point, one beat at a time. Twenty four wedges, one shared centre: hollow and private within, solid and public without, and information entering and leaving at the point.'),
   {t:'The whole breath', b:'Once more from the beginning, quickly, so it lands as one gesture rather than a series of lessons: one block, twelve, a tube, twenty four, the ring, the horn.',
@@ -2517,7 +2520,7 @@ function applyStep(i){
   // Framing is handled by the journey itself, so nothing is hardcoded here.
   stageReset();
   if(s.extra) s.extra();
-  animateJourney(s.j);
+  animateJourney(s.j, s.pace);
 }
 function endGuide(){
   animToken++;
