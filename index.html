@@ -532,6 +532,7 @@ var P = {
   shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
   foldSeq:-1,   // ≥0: fold columns one at a time, in column units (taper leads fold by one)
   colSpread:24,   // how many columns have arrived; the rest are collapsed into column 1
+  unfoldWave:-1,  // 0..1: the horn opens out column by column, like keys
   auraFade:1,
   addrshell:4, addrcell:1, addrside:'out'
 };
@@ -1207,7 +1208,8 @@ function smoothstep(x){
   return x * x * (3 - 2 * x);
 }
 
-function writePositions(arr, us, vs, ucs, vcs, count){
+var waveShift = 0;   // measured recentring for the travelling unfold
+function writePositions(arr, us, vs, ucs, vcs, count, isMesh){
   var W = P.cols, H = P.rows;
   var a = P.curl, b = P.ring, c = P.pinch;
   var ease = smoothstep(P.master);
@@ -1228,6 +1230,41 @@ function writePositions(arr, us, vs, ucs, vcs, count){
   var q = axialLen > 1e-6 ? W / axialLen : 1;    // equator span ÷ centre-line span
   var denom = rhoFinal + rV;
 
+  /* One place where a surface point is worked out, so two different poses
+     of the same vertex can be blended: that is what lets the unfold travel
+     along the columns instead of happening to all of them at once. */
+  function rollPos(aL, bL, goreL, un, vn, uc, ucD, wShrink){
+    var phiVL = aL * TAU;
+    var rhoVL = phiVL > 1e-6 ? H / phiVL : 0;
+    var phiUL = bL * TAU;
+    var rhoUL = phiUL > 1e-6 ? axialLen / phiUL : 0;
+    var t0, g0;
+    if(phiVL > 1e-6){
+      var av = (vn - 1) * phiVL;
+      t0 = rhoVL * Math.sin(av);
+      g0 = rhoVL * (1 - Math.cos(av));
+    } else { t0 = (vn - 1) * H; g0 = 0; }
+    var dr = g0 - rV * aL;
+    var yy = -(t0 + (H * 0.5) * (1 - aL));
+    var drFinal = -rV * Math.cos((vn - 1) * TAU);
+    var f = (rhoFinal + drFinal) / denom;
+    var kBase = 1 + goreL * (q - 1);
+    var kSpan = 1 + goreL * (f * q - 1);
+    var span = (ucD - 0.5) * kBase + (un - uc) * kSpan * wShrink;
+    var xx, zz;
+    if(phiUL > 1e-6){
+      var psi = span * phiUL, rpt = rhoUL + dr;
+      xx = rpt * Math.sin(psi);
+      zz = rpt * Math.cos(psi) - rhoUL + rhoFinal * bL;
+    } else { xx = span * axialLen; zz = dr; }
+    return [xx, yy, zz];
+  }
+  /* keep whatever columns have arrived centred on the stage, so a lone
+     column sits where you are looking instead of sliding off to one side */
+  var spreadShift = P.colSpread < W ? 0.5 - (P.colSpread * 0.5) / W : 0;
+  var WAVE = 5;   // how many columns are mid-move at once: the concertina
+
+
   for(var i=0;i<count;i++){
     var un = us[i], vn = vs[i], uc = ucs[i];
     var x, y, z;
@@ -1244,7 +1281,10 @@ function writePositions(arr, us, vs, ucs, vcs, count){
       // own index a column has zero width and sits on column 1's centre.
       if(P.colSpread < W){
         var ti = clamp01(P.colSpread - colI);
-        ucD = mix(0.5 / W, uc, ti);
+        // collapse onto the stage centre, not onto column one's own slot,
+        // otherwise the survivor keeps its place in a 24 wide row and walks
+        // off the side of the screen
+        ucD = mix(0.5 - spreadShift, uc, ti) + spreadShift;
         wShrink = ti;
       }
       if(P.foldSeq >= 0){
@@ -1257,8 +1297,19 @@ function writePositions(arr, us, vs, ucs, vcs, count){
         rhoUL = axialLen / TAU;
         goreL = P.gore * tK * (1 - aL);
       }
-      // column focus: every other column slides into the focused one and
-      // shrinks away, leaving a single column of 12 on stage
+      // The unfold travels: each column leaves the horn on its own beat,
+      // uncurling and releasing from the ring in one move, while the
+      // columns ahead of it are still closed. A concertina, or keys.
+      if(P.unfoldWave >= 0){
+        var open = clamp01((P.unfoldWave * (W + WAVE) - colI) / WAVE);
+        var pShut = rollPos(1, 1, 0, un, vn, uc, ucD, wShrink);
+        var pOpen = rollPos(0, 0, P.gore, un, vn, uc, ucD, wShrink);
+        var e = open * open * (3 - 2 * open);
+        arr[i*3]     = mix(pShut[0], pOpen[0], e);
+        arr[i*3 + 1] = mix(pShut[1], pOpen[1], e);
+        arr[i*3 + 2] = mix(pShut[2], pOpen[2], e);
+        continue;
+      }
 
       // ---- stage 1: curl along v. The seam sits AT the horn, so an
       //      unrolled column is a lens pinched at both ends — a gore.
@@ -1322,16 +1373,34 @@ function writePositions(arr, us, vs, ucs, vcs, count){
 
     arr[i*3] = x; arr[i*3+1] = y; arr[i*3+2] = z;
   }
+
+  /* While the wave crosses, the opened columns lie out along the row and
+     the shut ones are still gathered at the centre, so the shape is
+     lopsided and would slide sideways and back. Measure where it actually
+     sits and take that off, so it opens on the spot. The mesh measures,
+     the lattice reuses the same figure so the two stay locked together. */
+  if(P.unfoldWave >= 0){
+    if(isMesh){
+      var mn = Infinity, mx = -Infinity;
+      for(var m = 0; m < count; m++){
+        var xv = arr[m*3];
+        if(xv < mn) mn = xv;
+        if(xv > mx) mx = xv;
+      }
+      waveShift = (mn + mx) / 2;
+    }
+    for(var n2 = 0; n2 < count; n2++) arr[n2*3] -= waveShift;
+  }
 }
 
 function updateGeometry(){
   var pa = geo.attributes.position;
-  writePositions(pa.array, uArr, vArr, ucArr, vcArr, pa.count);
+  writePositions(pa.array, uArr, vArr, ucArr, vcArr, pa.count, true);
   pa.needsUpdate = true;
   geo.computeBoundingSphere();
 
   var la = lattice.geometry.attributes.position;
-  writePositions(la.array, lineU, lineV, lineUc, lineVc, la.count);
+  writePositions(la.array, lineU, lineV, lineUc, lineVc, la.count, false);
   la.needsUpdate = true;
   lattice.geometry.computeBoundingSphere();
 }
@@ -2192,18 +2261,30 @@ function applyJourney(J){
     : mix(1, 24, es(J, 90, 96));
   P.colSpread = spread;
 
-  /* the fold itself. Rows are curled from the moment the cards hand
-     over, because the card tube already is that curl. */
-  var curl  = J <= 22 ? 0 : 1 - es(J, 64, 70);
-  var ring  = es(J, 38, 46) * (1 - es(J, 58, 64));
-  var pinch = J < 46 ? 0 : es(J, 46, 54) * (1 - es(J, 54, 58));
+  /* The unfold is NOT a rewind. Pinch is what draws a column to a
+     point rather than a blunt third, so it is held at 1 from the
+     moment the horn forms: we open the horn out and the needles are
+     what we find, instead of winding back to the ring we came from.
+     Ring and curl overlap on the way out, so it blooms open rather
+     than retracing its own steps. */
+  var breathe = (J >= 70 && J < 78)
+    ? 1 - 0.5 * (1 - Math.cos(seg(J, 70, 78) * TAU)) : null;
+
+  /* J 54..70 is the travelling unfold. While it runs, curl and ring are
+     handled per column by the wave, so they are simply left at the state
+     the wave ends on: flat. */
+  P.unfoldWave = (J >= 54 && J < 70) ? seg(J, 54, 70) : -1;
+
+  var curl  = J <= 22 ? 0 : (J >= 54 ? 0 : 1);
+  var ring  = J >= 54 ? 0 : es(J, 38, 46);
+  var pinch = J < 46 ? 0 : (breathe !== null ? breathe : es(J, 46, 54));
   if(J >= 90) pinch = 1;                       // wedges land on the point
 
-  /* the taper: absent while we build, revealed by the unfolding,
-     then breathed once so both readings are visible */
-  var gore = J < 64 ? 0
-    : J < 70 ? es(J, 64, 70)
-    : J < 78 ? 1 - 0.5 * (1 - Math.cos(seg(J, 70, 78) * TAU))
+  /* the taper: absent while we build, full from the moment the horn
+     starts opening so each column arrives already a needle, then
+     breathed with pinch so both readings sit at the same width */
+  var gore = J < 54 ? 0
+    : breathe !== null ? breathe
     : 1;
 
   /* the closing cascade: each column folds home on its own beat */
@@ -2217,6 +2298,18 @@ function applyJourney(J){
   setP('pinch', 'pinch', pinch, 2);
   setP('gore',  'gore',  gore,  2);
   setP('master','master', Math.max(curl, ring), 2);
+
+  /* Rotation is a directing choice, not wallpaper. While the guide is
+     driving, the stage is held still so the eye stays where the story
+     puts it, and turns only at the two moments where seeing around the
+     form is the point: the horn just after it closes, and the finished
+     object at the end. */
+  if(document.body.classList.contains('guided')){
+    var turn = (J > 53.5 && J < 58) ? 0.10
+             : (J >= 96)           ? 0.12
+             : 0;
+    setP('spin', 'spin', turn, 2);
+  }
   document.getElementById('gripval').textContent = 'journey ' + Math.round(J);
 
   if(J >= 99.99){                              // settle onto the clean torus
