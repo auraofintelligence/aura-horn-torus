@@ -1,0 +1,273 @@
+{
+ "home": [
+  "s001",
+  "s002",
+  "s003",
+  "s004",
+  "s005"
+ ],
+ "quick-start": [
+  "s006"
+ ],
+ "quick-start/quick-navigation": [
+  "s007"
+ ],
+ "quick-start/site-map": [
+  "s008"
+ ],
+ "aura-menu": [
+  "s009",
+  "s010",
+  "s076",
+  "s077",
+  "s078",
+  "s079",
+  "s080",
+  "s081",
+  "s082",
+  "s083",
+  "s084",
+  "s085",
+  "s086",
+  "s087"
+ ],
+ "aura-menu/matrix-programmer": [
+  "s011",
+  "s012",
+  "s013",
+  "s021",
+  "s022",
+  "s023",
+  "s024",
+  "s025",
+  "s026"
+ ],
+ "aura-menu/matrix-programmer/tool-inventory": [
+  "s014"
+ ],
+ "aura-menu/matrix-programmer/finite-map-violet-90-x-200": [
+  "s015",
+  "s017"
+ ],
+ "aura-menu/matrix-programmer/finite-map-violet-90-x-200/interior-personal-view-of-torus": [
+  "s016"
+ ],
+ "aura-menu/matrix-programmer/infinite-map-violet-90-x-200": [
+  "s018",
+  "s020"
+ ],
+ "aura-menu/matrix-programmer/infinite-map-violet-90-x-200/interior-personal-view-of-torus": [
+  "s019"
+ ],
+ "aura-menu/system-preferences": [
+  "s027"
+ ],
+ "aura-menu/system-preferences/advertising-options": [
+  "s028",
+  "s029",
+  "s030",
+  "s031",
+  "s032"
+ ],
+ "aura-menu/system-preferences/ai-ml-algorithms": [
+  "s033",
+  "s034",
+  "s035",
+  "s036",
+  "s037",
+  "s038",
+  "s039",
+  "s040",
+  "s041",
+  "s042",
+  "s043",
+  "s044",
+  "s045",
+  "s046",
+  "s047",
+  "s048",
+  "s049",
+  "s050"
+ ],
+ "aura-menu/system-preferences/memory": [
+  "s051"
+ ],
+ "aura-menu/system-preferences/iot-networked-devices": [
+  "s052",
+  "s053"
+ ],
+ "aura-menu/social-web": [
+  "s054",
+  "s055",
+  "s056",
+  "s057",
+  "s058",
+  "s059",
+  "s060",
+  "s061",
+  "s062",
+  "s063",
+  "s064",
+  "s065",
+  "s066",
+  "s067",
+  "s068",
+  "s069"
+ ],
+ "aura-menu/social-web/we-are-family": [
+  "s070"
+ ],
+ "aura-menu/social-web/favourites-list": [
+  "s071"
+ ],
+ "aura-menu/social-web/private-wish-list": [
+  "s072"
+ ],
+ "aura-menu/social-web/bucket-list": [
+  "s073"
+ ],
+ "aura-menu/social-web/public-life-goals": [
+  "s074"
+ ],
+ "aura-menu/social-web/travel-plans": [
+  "s075"
+ ],
+ "aura-menu/virtual-reality-mode": [
+  "s088"
+ ],
+ "chakras": [
+  "s089"
+ ],
+ "chakras/crown-chakra-white-geosphere": [
+  "s090",
+  "s091",
+  "s093"
+ ],
+ "chakras/crown-chakra-white-geosphere/google-earth-api": [
+  "s092"
+ ],
+ "chakras/violet-chakra": [
+  "s094"
+ ],
+ "chakras/indigo-chakra": [
+  "s095"
+ ],
+ "chakras/blue-chakra": [
+  "s096"
+ ],
+ "chakras/green-chakra": [
+  "s097"
+ ],
+ "chakras/yellow-chakra": [
+  "s098"
+ ],
+ "chakras/orange-chakra": [
+  "s099"
+ ],
+ "chakras/red-chakra": [
+  "s100"
+ ],
+ "avatar-creator": [
+  "s101",
+  "s102",
+  "s103",
+  "s104",
+  "s105",
+  "s106",
+  "s107",
+  "s108",
+  "s109"
+ ],
+ "avatar-creator/pose-estimation": [
+  "s110"
+ ],
+ "avatar-creator/face-mapping": [
+  "s111"
+ ],
+ "avatar-creator/emotional-expressions": [
+  "s112"
+ ],
+ "avatar-creator/natural-language": [
+  "s113"
+ ],
+ "mind-palace-creator": [
+  "s114",
+  "s116",
+  "s117",
+  "s120"
+ ],
+ "mind-palace-creator/load-sample-mind-palace": [
+  "s115"
+ ],
+ "mind-palace-creator/map-public-buildings": [
+  "s118"
+ ],
+ "mind-palace-creator/map-real-estate": [
+  "s119"
+ ],
+ "gajra-earth": [
+  "s121",
+  "s124"
+ ],
+ "gajra-earth/vision": [
+  "s122"
+ ],
+ "gajra-earth/game": [
+  "s123"
+ ],
+ "gajra-earth/membership": [
+  "s125"
+ ],
+ "gajra-earth/programs": [
+  "s126",
+  "s131"
+ ],
+ "gajra-earth/programs/gajraearthvow": [
+  "s127"
+ ],
+ "gajra-earth/programs/clean-india": [
+  "s128"
+ ],
+ "gajra-earth/programs/music-for-good-2025": [
+  "s129"
+ ],
+ "gajra-earth/programs/proposing-the-1st-global-vote": [
+  "s130"
+ ],
+ "the-aura-affinity-marketplace": [
+  "s132"
+ ],
+ "the-aura-affinity-marketplace/vision": [
+  "s133"
+ ],
+ "the-aura-affinity-marketplace/search": [
+  "s134"
+ ],
+ "the-aura-affinity-marketplace/search/search-results": [
+  "s135"
+ ],
+ "the-aura-affinity-marketplace/marketplace": [
+  "s136"
+ ],
+ "the-aura-affinity-marketplace/marketplace/aura-accommodation": [
+  "s137"
+ ],
+ "the-aura-affinity-marketplace/marketplace/aura-creative-industries": [
+  "s138"
+ ],
+ "the-aura-affinity-marketplace/marketplace/aura-event-management": [
+  "s139"
+ ],
+ "the-aura-affinity-marketplace/marketplace/aura-of-health-and-wellbeing": [
+  "s140"
+ ],
+ "the-aura-affinity-marketplace/marketplace/aura-cities-and-developments": [
+  "s141"
+ ],
+ "the-aura-affinity-marketplace/blockchain": [
+  "s142"
+ ],
+ "the-aura-affinity-marketplace/membership": [
+  "s143"
+ ]
+}

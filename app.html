@@ -63,6 +63,27 @@
 
   .note{font-size:11px;color:var(--ink-soft);line-height:1.55;margin:14px 0 0}
   .empty{font-size:12px;color:var(--ink-soft);padding:20px 0;text-align:center}
+  /* the page itself, when you have arrived rather than passed through */
+  .hero{display:flex;gap:16px;align-items:flex-start}
+  .hero .ico{width:84px;height:84px;border-radius:20px}
+  .hero .ico .glyph{font-size:38px}
+  .hero h2{font-size:19px;margin:2px 0 3px;letter-spacing:-.01em}
+  .hero .where{font-size:11.5px;color:var(--ink-soft)}
+  .hero .desc{font-size:12.5px;color:var(--ink-soft);margin:9px 0 0;max-width:60ch}
+  .prov{font-size:11px;color:var(--ink-soft);margin:10px 0 0;padding:8px 11px;border-radius:9px;
+    border:1px solid var(--line);background:rgba(255,255,255,.02);max-width:66ch}
+  .shots{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0 0}
+  .shot{width:210px}
+  .shot img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#fff}
+  .shot .cap{font-size:10.5px;color:var(--ink-soft);margin:6px 0 0;line-height:1.4}
+  .sibs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0}
+  .sib{display:flex;align-items:center;gap:7px;padding:6px 11px 6px 7px;border-radius:999px;
+    border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:11px;
+    color:var(--ink-soft);cursor:pointer;text-decoration:none}
+  .sib:hover{border-color:rgba(216,179,106,.45);color:var(--ink)}
+  .sib.on{color:var(--accent);border-color:rgba(216,179,106,.5);background:rgba(216,179,106,.1)}
+  .sib .ico{width:24px;height:24px;border-radius:8px}
+  .sib .ico .glyph{font-size:13px}
   .count{font-size:11px;color:var(--ink-soft);margin:12px 0 0}
 
   /* icon picker */
@@ -139,6 +160,8 @@
   var ICONS  = (window.AURA_ICONS && window.AURA_ICONS.icons) || [];
   var ASSIGN = (window.AURA_ICONS && window.AURA_ICONS.assign) || {};
   var HOW    = (window.AURA_ICONS && window.AURA_ICONS.assignBy) || {};
+  var SCREENS = (window.AURA_ICONS && window.AURA_ICONS.screens) || {};
+  var SCRDIR  = (window.AURA_ICONS && window.AURA_ICONS.screenDir) || 'assets/screens/';
   var HOWTXT = {
     screen: 'This icon was cut from the prototype screen for this page.',
     child:  'Borrowed from a page beneath this one, because this one had no screen of its own.',
@@ -197,10 +220,61 @@
   }
   function go(parts){ location.hash = '#/' + parts.join('/'); }
 
-  function findSection(s){ return PAGES.filter(function(x){ return x.slug === s; })[0]; }
-  function findGroup(S, g){ return S ? S.groups.filter(function(x){ return x.slug === g; })[0] : null; }
-  function findPage(G, p){ return G ? G.pages.filter(function(x){ return x.slug === p; })[0] : null; }
+  /* One resolver for every depth, so arriving anywhere gives you a real page.
+     A node knows its name, its children, its trail, and who sits beside it. */
+  function resolve(parts){
+    var node = {key:'', name:'Aura', kind:'root', children:[], trail:[], sibs:[], parent:null};
+    var S = PAGES.filter(function(x){ return x.slug === parts[0]; })[0];
+    node.children = PAGES.map(function(s){
+      return {key:s.slug, name:s.name, n:s.groups.length, unit:'groups'}; });
+    if(!S) return node;
 
+    node = {key:S.slug, name:S.name, kind:'section', parent:'',
+      trail:[[S.name, S.slug]], sibs:PAGES.map(function(s){ return {key:s.slug, name:s.name}; }),
+      children:S.groups.map(function(g){
+        return {key:S.slug + '/' + g.slug, name:g.name,
+                n:g.pages.length + (g.more || []).length, unit:'inside'}; })};
+    var G = S.groups.filter(function(x){ return x.slug === parts[1]; })[0];
+    if(!G) return node;
+
+    var gk = S.slug + '/' + G.slug;
+    node = {key:gk, name:G.name, kind:'group', parent:S.slug,
+      trail:[[S.name, S.slug], [G.name, gk]],
+      sibs:S.groups.map(function(g){ return {key:S.slug + '/' + g.slug, name:g.name}; }),
+      children:G.pages.map(function(p){
+        return {key:gk + '/' + p.slug, name:p.name, n:p.items.length, unit:'inside'}; })
+        .concat((G.more || []).map(function(it){
+          return {key:gk + '/more/' + slug(it), name:it, n:0, unit:''}; }))};
+    if(!parts[2]) return node;
+
+    if(parts[2] === 'more'){
+      var mi = (G.more || []).filter(function(it){ return slug(it) === parts[3]; })[0];
+      if(!mi) return node;
+      var mk = gk + '/more/' + slug(mi);
+      return {key:mk, name:mi, kind:'item', parent:gk,
+        trail:[[S.name, S.slug], [G.name, gk], [mi, mk]], children:[],
+        sibs:(G.more || []).map(function(it){ return {key:gk + '/more/' + slug(it), name:it}; })};
+    }
+    var P = G.pages.filter(function(x){ return x.slug === parts[2]; })[0];
+    if(!P) return node;
+
+    var pk = gk + '/' + P.slug;
+    node = {key:pk, name:P.name, kind:'page', parent:gk,
+      trail:[[S.name, S.slug], [G.name, gk], [P.name, pk]],
+      sibs:G.pages.map(function(p){ return {key:gk + '/' + p.slug, name:p.name}; }),
+      children:P.items.map(function(it){
+        return {key:pk + '/' + slug(it), name:it, n:0, unit:''}; })};
+    if(!parts[3]) return node;
+
+    var it = P.items.filter(function(x){ return slug(x) === parts[3]; })[0];
+    if(!it) return node;
+    var ik = pk + '/' + slug(it);
+    return {key:ik, name:it, kind:'entry', parent:pk,
+      trail:[[S.name, S.slug], [G.name, gk], [P.name, pk], [it, ik]], children:[],
+      sibs:P.items.map(function(x){ return {key:pk + '/' + slug(x), name:x}; })};
+  }
+
+  /* every tile goes somewhere. Nothing is a dead click. */
   function tile(key, name, sub, onclick){
     var a = document.createElement('a');
     a.className = 'tile'; a.href = 'javascript:void(0)';
@@ -209,84 +283,113 @@
     a.onclick = function(e){
       var ico = e.target.closest && e.target.closest('.ico');
       if(editing && ico){ e.preventDefault(); openPicker(key, name); return; }
-      if(onclick) onclick();
+      if(onclick) onclick(); else go(key.split('/'));
     };
     return a;
   }
 
-  function panel(title, sub, key){
+  function panel(title, sub, key, noIcon){
     var s = document.createElement('section');
-    s.innerHTML = '<div class="shead">' + iconHTML(key || ('h/' + slug(title)), title, true) +
+    s.innerHTML = '<div class="shead">' +
+      (noIcon ? '' : iconHTML(key || ('h/' + slug(title)), title, true)) +
       '<div><h2>' + esc(title) + '</h2>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '') + '</div></div>';
     var grid = document.createElement('div'); grid.className = 'tiles';
     s.appendChild(grid); s._grid = grid;
     return s;
   }
 
+  var KINDNAME = {root:'', section:'Section', group:'Group', page:'Page', item:'Entry', entry:'Entry'};
+
   function render(){
-    var r = route(), v = el('view'); v.innerHTML = '';
-    var t = el('trail');
-    var crumbs = [['Aura', []]];
-    var S = findSection(r[0]), G = findGroup(S, r[1]), P = findPage(G, r[2]);
-    if(S) crumbs.push([S.name, [S.slug]]);
-    if(G) crumbs.push([G.name, [S.slug, G.slug]]);
-    if(P) crumbs.push([P.name, [S.slug, G.slug, P.slug]]);
-    t.innerHTML = '';
+    var node = resolve(route()), v = el('view'), t = el('trail');
+    v.innerHTML = ''; t.innerHTML = '';
+
+    var crumbs = [['Aura', []]].concat(node.trail.map(function(c){ return [c[0], c[1].split('/')]; }));
     crumbs.forEach(function(c, i){
       if(i) t.insertAdjacentHTML('beforeend', '<span class="sep">›</span>');
-      if(i === crumbs.length - 1){ t.insertAdjacentHTML('beforeend', '<span class="here">' + esc(c[0]) + '</span>'); }
+      if(i === crumbs.length - 1) t.insertAdjacentHTML('beforeend', '<span class="here">' + esc(c[0]) + '</span>');
       else { var a = document.createElement('a'); a.textContent = c[0];
              a.onclick = function(){ go(c[1]); }; t.appendChild(a); }
     });
 
-    if(P){                                   /* a page: its items */
-      var sec = panel(P.name, P.items.length + (P.items.length === 1 ? ' entry' : ' entries') +
-        ' under ' + G.name, [S.slug, G.slug, P.slug].join('/'));
-      P.items.forEach(function(it){
-        sec._grid.appendChild(tile([S.slug, G.slug, P.slug, slug(it)].join('/'), it, null, null));
+    if(node.kind === 'root'){
+      var home = panel('Aura', PAGES.length + ' sections, ' + count() + ' addressable names', 'home');
+      node.children.forEach(function(c){
+        home._grid.appendChild(tile(c.key, c.name, c.n ? c.n + ' ' + c.unit : null));
       });
-      if(!P.items.length) sec._grid.outerHTML = '<p class="empty">A single page with no entries beneath it.</p>';
-      v.appendChild(sec);
+      v.appendChild(home);
       return;
     }
-    if(G){                                   /* a group: its pages */
-      var sec2 = panel(G.name, G.pages.length + ' pages in ' + S.name, [S.slug, G.slug].join('/'));
-      G.pages.forEach(function(p){
-        sec2._grid.appendChild(tile([S.slug, G.slug, p.slug].join('/'), p.name,
-          p.items.length ? p.items.length + ' inside' : null,
-          function(){ go([S.slug, G.slug, p.slug]); }));
+
+    /* who this page is */
+    var id = ASSIGN[node.key], ic = id && byId[id];
+    var hero = document.createElement('section');
+    var where = KINDNAME[node.kind] +
+      (node.trail.length > 1 ? ' in ' + node.trail[node.trail.length - 2][0] : ' of the Aura app');
+    hero.innerHTML =
+      '<div class="hero">' + iconHTML(node.key, node.name) +
+      '<div><div class="where">' + esc(where) + '</div><h2>' + esc(node.name) + '</h2>' +
+      (ic && HOW[node.key] === 'screen' ? '<p class="desc">' + esc(ic.desc) + '</p>' : '') +
+      '</div></div>';
+    if(ic) hero.insertAdjacentHTML('beforeend',
+      '<p class="prov"><b>' + esc(ic.name) + '.</b> ' + esc(HOWTXT[HOW[node.key]] || '') +
+      ' Turn on Edit icons and tap it to change it.</p>');
+    v.appendChild(hero);
+
+    /* the prototype screens drawn for this page, if any were */
+    var shots = SCREENS[node.key] || [];
+    if(shots.length){
+      var ss = document.createElement('section');
+      ss.innerHTML = '<div class="shead"><div><h2>Drawn in the prototype</h2>' +
+        '<p class="sub">' + shots.length + (shots.length === 1 ? ' screen' : ' screens') +
+        ' from the original Aura prototype for this page</p></div></div>';
+      var row = document.createElement('div'); row.className = 'shots';
+      shots.forEach(function(s){
+        var d = document.createElement('div'); d.className = 'shot';
+        d.innerHTML = '<img loading="lazy" alt="Prototype screen ' + s + '" src="' + SCRDIR + s + '.webp">' +
+                      '<p class="cap">' + s + '</p>';
+        row.appendChild(d);
       });
-      v.appendChild(sec2);
-      if(G.more && G.more.length){
-        var m = panel('Also under ' + G.name, 'Named in the workbook, not yet given a page of their own',
-          [S.slug, G.slug, 'more'].join('/'));
-        G.more.forEach(function(it){
-          m._grid.appendChild(tile([S.slug, G.slug, 'more', slug(it)].join('/'), it, null, null));
-        });
-        v.appendChild(m);
-      }
-      if(!G.pages.length && !(G.more || []).length)
-        v.appendChild(document.createRange().createContextualFragment('<p class="empty">A single page with nothing beneath it.</p>'));
-      return;
+      ss.appendChild(row); v.appendChild(ss);
     }
-    if(S){                                   /* a section: its groups */
-      var sec3 = panel(S.name, S.groups.length + ' groups', S.slug);
-      S.groups.forEach(function(g){
-        var n = g.pages.length + (g.more || []).length;
-        sec3._grid.appendChild(tile([S.slug, g.slug].join('/'), g.name, n ? n + ' inside' : null,
-          function(){ go([S.slug, g.slug]); }));
+
+    /* what is beneath */
+    if(node.children.length){
+      var kids = panel('Inside ' + node.name,
+        node.children.length + (node.children.length === 1 ? ' page' : ' pages'), null, true);
+      node.children.forEach(function(c){
+        kids._grid.appendChild(tile(c.key, c.name, c.n ? c.n + ' ' + c.unit : null));
       });
-      if(!S.groups.length) sec3._grid.outerHTML = '<p class="empty">This section is a single page.</p>';
-      v.appendChild(sec3);
-      return;
+      v.appendChild(kids);
+    } else if(!shots.length){
+      var none = document.createElement('section');
+      none.innerHTML = '<p class="note" style="margin:0">Nothing sits beneath this one in the workbook, and no ' +
+        'prototype screen was drawn for it. It is a named place in the app that has not been designed yet. ' +
+        'The name is the whole record, and that is worth saying rather than hiding.</p>';
+      v.appendChild(none);
     }
-    /* home */
-    var home = panel('Aura', PAGES.length + ' sections, ' + count() + ' addressable names', 'home');
-    PAGES.forEach(function(s){
-      home._grid.appendChild(tile(s.slug, s.name, s.groups.length ? s.groups.length + ' groups' : null,
-        function(){ go([s.slug]); }));
-    });
-    v.appendChild(home);
+
+    /* move sideways without going back up */
+    if(node.sibs && node.sibs.length > 1){
+      var sb = document.createElement('section');
+      sb.innerHTML = '<div class="shead"><div><h2>Beside this</h2>' +
+        '<p class="sub">The rest of ' + esc(node.trail.length > 1 ? node.trail[node.trail.length - 2][0] : 'the app') +
+        '</p></div></div>';
+      var strip = document.createElement('div'); strip.className = 'sibs';
+      node.sibs.forEach(function(s){
+        var a = document.createElement('a');
+        a.className = 'sib' + (s.key === node.key ? ' on' : '');
+        a.href = 'javascript:void(0)';
+        a.innerHTML = iconHTML(s.key, s.name, true) + '<span>' + esc(s.name) + '</span>';
+        a.onclick = function(e){
+          var box = e.target.closest && e.target.closest('.ico');
+          if(editing && box){ openPicker(s.key, s.name); return; }
+          go(s.key.split('/'));
+        };
+        strip.appendChild(a);
+      });
+      sb.appendChild(strip); v.appendChild(sb);
+    }
   }
 
   function count(){
@@ -331,9 +434,9 @@
     if(!q){ render(); return; }
     var hits = search(q), v = el('view');
     v.innerHTML = '';
-    var sec = panel('Search', hits.length + ' matches for “' + q + '”', 'search');
+    var sec = panel('Search', hits.length + ' matches for “' + q + '”', null, true);
     hits.slice(0, 120).forEach(function(h){
-      sec._grid.appendChild(tile(h.k, h.n, h.w, function(){ go(h.go); el('q').value = ''; }));
+      sec._grid.appendChild(tile(h.k, h.n, h.w, function(){ el('q').value = ''; go(h.k.split('/')); }));
     });
     v.appendChild(sec);
     if(hits.length > 120) v.insertAdjacentHTML('beforeend', '<p class="count">Showing the first 120.</p>');
