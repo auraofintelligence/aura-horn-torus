@@ -1,7 +1,6 @@
-/* Aura icon library and prototype screens. Icons were cut from the MockPlus prototype screens,
-   described by a reading pass, then matched back to the page each came from. assignBy records how:
-   "screen" = cut from that page, "child" = borrowed from below, "name" = matched by wording only.
-   screens maps a route to the prototype screens drawn for it. Generated: do not hand edit. */
+/* Aura icon library and prototype screens. Icons were cut from the prototype screens, described by a
+   reading pass, then matched back to the page each came from. assignBy records how: "screen" = cut from
+   that page, "child" = borrowed from below, "name" = matched by wording only. Do not hand edit. */
 window.AURA_ICONS = {
  "built": "2026-08-07",
  "source": "Aura MockPlus prototype screens",
@@ -3567,16 +3566,23 @@ window.AURA_ICONS = {
   "aura-menu/social-web": "ic201",
   "the-aura-affinity-marketplace/marketplace/aura-event-management": "ic369",
   "aura-menu/system-preferences/ai-ml-algorithms": "ic151",
-  "avatar-creator": "ic298",
+  "avatar-creator/ratios-of-body-to-aura/height-with-arms-upstretched": "ic298",
+  "avatar-creator/ratios-of-body-to-aura/shoulder-height-with-arms-outstretched": "ic052",
+  "avatar-creator/ratios-of-body-to-aura": "ic297",
   "aura-menu/system-preferences": "ic093",
+  "avatar-creator": "ic004",
+  "avatar-creator/ratios-of-body-to-aura/avatar-questionaire": "ic049",
+  "avatar-creator/ratios-of-body-to-aura/social-proximity-settings": "ic295",
   "avatar-creator/pose-estimation": "ic004",
   "avatar-creator/face-mapping": "ic004",
   "avatar-creator/emotional-expressions": "ic306",
   "avatar-creator/natural-language": "ic307",
   "mind-palace-creator": "ic308",
   "mind-palace-creator/load-sample-mind-palace": "ic309",
+  "mind-palace-creator/map-your-home": "ic054",
   "mind-palace-creator/map-public-buildings": "ic312",
   "mind-palace-creator/map-real-estate": "ic314",
+  "mind-palace-creator/map-resorts": "ic315",
   "the-aura-affinity-marketplace/marketplace": "ic367",
   "chakras": "ic275",
   "chakras/crown-chakra-white-geosphere": "ic279",
@@ -3664,16 +3670,15 @@ window.AURA_ICONS = {
   "aura-menu/matrix-programmer/finite-map-red-12-by-24": "ic109",
   "aura-menu/matrix-programmer/finite-map-red-12-by-24/interior-personal-view-of-torus": "ic167",
   "aura-menu/matrix-programmer/infinite-map-red-12-by-24": "ic138",
-  "aura-menu/matrix-programmer/infinite-map-red-12-by-24/interior-personal-view-of-torus": "ic295",
+  "aura-menu/matrix-programmer/infinite-map-red-12-by-24/interior-personal-view-of-torus": "ic167",
   "aura-menu/matrix-programmer/finite-map-orange-24-by-45": "ic293",
-  "aura-menu/matrix-programmer/finite-map-orange-24-by-45/interior-personal-view-of-torus": "ic167",
+  "aura-menu/matrix-programmer/finite-map-orange-24-by-45/interior-personal-view-of-torus": "ic295",
   "aura-menu/matrix-programmer/infinite-map-orange-24-by-45": "ic293",
-  "aura-menu/matrix-programmer/infinite-map-orange-24-by-45/interior-personal-view-of-torus": "ic295",
+  "aura-menu/matrix-programmer/infinite-map-orange-24-by-45/interior-personal-view-of-torus": "ic167",
   "aura-menu/matrix-programmer/finite-map-yellow-36-by-72": "ic292",
-  "aura-menu/matrix-programmer/finite-map-yellow-36-by-72/interior-personal-view-of-torus": "ic167",
   "aura-menu/matrix-programmer/infinite-map-yellow-36-by-72": "ic292",
   "aura-menu/matrix-programmer/finite-map-green-40-x-90": "ic052",
-  "aura-menu/matrix-programmer/infinite-map-green-40-x-90": "ic315",
+  "aura-menu/matrix-programmer/infinite-map-green-40-x-90": "ic291",
   "aura-menu/matrix-programmer/finite-map-blue-45-x-120": "ic281",
   "aura-menu/matrix-programmer/infinite-map-blue-45-x-120": "ic175",
   "aura-menu/matrix-programmer/finite-map-indigo-60-x-180": "ic374",
@@ -3688,7 +3693,7 @@ window.AURA_ICONS = {
   "aura-menu/system-preferences/more/home-automation": "ic107",
   "aura-menu/system-preferences/more/personal-assistant": "ic108",
   "aura-menu/system-preferences/more/aura-oi-artist": "ic111",
-  "aura-menu/system-preferences/more/aura-oi-simulator": "ic049",
+  "aura-menu/system-preferences/more/aura-oi-simulator": "ic059",
   "aura-menu/system-preferences/more/episodic-memory": "ic095",
   "aura-menu/system-preferences/more/fast-memory": "ic095",
   "aura-menu/system-preferences/more/slow-memory": "ic095",
@@ -3700,22 +3705,16 @@ window.AURA_ICONS = {
   "chakras/crown-chakra-white-geosphere/star-map-api": "ic280",
   "chakras/blue-chakra/finite-map-blue-45-x-120": "ic165",
   "chakras/blue-chakra/infinite-map-blue-45-x-120": "ic289",
-  "chakras/green-chakra/finite-map-green-40-x-90": "ic052",
-  "chakras/green-chakra/infinite-map-green-40-x-90": "ic291",
+  "chakras/green-chakra/finite-map-green-40-x-90": "ic109",
+  "chakras/green-chakra/infinite-map-green-40-x-90": "ic138",
   "chakras/yellow-chakra/finite-map-yellow-36-by-72": "ic292",
   "chakras/orange-chakra/finite-map-orange-24-by-45": "ic293",
   "chakras/red-chakra/finite-map-red-12-by-24": "ic294",
-  "chakras/red-chakra/infinite-map-red-12-by-24": "ic109",
-  "avatar-creator/ratios-of-body-to-aura": "ic298",
-  "avatar-creator/ratios-of-body-to-aura/avatar-questionaire": "ic013",
-  "avatar-creator/ratios-of-body-to-aura/social-proximity-settings": "ic090",
+  "chakras/red-chakra/infinite-map-red-12-by-24": "ic205",
   "avatar-creator/ratios-of-body-to-aura/eye-size-and-positioning": "ic273",
-  "avatar-creator/ratios-of-body-to-aura/height-with-arms-upstretched": "ic333",
-  "avatar-creator/ratios-of-body-to-aura/shoulder-height-with-arms-outstretched": "ic020",
-  "mind-palace-creator/map-your-home": "ic141",
   "mind-palace-creator/create-a-new-palace": "ic308",
   "gajra-earth/programs/urban-hydroponic-tower-gardens": "ic315",
-  "the-aura-affinity-marketplace/marketplace/aura-creative-industries": "ic059",
+  "the-aura-affinity-marketplace/marketplace/aura-creative-industries": "ic298",
   "the-aura-affinity-marketplace/blockchain/public-ledger-tutorial": "ic379",
   "the-aura-affinity-marketplace/membership/social-responsibility": "ic295",
   "the-aura-affinity-marketplace/membership/review-upgrade-options": "ic203"
@@ -3725,16 +3724,23 @@ window.AURA_ICONS = {
   "aura-menu/social-web": "screen",
   "the-aura-affinity-marketplace/marketplace/aura-event-management": "screen",
   "aura-menu/system-preferences/ai-ml-algorithms": "screen",
-  "avatar-creator": "screen",
+  "avatar-creator/ratios-of-body-to-aura/height-with-arms-upstretched": "screen",
+  "avatar-creator/ratios-of-body-to-aura/shoulder-height-with-arms-outstretched": "screen",
+  "avatar-creator/ratios-of-body-to-aura": "screen",
   "aura-menu/system-preferences": "screen",
+  "avatar-creator": "screen",
+  "avatar-creator/ratios-of-body-to-aura/avatar-questionaire": "screen",
+  "avatar-creator/ratios-of-body-to-aura/social-proximity-settings": "screen",
   "avatar-creator/pose-estimation": "screen",
   "avatar-creator/face-mapping": "screen",
   "avatar-creator/emotional-expressions": "screen",
   "avatar-creator/natural-language": "screen",
   "mind-palace-creator": "screen",
   "mind-palace-creator/load-sample-mind-palace": "screen",
+  "mind-palace-creator/map-your-home": "screen",
   "mind-palace-creator/map-public-buildings": "screen",
   "mind-palace-creator/map-real-estate": "screen",
+  "mind-palace-creator/map-resorts": "screen",
   "the-aura-affinity-marketplace/marketplace": "screen",
   "chakras": "screen",
   "chakras/crown-chakra-white-geosphere": "screen",
@@ -3828,7 +3834,6 @@ window.AURA_ICONS = {
   "aura-menu/matrix-programmer/infinite-map-orange-24-by-45": "name",
   "aura-menu/matrix-programmer/infinite-map-orange-24-by-45/interior-personal-view-of-torus": "name",
   "aura-menu/matrix-programmer/finite-map-yellow-36-by-72": "name",
-  "aura-menu/matrix-programmer/finite-map-yellow-36-by-72/interior-personal-view-of-torus": "name",
   "aura-menu/matrix-programmer/infinite-map-yellow-36-by-72": "name",
   "aura-menu/matrix-programmer/finite-map-green-40-x-90": "name",
   "aura-menu/matrix-programmer/infinite-map-green-40-x-90": "name",
@@ -3864,13 +3869,7 @@ window.AURA_ICONS = {
   "chakras/orange-chakra/finite-map-orange-24-by-45": "name",
   "chakras/red-chakra/finite-map-red-12-by-24": "name",
   "chakras/red-chakra/infinite-map-red-12-by-24": "name",
-  "avatar-creator/ratios-of-body-to-aura": "name",
-  "avatar-creator/ratios-of-body-to-aura/avatar-questionaire": "name",
-  "avatar-creator/ratios-of-body-to-aura/social-proximity-settings": "name",
   "avatar-creator/ratios-of-body-to-aura/eye-size-and-positioning": "name",
-  "avatar-creator/ratios-of-body-to-aura/height-with-arms-upstretched": "name",
-  "avatar-creator/ratios-of-body-to-aura/shoulder-height-with-arms-outstretched": "name",
-  "mind-palace-creator/map-your-home": "name",
   "mind-palace-creator/create-a-new-palace": "name",
   "gajra-earth/programs/urban-hydroponic-tower-gardens": "name",
   "the-aura-affinity-marketplace/marketplace/aura-creative-industries": "name",
@@ -4019,12 +4018,14 @@ window.AURA_ICONS = {
    "s089"
   ],
   "chakras/crown-chakra-white-geosphere": [
-   "s090",
-   "s091",
-   "s093"
+   "s090"
   ],
   "chakras/crown-chakra-white-geosphere/google-earth-api": [
+   "s091",
    "s092"
+  ],
+  "chakras/crown-chakra-white-geosphere/star-map-api": [
+   "s093"
   ],
   "chakras/violet-chakra": [
    "s094"
@@ -4049,13 +4050,23 @@ window.AURA_ICONS = {
   ],
   "avatar-creator": [
    "s101",
-   "s102",
+   "s102"
+  ],
+  "avatar-creator/ratios-of-body-to-aura": [
    "s103",
+   "s107"
+  ],
+  "avatar-creator/ratios-of-body-to-aura/avatar-questionaire": [
    "s104",
-   "s105",
-   "s106",
-   "s107",
-   "s108",
+   "s105"
+  ],
+  "avatar-creator/ratios-of-body-to-aura/social-proximity-settings": [
+   "s106"
+  ],
+  "avatar-creator/ratios-of-body-to-aura/height-with-arms-upstretched": [
+   "s108"
+  ],
+  "avatar-creator/ratios-of-body-to-aura/shoulder-height-with-arms-outstretched": [
    "s109"
   ],
   "avatar-creator/pose-estimation": [
@@ -4071,19 +4082,23 @@ window.AURA_ICONS = {
    "s113"
   ],
   "mind-palace-creator": [
-   "s114",
-   "s116",
-   "s117",
-   "s120"
+   "s114"
   ],
   "mind-palace-creator/load-sample-mind-palace": [
    "s115"
+  ],
+  "mind-palace-creator/map-your-home": [
+   "s116",
+   "s117"
   ],
   "mind-palace-creator/map-public-buildings": [
    "s118"
   ],
   "mind-palace-creator/map-real-estate": [
    "s119"
+  ],
+  "mind-palace-creator/map-resorts": [
+   "s120"
   ],
   "gajra-earth": [
    "s121",

@@ -386,12 +386,26 @@
       if(held.body) hs.insertAdjacentHTML('beforeend', '<p class="body">' + esc(held.body) + '</p>');
       if(held.rows.length){
         var ul = document.createElement('div'); ul.className = 'holds';
-        held.rows.forEach(function(rw){
-          var d = document.createElement('div'); d.className = 'hold';
-          d.innerHTML = '<span class="b"></span><span>' + esc(rw) + '</span>';
-          ul.appendChild(d);
-        });
+        var CAP = 36, shown = Math.min(CAP, held.rows.length);
+        function paint(n){
+          ul.innerHTML = '';
+          held.rows.slice(0, n).forEach(function(rw){
+            var d = document.createElement('div'); d.className = 'hold';
+            d.innerHTML = '<span class="b"></span><span>' + esc(rw) + '</span>';
+            ul.appendChild(d);
+          });
+        }
+        paint(shown);
         hs.appendChild(ul);
+        if(held.rows.length > CAP){
+          var more = document.createElement('button');
+          more.style.marginTop = '12px';
+          more.textContent = 'Show the other ' + (held.rows.length - CAP);
+          more.onclick = function(){ paint(held.rows.length); more.remove(); };
+          hs.appendChild(more);
+        }
+        hs.querySelector('.sub').textContent += ' · ' + held.rows.length +
+          (held.rows.length === 1 ? ' entry' : ' entries');
       }
       v.appendChild(hs);
     }
