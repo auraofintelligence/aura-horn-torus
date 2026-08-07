@@ -2720,11 +2720,31 @@ document.getElementById('menuGuide').addEventListener('click', function(){
   applyStep(0);
 });
 
+/* ---------- arriving on an address ----------
+   The app directory links straight here: #addr=shell,cell,side. Skip the
+   guide, because you were sent to a specific facet, not to the story. */
+function openHashAddress(){
+  var m = /addr=(\d+),(\d+),(in|out)/.exec(location.hash || '');
+  if(!m) return false;
+  var k = Math.min(7, Math.max(1, +m[1])), cell = Math.min(288, Math.max(1, +m[2]));
+  endGuide();
+  setP('addrshell', 'addrshell', k, 0);
+  setP('addrcell',  'addrcell',  cell, 0);
+  P.addrside = m[3];
+  document.querySelectorAll('#sideseg button').forEach(function(x){
+    x.classList.toggle('on', x.dataset.side === P.addrside);
+  });
+  findAddress();
+  return true;
+}
+window.addEventListener('hashchange', openHashAddress);
+
 /* ---------- go ---------- */
 resize();
 rebuild();
 applyStep(0);
 tick();
+if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
 
 })();
 </script>

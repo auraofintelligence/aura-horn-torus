@@ -76,6 +76,24 @@
   .shot{width:210px}
   .shot img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#fff}
   .shot .cap{font-size:10.5px;color:var(--ink-soft);margin:6px 0 0;line-height:1.4}
+  /* what the page holds, straight off the prototype */
+  .body{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;max-width:62ch;line-height:1.6}
+  .holds{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px}
+  .hold{display:flex;gap:9px;align-items:baseline;padding:9px 12px;border-radius:10px;
+    border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:12px;line-height:1.4}
+  .hold .b{width:5px;height:5px;flex:0 0 auto;border-radius:50%;background:var(--accent);
+    opacity:.65;transform:translateY(-2px)}
+  /* the address on the lattice */
+  .addrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+  .addr{display:flex;flex-direction:column;gap:3px;padding:14px 15px;border-radius:14px;
+    border:1px solid var(--line);background:rgba(255,255,255,.02);text-decoration:none;color:var(--ink)}
+  .addr:hover{border-color:rgba(216,179,106,.5)}
+  .addr .t{font-size:10px;color:var(--ink-soft);letter-spacing:.09em;text-transform:uppercase}
+  .addr .a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:var(--accent);
+    letter-spacing:.02em;margin:2px 0}
+  .addr.in{border-left:2px solid rgba(216,179,106,.55)}
+  .addr.out{border-left:2px solid rgba(140,170,220,.5)}
+  .addr.out .a{color:#9dbbe8}
   .sibs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0}
   .sib{display:flex;align-items:center;gap:7px;padding:6px 11px 6px 7px;border-radius:999px;
     border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:11px;
@@ -154,6 +172,8 @@
 
 <script src="assets/pages.js"></script>
 <script src="assets/icons.js"></script>
+<script src="assets/relations.js"></script>
+<script src="assets/holds.js"></script>
 <script>
 (function(){
   var PAGES  = (window.AURA_PAGES && window.AURA_PAGES.sections) || [];
@@ -162,6 +182,10 @@
   var HOW    = (window.AURA_ICONS && window.AURA_ICONS.assignBy) || {};
   var SCREENS = (window.AURA_ICONS && window.AURA_ICONS.screens) || {};
   var SCRDIR  = (window.AURA_ICONS && window.AURA_ICONS.screenDir) || 'assets/screens/';
+  var REL     = window.AURA_REL || {shells:[], registers:{}, related:{}, note:''};
+  var REG     = REL.registers || {};
+  var RELATED = REL.related || {};
+  var HOLDS   = (window.AURA_HOLDS && window.AURA_HOLDS.pages) || {};
   var HOWTXT = {
     screen: 'This icon was cut from the prototype screen for this page.',
     child:  'Borrowed from a page beneath this one, because this one had no screen of its own.',
@@ -351,6 +375,57 @@
         row.appendChild(d);
       });
       ss.appendChild(row); v.appendChild(ss);
+    }
+
+    /* what this page holds, as the prototype spelled it out */
+    var held = HOLDS[node.key];
+    if(held && (held.rows.length || held.body)){
+      var hs = document.createElement('section');
+      hs.innerHTML = '<div class="shead"><div><h2>What it holds</h2>' +
+        '<p class="sub">Transcribed from the prototype screen, not written for this page</p></div></div>';
+      if(held.body) hs.insertAdjacentHTML('beforeend', '<p class="body">' + esc(held.body) + '</p>');
+      if(held.rows.length){
+        var ul = document.createElement('div'); ul.className = 'holds';
+        held.rows.forEach(function(rw){
+          var d = document.createElement('div'); d.className = 'hold';
+          d.innerHTML = '<span class="b"></span><span>' + esc(rw) + '</span>';
+          ul.appendChild(d);
+        });
+        hs.appendChild(ul);
+      }
+      v.appendChild(hs);
+    }
+
+    /* where it would live on the lattice */
+    var rg = REG[node.key];
+    if(rg){
+      var k = REL.shells.indexOf(rg.shell) + 1;
+      var pad = function(n){ return ('00' + n).slice(-3); };
+      var span = rg.n === 1 ? pad(rg.from) : pad(rg.from) + ' to ' + pad(rg.to);
+      var ls = document.createElement('section');
+      ls.innerHTML = '<div class="shead"><div><h2>Where it lives</h2>' +
+        '<p class="sub">' + rg.n + (rg.n === 1 ? ' facet' : ' facets') + ' on the ' + rg.shell.toLowerCase() +
+        ' torus</p></div></div>' +
+        '<div class="addrs">' +
+          '<a class="addr in" href="index.html#addr=' + k + ',' + rg.from + ',in">' +
+            '<span class="t">Interior, personal</span><span class="a">' + rg.shell + ' I-' + span + '</span>' +
+            '<span class="t">private encrypted record</span></a>' +
+          '<a class="addr out" href="index.html#addr=' + k + ',' + rg.from + ',out">' +
+            '<span class="t">Exterior, observer</span><span class="a">' + rg.shell + ' O-' + span + '</span>' +
+            '<span class="t">public permissioned record</span></a>' +
+        '</div>' +
+        '<p class="note">Same facet numbers on both faces, and the letter says which register you are reading. ' +
+        'Tap either one to open it on the torus. ' + esc(REL.note) + '</p>';
+      v.appendChild(ls);
+    }
+
+    /* what it relates to elsewhere in the app */
+    var rl = RELATED[node.key];
+    if(rl && rl.length){
+      var rs = panel('Related elsewhere',
+        'Other pages that share this one’s wording, found across the whole directory', null, true);
+      rl.forEach(function(x){ rs._grid.appendChild(tile(x.key, x.name, x.where || null)); });
+      v.appendChild(rs);
     }
 
     /* what is beneath */
