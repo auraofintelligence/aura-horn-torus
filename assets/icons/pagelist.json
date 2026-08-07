@@ -1,0 +1,1729 @@
+[
+ {
+  "lvl": 3,
+  "section": "",
+  "group": "Estimate 300 pages",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 1,
+  "section": "Home",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "Quick Start",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Quick Start",
+  "group": "Quick Navigation",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Quick Start",
+  "group": "Site Map",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "Aura Menu",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Social Media API Access",
+  "items": [
+   "Facebook",
+   "X/Twitter",
+   "Instagram",
+   "TikTok",
+   "LinkedIN",
+   "Pinterest",
+   "YouTube",
+   "Family Tree",
+   "Dating Apps",
+   "Request API"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Social Media Data Upload",
+  "items": [
+   "Facebook",
+   "X/Twitter",
+   "Instagram",
+   "TikTok",
+   "LinkedIN",
+   "Pinterest",
+   "YouTube",
+   "Family Tree",
+   "Dating Apps",
+   "Request API"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Embed and Analyse Data",
+  "items": [
+   "Friend Lists",
+   "Sentiment",
+   "Friend Groups"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "We Are Family",
+  "items": [
+   "Family Tree",
+   "Friends List"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Favourites List",
+  "items": [
+   "Values I Prefer",
+   "Virtues I Prefer",
+   "Emotions I Prefer",
+   "Sensations I Prefer",
+   "Experiences I Enjoy",
+   "Books",
+   "Music",
+   "TV Shows",
+   "Films",
+   "Games I Enjoy",
+   "Places I Love",
+   "People I Love"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Private Wish List",
+  "items": [
+   "Project Specific Wish Lists",
+   "Themed Wish Lists",
+   "Relationships",
+   "Lifestyle",
+   "Travel",
+   "Learning",
+   "Home",
+   "Other"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Bucket List",
+  "items": [
+   "Places To Go",
+   "People To Meet",
+   "Activities To Try",
+   "Events To Attend",
+   "Skills To Master",
+   "Creativity",
+   "Other"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Public Life Goals",
+  "items": [
+   "Research",
+   "Performance",
+   "Leadership",
+   "Public Service",
+   "Milestones",
+   "Experiences",
+   "Other"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Social Web",
+  "page": "Travel Plans",
+  "items": [
+   "Oceania",
+   "Asia",
+   "Africa",
+   "South America",
+   "Central America",
+   "North America",
+   "Europe",
+   "Antarctica",
+   "Off World"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Birthdays",
+  "items": [
+   "Milestones",
+   "Counters",
+   "Schedules",
+   "Reminders",
+   "Ceremonies",
+   "Celestial",
+   "Learning",
+   "Work",
+   "Weather",
+   "Community",
+   "Other"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Birthday Reminders",
+  "items": [
+   "Solar Orbits",
+   "Countdown",
+   "ToDo",
+   "To-Do Lists",
+   "Seasons",
+   "Astronomy Information",
+   "Educational Resources",
+   "Project Management",
+   "Weather Forecast",
+   "Local Event Calendar"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Age Calculator",
+  "items": [
+   "Learning",
+   "Action",
+   "Daily Planner",
+   "Alarm Clock",
+   "Love",
+   "Star Gazing",
+   "Study Planner",
+   "Task Tracker",
+   "Weather Alerts",
+   "Community Announcements & Bulletins"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Zodiac Signs",
+  "items": [
+   "Relationships",
+   "Timer",
+   "Calendar Integration",
+   "Medication Reminders",
+   "Luck & Good Fortune",
+   "Solar and Lunar Events",
+   "Language Learning",
+   "Time Management",
+   "Outdoor Activities Planner",
+   "Volunteering & Civic Engagement Opportunities"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Birthday Countdown",
+  "items": [
+   "Goals",
+   "Laps",
+   "Event Scheduler",
+   "Event Notifications",
+   "Specific Environments",
+   "Astronomical Calendar",
+   "Skill Development",
+   "Productivity Tools",
+   "Weather Widgets",
+   "Neighborhood Watch Alerts"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Gift Ideas",
+  "items": [
+   "Distances",
+   "Steps",
+   "Task Manager",
+   "Task Alerts",
+   "Congratulations",
+   "Celestial Map",
+   "Online Courses",
+   "Work Calendar",
+   "Climate Information",
+   "Community Polling & Surveys"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Party Planning",
+  "items": [
+   "Weight",
+   "Dates",
+   "Class Schedules",
+   "Sticky Notes",
+   "Good Willing",
+   "Meteor Shower Alerts",
+   "Flashcards",
+   "Team Collaboration",
+   "Weather Radar"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "Astrological Insights",
+  "items": [
+   "Health",
+   "Inventory",
+   "Appointment Booking",
+   "Habit Tracking",
+   "Farewells",
+   "Constellation Guide",
+   "Educational Games",
+   "Work Remotely Tools",
+   "Travel Weather"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Travel",
+   "Heartbeat",
+   "Timetable Generator",
+   "Ancestors",
+   "Satellite Tracking",
+   "Just-in-time Instruction",
+   "Just-in-time Instruction"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Output",
+   "Breaths",
+   "Births",
+   "Astrological Insights"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Input",
+   "Birthdays"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Gifts",
+   "Mothers"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Acquisitions",
+   "Fathers"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Achievement",
+   "Brothers"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Sisters"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Wider Family"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Partnerships"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Friendships"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Courtship"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Timing & Signals",
+  "page": "",
+  "items": [
+   "Graduation"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Option 1 = all torus are 12 by 24",
+  "items": [
+   "Option 2 = below"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Matrix Program Passthrough",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Tool Inventory",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Red 12 by 24)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Red 12 by 24)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Orange 24 by 45)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Orange 24 by 45)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Yellow 36 by 72)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Yellow 36 by 72)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Green 40 x 90)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Green 40 x 90)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Blue 45 x 120)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Blue 45 x 120)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Indigo 60 x 180)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Indigo 60 x 180)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Finite Map (Violet 90 x 200)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "Infinite Map (Violet 90 x 200)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "Matrix Programmer",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "Advertising Options",
+  "items": []
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Crowdfunding"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Incoming Advertising"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Public Wish Lists"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Sponsorships"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "AI/ML Algorithms",
+  "items": []
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Gaze Tracking"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Face Recognition"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Object Detection"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Hand Tracking"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Recomendations"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Nearby Friends"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Navigation Pathfinder"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Multi-Stop Journey Planner"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Anomoly Detection"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Sentiment Analysis"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Home Automation"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Personal Assistant"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Aura Oi Artist"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "DIfferently Abled Assistance"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Aura Oi Simulator"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Measuring Tool"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Neaby Opportunities"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "Memory",
+  "items": []
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Episodic Memory"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Fast Memory"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Slow Memory"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Dream Memory"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "IoT Networked Devices",
+  "items": []
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Service Drones"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Aura Menu",
+  "group": "System Preferences",
+  "page": "",
+  "items": [
+   "Smart Wearables"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Aura Menu",
+  "group": "Virtual Reality Mode",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "Chakras",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Crown Chakra (White Geosphere)",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Crown Chakra (White Geosphere)",
+  "page": "Google Earth API",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Crown Chakra (White Geosphere)",
+  "page": "Star Map API",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Violet Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Violet Chakra",
+  "page": "Finite Map (Violet 90 x 200)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Violet Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Violet Chakra",
+  "page": "Infinite Map (Violet 90 x 200)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Violet Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Indigo Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Indigo Chakra",
+  "page": "Finite Map (Indigo 60 x 180)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Indigo Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Indigo Chakra",
+  "page": "Infinite Map (Indigo 60 x 180)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Indigo Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Blue Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Blue Chakra",
+  "page": "Finite Map (Blue 45 x 120)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Blue Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Blue Chakra",
+  "page": "Infinite Map (Blue 45 x 120)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Blue Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Green Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Green Chakra",
+  "page": "Finite Map (Green 40 x 90)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Green Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Green Chakra",
+  "page": "Infinite Map (Green 40 x 90)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Green Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Yellow Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Yellow Chakra",
+  "page": "Finite Map (Yellow 36 by 72)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Yellow Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Yellow Chakra",
+  "page": "Infinite Map (Yellow 36 by 72)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Yellow Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Orange Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Orange Chakra",
+  "page": "Finite Map (Orange 24 by 45)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Orange Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Orange Chakra",
+  "page": "Infinite Map (Orange 24 by 45)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Orange Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 3,
+  "section": "Chakras",
+  "group": "Red Chakra",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Red Chakra",
+  "page": "Finite Map (Red 12 by 24)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Red Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 4,
+  "section": "Chakras",
+  "group": "Red Chakra",
+  "page": "Infinite Map (Red 12 by 24)",
+  "items": [
+   "Interior (Personal) View of Torus"
+  ]
+ },
+ {
+  "lvl": 5,
+  "section": "Chakras",
+  "group": "Red Chakra",
+  "page": "",
+  "items": [
+   "Exterior (Observer) View of Torus"
+  ]
+ },
+ {
+  "lvl": 2,
+  "section": "Avatar Creator",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "Avatar Questionaire",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "Social Proximity Settings",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "Eye size and positioning",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "Height with arms upstretched",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "Avatar Creator",
+  "group": "Ratios of Body to Aura",
+  "page": "Shoulder height with arms outstretched",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Avatar Creator",
+  "group": "Pose Estimation",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Avatar Creator",
+  "group": "Face Mapping",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Avatar Creator",
+  "group": "Emotional Expressions",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Avatar Creator",
+  "group": "Natural Language",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "Mind Palace Creator",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Load Sample Mind Palace",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Your Home",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Your Work",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Public Buildings",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Real Estate",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Resorts",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Map Natural Environments",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "Mind Palace Creator",
+  "group": "Create A New Palace",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "GAJRA.Earth",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "GAJRA.Earth",
+  "group": "Vision",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "GAJRA.Earth",
+  "group": "Game",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "GAJRA.Earth",
+  "group": "Cryptocurrency Token",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "GAJRA.Earth",
+  "group": "Membership",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "GAJRAearthVOW",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "Clean India",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "Urban Hydroponic Tower Gardens",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "Music For Good 2025",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "Proposing the 1st Global Vote",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "GAJRA.Earth",
+  "group": "Programs",
+  "page": "AGI Alignment",
+  "items": []
+ },
+ {
+  "lvl": 2,
+  "section": "The Aura Affinity Marketplace",
+  "group": "",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Vision",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Search",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Search",
+  "page": "Search Results",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "Aura Accommodation",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "Aura Creative Industries",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "Aura Event Management",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "Aura of Health and Wellbeing",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Marketplace",
+  "page": "Aura Cities and Developments",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "Create New Transaction",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "View Pending Transactions",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "View Passed Transactions",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "Public Ledger Tutorial",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Blockchain",
+  "page": "Career Opportunities",
+  "items": []
+ },
+ {
+  "lvl": 3,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "Joining Process",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "Member Benefits",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "Social Responsibility",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "Review Upgrade Options",
+  "items": []
+ },
+ {
+  "lvl": 4,
+  "section": "The Aura Affinity Marketplace",
+  "group": "Membership",
+  "page": "Career Opportunities",
+  "items": []
+ }
+]

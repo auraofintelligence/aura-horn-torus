@@ -1,0 +1,11846 @@
+[
+ {
+  "icon": "s001_01",
+  "screen": "s001",
+  "src": "Screenshot 2026-07-06 135316.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 15.5,
+  "fill": 0.987,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s002_01",
+  "screen": "s002",
+  "src": "Screenshot 2026-07-06 135339.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 15.5,
+  "fill": 0.987,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s003_01",
+  "screen": "s003",
+  "src": "Screenshot 2026-07-06 135420.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 15.5,
+  "fill": 0.987,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s004_01",
+  "screen": "s004",
+  "src": "Screenshot 2026-07-06 135448.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 15.5,
+  "fill": 0.987,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s005_01",
+  "screen": "s005",
+  "src": "Screenshot 2026-07-06 135501.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 15.5,
+  "fill": 0.987,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s006_01",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   0,
+   38,
+   450,
+   828
+  ],
+  "sat": 53.6,
+  "fill": 0.245,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_02",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   7,
+   41,
+   86,
+   80
+  ],
+  "sat": 169.9,
+  "fill": 0.956,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_03",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   112,
+   42,
+   224,
+   77
+  ],
+  "sat": 87.9,
+  "fill": 0.612,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_04",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   358,
+   46,
+   84,
+   73
+  ],
+  "sat": 86.6,
+  "fill": 0.437,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_05",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   189,
+   156,
+   70,
+   70
+  ],
+  "sat": 65.9,
+  "fill": 0.401,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_06",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   133,
+   238,
+   182,
+   187
+  ],
+  "sat": 139.7,
+  "fill": 0.493,
+  "kind": "art"
+ },
+ {
+  "icon": "s006_07",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   132,
+   524,
+   184,
+   161
+  ],
+  "sat": 0.0,
+  "fill": 0.156,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s006_08",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   265,
+   715,
+   72,
+   73
+  ],
+  "sat": 5.8,
+  "fill": 0.289,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s006_09",
+  "screen": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "box": [
+   99,
+   717,
+   84,
+   72
+  ],
+  "sat": 8.6,
+  "fill": 0.582,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_01",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 20.1,
+  "fill": 0.12,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_02",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   62,
+   116,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_03",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   136,
+   116,
+   30,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.232,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_04",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   209,
+   116,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_05",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   284,
+   116,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_06",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   358,
+   116,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_07",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   62,
+   187,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_08",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   136,
+   187,
+   30,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.228,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_09",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   209,
+   187,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_10",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   284,
+   187,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_11",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   358,
+   187,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_12",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   62,
+   262,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_13",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   136,
+   262,
+   30,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.228,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_14",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   209,
+   262,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_15",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   284,
+   262,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.22,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_16",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   358,
+   262,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_17",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   62,
+   334,
+   31,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.228,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_18",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   136,
+   334,
+   30,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.236,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_19",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   209,
+   334,
+   31,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.228,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_20",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   284,
+   334,
+   31,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.228,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_21",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   358,
+   334,
+   31,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.232,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_22",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   62,
+   406,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_23",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   136,
+   406,
+   30,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.232,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_24",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   209,
+   406,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_25",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   284,
+   406,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_26",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   358,
+   406,
+   31,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.221,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_27",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   178,
+   536,
+   92,
+   151
+  ],
+  "sat": 111.8,
+  "fill": 0.47,
+  "kind": "art"
+ },
+ {
+  "icon": "s007_28",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   270,
+   709,
+   72,
+   72
+  ],
+  "sat": 5.7,
+  "fill": 0.301,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s007_29",
+  "screen": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "box": [
+   99,
+   717,
+   84,
+   72
+  ],
+  "sat": 8.6,
+  "fill": 0.582,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_01",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 18.2,
+  "fill": 0.098,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_02",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   228,
+   62,
+   37,
+   36
+  ],
+  "sat": 0.0,
+  "fill": 0.493,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_03",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   168,
+   65,
+   40,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.408,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_04",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   86,
+   69,
+   30,
+   30
+  ],
+  "sat": 239.2,
+  "fill": 0.791,
+  "kind": "art"
+ },
+ {
+  "icon": "s008_05",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   151,
+   229,
+   128,
+   88
+  ],
+  "sat": 10.8,
+  "fill": 0.081,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_06",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   145,
+   460,
+   41,
+   41
+  ],
+  "sat": 9.4,
+  "fill": 0.475,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_07",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   263,
+   460,
+   42,
+   41
+  ],
+  "sat": 8.8,
+  "fill": 0.494,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s008_08",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   107,
+   709,
+   75,
+   85
+  ],
+  "sat": 157.1,
+  "fill": 0.42,
+  "kind": "art"
+ },
+ {
+  "icon": "s008_09",
+  "screen": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "box": [
+   270,
+   709,
+   72,
+   72
+  ],
+  "sat": 5.7,
+  "fill": 0.301,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s009_01",
+  "screen": "s009",
+  "src": "Screenshot 2026-07-06 135658.png",
+  "box": [
+   0,
+   38,
+   600,
+   435
+  ],
+  "sat": 8.5,
+  "fill": 0.959,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s010_01",
+  "screen": "s010",
+  "src": "Screenshot 2026-07-06 135705.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 203.5,
+  "fill": 0.991,
+  "kind": "art"
+ },
+ {
+  "icon": "s011_01",
+  "screen": "s011",
+  "src": "Screenshot 2026-07-06 135710.png",
+  "box": [
+   0,
+   38,
+   600,
+   435
+  ],
+  "sat": 0.1,
+  "fill": 0.964,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s012_01",
+  "screen": "s012",
+  "src": "Screenshot 2026-07-06 135717.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 165.9,
+  "fill": 0.987,
+  "kind": "art"
+ },
+ {
+  "icon": "s013_01",
+  "screen": "s013",
+  "src": "Screenshot 2026-07-06 135719.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 165.9,
+  "fill": 0.987,
+  "kind": "art"
+ },
+ {
+  "icon": "s014_01",
+  "screen": "s014",
+  "src": "Screenshot 2026-07-06 135724.png",
+  "box": [
+   0,
+   38,
+   493,
+   435
+  ],
+  "sat": 9.3,
+  "fill": 0.965,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s015_01",
+  "screen": "s015",
+  "src": "Screenshot 2026-07-06 135730.png",
+  "box": [
+   0,
+   38,
+   600,
+   435
+  ],
+  "sat": 6.6,
+  "fill": 0.929,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s016_01",
+  "screen": "s016",
+  "src": "Screenshot 2026-07-06 135734.png",
+  "box": [
+   0,
+   38,
+   600,
+   435
+  ],
+  "sat": 6.9,
+  "fill": 0.933,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s017_01",
+  "screen": "s017",
+  "src": "Screenshot 2026-07-06 135749.png",
+  "box": [
+   0,
+   38,
+   600,
+   436
+  ],
+  "sat": 6.6,
+  "fill": 0.934,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s018_01",
+  "screen": "s018",
+  "src": "Screenshot 2026-07-06 135755.png",
+  "box": [
+   0,
+   38,
+   600,
+   435
+  ],
+  "sat": 6.3,
+  "fill": 0.924,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s019_01",
+  "screen": "s019",
+  "src": "Screenshot 2026-07-06 135804.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 20.3,
+  "fill": 0.973,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s020_01",
+  "screen": "s020",
+  "src": "Screenshot 2026-07-06 135810.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 39.2,
+  "fill": 0.97,
+  "kind": "art"
+ },
+ {
+  "icon": "s021_01",
+  "screen": "s021",
+  "src": "Screenshot 2026-07-06 135819.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 17.6,
+  "fill": 0.965,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s022_01",
+  "screen": "s022",
+  "src": "Screenshot 2026-07-06 135836.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 25.6,
+  "fill": 0.965,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s023_01",
+  "screen": "s023",
+  "src": "Screenshot 2026-07-06 135842.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 22.6,
+  "fill": 0.964,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s024_01",
+  "screen": "s024",
+  "src": "Screenshot 2026-07-06 135847.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 18.0,
+  "fill": 0.959,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s025_01",
+  "screen": "s025",
+  "src": "Screenshot 2026-07-06 135852.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 20.6,
+  "fill": 0.959,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s026_01",
+  "screen": "s026",
+  "src": "Screenshot 2026-07-06 135901.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 24.3,
+  "fill": 0.959,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s027_01",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   157,
+   38,
+   131,
+   136
+  ],
+  "sat": 56.5,
+  "fill": 0.685,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_02",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_03",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 68.1,
+  "fill": 0.259,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_04",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   194,
+   189,
+   86,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s027_05",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   57,
+   191,
+   87,
+   37
+  ],
+  "sat": 0.0,
+  "fill": 0.281,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s027_06",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   234,
+   261,
+   201,
+   203
+  ],
+  "sat": 113.9,
+  "fill": 0.556,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_07",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   36,
+   263,
+   160,
+   187
+  ],
+  "sat": 83.3,
+  "fill": 0.667,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_08",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   232,
+   477,
+   207,
+   207
+  ],
+  "sat": 77.3,
+  "fill": 0.255,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_09",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   31,
+   525,
+   102,
+   136
+  ],
+  "sat": 78.0,
+  "fill": 0.174,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_10",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   142,
+   530,
+   64,
+   143
+  ],
+  "sat": 47.7,
+  "fill": 0.371,
+  "kind": "art"
+ },
+ {
+  "icon": "s027_11",
+  "screen": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s028_01",
+  "screen": "s028",
+  "src": "Screenshot 2026-07-06 135917.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 39.4,
+  "fill": 0.123,
+  "kind": "art"
+ },
+ {
+  "icon": "s028_02",
+  "screen": "s028",
+  "src": "Screenshot 2026-07-06 135917.png",
+  "box": [
+   146,
+   57,
+   160,
+   191
+  ],
+  "sat": 83.3,
+  "fill": 0.666,
+  "kind": "art"
+ },
+ {
+  "icon": "s028_03",
+  "screen": "s028",
+  "src": "Screenshot 2026-07-06 135917.png",
+  "box": [
+   210,
+   723,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s029_01",
+  "screen": "s029",
+  "src": "Screenshot 2026-07-06 135925.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 36.8,
+  "fill": 0.105,
+  "kind": "art"
+ },
+ {
+  "icon": "s029_02",
+  "screen": "s029",
+  "src": "Screenshot 2026-07-06 135925.png",
+  "box": [
+   126,
+   71,
+   199,
+   188
+  ],
+  "sat": 85.8,
+  "fill": 0.424,
+  "kind": "art"
+ },
+ {
+  "icon": "s029_03",
+  "screen": "s029",
+  "src": "Screenshot 2026-07-06 135925.png",
+  "box": [
+   210,
+   731,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s029_04",
+  "screen": "s029",
+  "src": "Screenshot 2026-07-06 135925.png",
+  "box": [
+   64,
+   732,
+   29,
+   29
+  ],
+  "sat": 26.2,
+  "fill": 0.37,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s030_01",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 29.2,
+  "fill": 0.093,
+  "kind": "art"
+ },
+ {
+  "icon": "s030_02",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   159,
+   61,
+   41,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.403,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s030_03",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   370,
+   61,
+   40,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.41,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s030_04",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   122,
+   99,
+   207,
+   207
+  ],
+  "sat": 66.9,
+  "fill": 0.333,
+  "kind": "art"
+ },
+ {
+  "icon": "s030_05",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   70,
+   733,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s030_06",
+  "screen": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "box": [
+   210,
+   733,
+   30,
+   30
+  ],
+  "sat": 26.0,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s031_01",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 29.2,
+  "fill": 0.093,
+  "kind": "art"
+ },
+ {
+  "icon": "s031_02",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   159,
+   61,
+   41,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.403,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s031_03",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   370,
+   61,
+   40,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.41,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s031_04",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   122,
+   99,
+   207,
+   207
+  ],
+  "sat": 66.9,
+  "fill": 0.333,
+  "kind": "art"
+ },
+ {
+  "icon": "s031_05",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   70,
+   733,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s031_06",
+  "screen": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "box": [
+   210,
+   733,
+   30,
+   30
+  ],
+  "sat": 26.0,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s032_01",
+  "screen": "s032",
+  "src": "Screenshot 2026-07-06 135944.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 1.1,
+  "fill": 0.113,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s032_02",
+  "screen": "s032",
+  "src": "Screenshot 2026-07-06 135944.png",
+  "box": [
+   122,
+   54,
+   207,
+   207
+  ],
+  "sat": 1.5,
+  "fill": 0.59,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s032_03",
+  "screen": "s032",
+  "src": "Screenshot 2026-07-06 135944.png",
+  "box": [
+   210,
+   730,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_01",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   34,
+   64,
+   101,
+   93
+  ],
+  "sat": 1.9,
+  "fill": 0.457,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_02",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   321,
+   68,
+   92,
+   89
+  ],
+  "sat": 45.7,
+  "fill": 0.343,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_03",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   204,
+   75,
+   41,
+   49
+  ],
+  "sat": 0.1,
+  "fill": 0.435,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_04",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   316,
+   198,
+   100,
+   100
+  ],
+  "sat": 7.0,
+  "fill": 0.431,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_05",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   177,
+   200,
+   96,
+   96
+  ],
+  "sat": 61.8,
+  "fill": 0.622,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_06",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   42,
+   203,
+   89,
+   92
+  ],
+  "sat": 3.2,
+  "fill": 0.644,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_07",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   38,
+   336,
+   93,
+   101
+  ],
+  "sat": 28.4,
+  "fill": 0.299,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_08",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   174,
+   336,
+   101,
+   101
+  ],
+  "sat": 1.8,
+  "fill": 0.386,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_09",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   316,
+   336,
+   100,
+   101
+  ],
+  "sat": 76.3,
+  "fill": 0.197,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_10",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   178,
+   477,
+   94,
+   95
+  ],
+  "sat": 152.6,
+  "fill": 0.623,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_11",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   328,
+   482,
+   78,
+   84
+  ],
+  "sat": 21.7,
+  "fill": 0.5,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s033_12",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   39,
+   487,
+   87,
+   61
+  ],
+  "sat": 67.1,
+  "fill": 0.31,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_13",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   174,
+   610,
+   101,
+   101
+  ],
+  "sat": 154.9,
+  "fill": 0.975,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_14",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   36,
+   615,
+   98,
+   91
+  ],
+  "sat": 89.3,
+  "fill": 0.711,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_15",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   320,
+   624,
+   91,
+   84
+  ],
+  "sat": 78.7,
+  "fill": 0.719,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_16",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   210,
+   739,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s033_17",
+  "screen": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "box": [
+   382,
+   746,
+   68,
+   48
+  ],
+  "sat": 5.4,
+  "fill": 0.452,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_01",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 1.2,
+  "fill": 0.074,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_02",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   203,
+   51,
+   96,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.323,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_03",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   106,
+   53,
+   84,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.357,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_04",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   174,
+   101,
+   101,
+   93
+  ],
+  "sat": 0.0,
+  "fill": 0.434,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_05",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_06",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_07",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s034_08",
+  "screen": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_01",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 1.3,
+  "fill": 0.067,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_02",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   81,
+   53,
+   73,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.349,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_03",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   169,
+   53,
+   103,
+   37
+  ],
+  "sat": 0.0,
+  "fill": 0.29,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_04",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   204,
+   124,
+   45,
+   70
+  ],
+  "sat": 0.1,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_05",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_06",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_07",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s035_08",
+  "screen": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_01",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 5.9,
+  "fill": 0.072,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_02",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   79,
+   51,
+   114,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.268,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_03",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   180,
+   112,
+   92,
+   89
+  ],
+  "sat": 42.5,
+  "fill": 0.346,
+  "kind": "art"
+ },
+ {
+  "icon": "s036_04",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_05",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_06",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s036_07",
+  "screen": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_01",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 1.5,
+  "fill": 0.078,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_02",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   151,
+   51,
+   41,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.362,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_03",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   206,
+   51,
+   90,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.309,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_04",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   308,
+   61,
+   41,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.404,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_05",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   182,
+   113,
+   87,
+   92
+  ],
+  "sat": 1.9,
+  "fill": 0.652,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_06",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_07",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_08",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s037_09",
+  "screen": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_01",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 13.3,
+  "fill": 0.081,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_02",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   241,
+   51,
+   76,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.346,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_03",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   66,
+   53,
+   80,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.36,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_04",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   177,
+   97,
+   96,
+   96
+  ],
+  "sat": 61.8,
+  "fill": 0.619,
+  "kind": "art"
+ },
+ {
+  "icon": "s038_05",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_06",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_07",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s038_08",
+  "screen": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_01",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 2.0,
+  "fill": 0.075,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_02",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   166,
+   51,
+   54,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.269,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_03",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   276,
+   51,
+   62,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.344,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_04",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   235,
+   53,
+   36,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.369,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_05",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   175,
+   97,
+   100,
+   99
+  ],
+  "sat": 5.4,
+  "fill": 0.426,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_06",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_07",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_08",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s039_09",
+  "screen": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_01",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 3.9,
+  "fill": 0.075,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_02",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   239,
+   51,
+   94,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.374,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_03",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   360,
+   51,
+   56,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.338,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_04",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   113,
+   55,
+   55,
+   35
+  ],
+  "sat": 0.0,
+  "fill": 0.332,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_05",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   178,
+   94,
+   93,
+   100
+  ],
+  "sat": 26.5,
+  "fill": 0.295,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_06",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_07",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_08",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s040_09",
+  "screen": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_01",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 1.2,
+  "fill": 0.074,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_02",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   236,
+   51,
+   47,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.396,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_03",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   148,
+   61,
+   74,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.321,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_04",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   174,
+   100,
+   101,
+   101
+  ],
+  "sat": 0.0,
+  "fill": 0.381,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_05",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_06",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_07",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s041_08",
+  "screen": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_01",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 7.0,
+  "fill": 0.071,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_02",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   130,
+   51,
+   84,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.246,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_03",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   55,
+   53,
+   70,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_04",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   174,
+   96,
+   101,
+   101
+  ],
+  "sat": 74.6,
+  "fill": 0.19,
+  "kind": "art"
+ },
+ {
+  "icon": "s042_05",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_06",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_07",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s042_08",
+  "screen": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_01",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 5.7,
+  "fill": 0.071,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_02",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   322,
+   51,
+   42,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.284,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_03",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   62,
+   53,
+   75,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.351,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_04",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   250,
+   53,
+   67,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.345,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_05",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   151,
+   55,
+   88,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.358,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_06",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   179,
+   114,
+   87,
+   61
+  ],
+  "sat": 67.1,
+  "fill": 0.31,
+  "kind": "art"
+ },
+ {
+  "icon": "s043_07",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_08",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_09",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s043_10",
+  "screen": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_01",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 30.5,
+  "fill": 0.08,
+  "kind": "art"
+ },
+ {
+  "icon": "s044_02",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   181,
+   53,
+   83,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.337,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_03",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   269,
+   55,
+   65,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.375,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_04",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   178,
+   109,
+   94,
+   94
+  ],
+  "sat": 152.7,
+  "fill": 0.624,
+  "kind": "art"
+ },
+ {
+  "icon": "s044_05",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_06",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_07",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s044_08",
+  "screen": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_01",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 3.7,
+  "fill": 0.089,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_02",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   227,
+   53,
+   58,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.345,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_03",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   298,
+   55,
+   47,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.408,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_04",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   350,
+   55,
+   33,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.383,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_05",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   187,
+   108,
+   78,
+   84
+  ],
+  "sat": 21.1,
+  "fill": 0.497,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_06",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s045_07",
+  "screen": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_01",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 17.7,
+  "fill": 0.096,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_02",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   100,
+   53,
+   45,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_03",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   195,
+   53,
+   50,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.374,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_04",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   256,
+   53,
+   53,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_05",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   321,
+   55,
+   28,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.396,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_06",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   176,
+   108,
+   98,
+   90
+  ],
+  "sat": 88.2,
+  "fill": 0.716,
+  "kind": "art"
+ },
+ {
+  "icon": "s046_07",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s046_08",
+  "screen": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_01",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 46.7,
+  "fill": 0.094,
+  "kind": "art"
+ },
+ {
+  "icon": "s047_02",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   198,
+   50,
+   88,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.381,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_03",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   339,
+   53,
+   82,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.303,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_04",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   174,
+   101,
+   101,
+   101
+  ],
+  "sat": 155.1,
+  "fill": 0.975,
+  "kind": "art"
+ },
+ {
+  "icon": "s047_05",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 4.6,
+  "fill": 0.143,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_06",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 4.7,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_07",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s047_08",
+  "screen": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s048_01",
+  "screen": "s048",
+  "src": "Screenshot 2026-07-06 140242.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 14.0,
+  "fill": 0.095,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s048_02",
+  "screen": "s048",
+  "src": "Screenshot 2026-07-06 140242.png",
+  "box": [
+   179,
+   117,
+   91,
+   84
+  ],
+  "sat": 77.5,
+  "fill": 0.717,
+  "kind": "art"
+ },
+ {
+  "icon": "s048_03",
+  "screen": "s048",
+  "src": "Screenshot 2026-07-06 140242.png",
+  "box": [
+   210,
+   721,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s048_04",
+  "screen": "s048",
+  "src": "Screenshot 2026-07-06 140242.png",
+  "box": [
+   62,
+   722,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s049_01",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   363,
+   47,
+   53,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.261,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s049_02",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   25,
+   49,
+   290,
+   324
+  ],
+  "sat": 81.1,
+  "fill": 0.304,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_03",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   286,
+   136,
+   145,
+   133
+  ],
+  "sat": 152.9,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_04",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   164,
+   251,
+   111,
+   232
+  ],
+  "sat": 20.6,
+  "fill": 0.38,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s049_05",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   0,
+   287,
+   113,
+   40
+  ],
+  "sat": 76.9,
+  "fill": 0.611,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_06",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   336,
+   296,
+   114,
+   35
+  ],
+  "sat": 171.6,
+  "fill": 0.737,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_07",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   326,
+   351,
+   104,
+   72
+  ],
+  "sat": 113.9,
+  "fill": 0.353,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_08",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   13,
+   355,
+   111,
+   53
+  ],
+  "sat": 73.6,
+  "fill": 0.511,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_09",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   209,
+   676,
+   33,
+   47
+  ],
+  "sat": 23.3,
+  "fill": 0.675,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s049_10",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.5,
+  "fill": 0.318,
+  "kind": "art"
+ },
+ {
+  "icon": "s049_11",
+  "screen": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 29.5,
+  "fill": 0.327,
+  "kind": "art"
+ },
+ {
+  "icon": "s050_01",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.4,
+  "fill": 0.062,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s050_02",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   289,
+   54,
+   70,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.323,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s050_03",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   94,
+   56,
+   30,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.495,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s050_04",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   234,
+   64,
+   41,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.404,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s050_05",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   174,
+   117,
+   101,
+   79
+  ],
+  "sat": 0.0,
+  "fill": 0.397,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s050_06",
+  "screen": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "box": [
+   210,
+   728,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s051_01",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 66.7,
+  "fill": 0.166,
+  "kind": "art"
+ },
+ {
+  "icon": "s051_02",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   154,
+   59,
+   30,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.495,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s051_03",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   269,
+   67,
+   29,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.357,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s051_04",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   38,
+   163,
+   110,
+   113
+  ],
+  "sat": 22.0,
+  "fill": 0.464,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s051_05",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   178,
+   170,
+   95,
+   96
+  ],
+  "sat": 107.5,
+  "fill": 0.725,
+  "kind": "art"
+ },
+ {
+  "icon": "s051_06",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   326,
+   171,
+   32,
+   31
+  ],
+  "sat": 34.9,
+  "fill": 0.517,
+  "kind": "art"
+ },
+ {
+  "icon": "s051_07",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   320,
+   208,
+   80,
+   59
+  ],
+  "sat": 54.0,
+  "fill": 0.537,
+  "kind": "art"
+ },
+ {
+  "icon": "s051_08",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   106,
+   406,
+   238,
+   238
+  ],
+  "sat": 119.8,
+  "fill": 0.427,
+  "kind": "art"
+ },
+ {
+  "icon": "s051_09",
+  "screen": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "box": [
+   210,
+   730,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s052_01",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 33.5,
+  "fill": 0.112,
+  "kind": "art"
+ },
+ {
+  "icon": "s052_02",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   197,
+   55,
+   31,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.346,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s052_03",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   242,
+   57,
+   65,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.357,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s052_04",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   109,
+   59,
+   83,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.375,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s052_05",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   38,
+   163,
+   110,
+   113
+  ],
+  "sat": 22.0,
+  "fill": 0.464,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s052_06",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   178,
+   170,
+   95,
+   96
+  ],
+  "sat": 107.5,
+  "fill": 0.725,
+  "kind": "art"
+ },
+ {
+  "icon": "s052_07",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   387,
+   244,
+   28,
+   27
+  ],
+  "sat": 127.8,
+  "fill": 0.751,
+  "kind": "art"
+ },
+ {
+  "icon": "s052_08",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   102,
+   400,
+   238,
+   238
+  ],
+  "sat": 56.1,
+  "fill": 0.043,
+  "kind": "art"
+ },
+ {
+  "icon": "s052_09",
+  "screen": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "box": [
+   210,
+   730,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s053_01",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 34.2,
+  "fill": 0.087,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_02",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   97,
+   57,
+   73,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.329,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s053_03",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   204,
+   117,
+   40,
+   42
+  ],
+  "sat": 145.6,
+  "fill": 0.59,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_04",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   264,
+   117,
+   40,
+   41
+  ],
+  "sat": 90.3,
+  "fill": 0.669,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_05",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   146,
+   124,
+   38,
+   28
+  ],
+  "sat": 76.6,
+  "fill": 0.406,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_06",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   151,
+   177,
+   28,
+   42
+  ],
+  "sat": 66.3,
+  "fill": 0.704,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_07",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   264,
+   177,
+   39,
+   42
+  ],
+  "sat": 165.8,
+  "fill": 0.683,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_08",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   205,
+   181,
+   39,
+   33
+  ],
+  "sat": 93.8,
+  "fill": 0.388,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_09",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   146,
+   236,
+   37,
+   42
+  ],
+  "sat": 124.1,
+  "fill": 0.374,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_10",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   209,
+   236,
+   30,
+   42
+  ],
+  "sat": 120.4,
+  "fill": 0.731,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_11",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   264,
+   236,
+   39,
+   42
+  ],
+  "sat": 135.0,
+  "fill": 0.792,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_12",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   102,
+   400,
+   238,
+   238
+  ],
+  "sat": 56.1,
+  "fill": 0.043,
+  "kind": "art"
+ },
+ {
+  "icon": "s053_13",
+  "screen": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "box": [
+   210,
+   739,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s054_01",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 37.9,
+  "fill": 0.265,
+  "kind": "art"
+ },
+ {
+  "icon": "s054_02",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   186,
+   42,
+   79,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.367,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_03",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   74,
+   44,
+   60,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.332,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_04",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   279,
+   44,
+   74,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.363,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_05",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   45,
+   271,
+   155,
+   124
+  ],
+  "sat": 13.1,
+  "fill": 0.786,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_06",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   252,
+   290,
+   147,
+   83
+  ],
+  "sat": 114.1,
+  "fill": 0.569,
+  "kind": "art"
+ },
+ {
+  "icon": "s054_07",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   247,
+   407,
+   157,
+   141
+  ],
+  "sat": 8.2,
+  "fill": 0.718,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_08",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   46,
+   425,
+   91,
+   115
+  ],
+  "sat": 1.1,
+  "fill": 0.222,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_09",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   171,
+   450,
+   29,
+   62
+  ],
+  "sat": 1.9,
+  "fill": 0.294,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s054_10",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   44,
+   560,
+   157,
+   157
+  ],
+  "sat": 60.0,
+  "fill": 0.502,
+  "kind": "art"
+ },
+ {
+  "icon": "s054_11",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   250,
+   567,
+   151,
+   143
+  ],
+  "sat": 101.1,
+  "fill": 0.762,
+  "kind": "art"
+ },
+ {
+  "icon": "s054_12",
+  "screen": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "box": [
+   210,
+   729,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s055_01",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 56.6,
+  "fill": 0.19,
+  "kind": "art"
+ },
+ {
+  "icon": "s055_02",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   49,
+   47,
+   60,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.332,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s055_03",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   293,
+   47,
+   60,
+   37
+  ],
+  "sat": 0.0,
+  "fill": 0.286,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s055_04",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   11,
+   335,
+   210,
+   316
+  ],
+  "sat": 120.1,
+  "fill": 0.24,
+  "kind": "art"
+ },
+ {
+  "icon": "s055_05",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   228,
+   335,
+   211,
+   316
+  ],
+  "sat": 112.4,
+  "fill": 0.255,
+  "kind": "art"
+ },
+ {
+  "icon": "s055_06",
+  "screen": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s056_01",
+  "screen": "s056",
+  "src": "Screenshot 2026-07-06 140344.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 3.2,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s056_02",
+  "screen": "s056",
+  "src": "Screenshot 2026-07-06 140344.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 2.1,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s056_03",
+  "screen": "s056",
+  "src": "Screenshot 2026-07-06 140344.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.7,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s057_01",
+  "screen": "s057",
+  "src": "Screenshot 2026-07-06 140350.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 2.0,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s057_02",
+  "screen": "s057",
+  "src": "Screenshot 2026-07-06 140350.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 1.3,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s057_03",
+  "screen": "s057",
+  "src": "Screenshot 2026-07-06 140350.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.4,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s058_01",
+  "screen": "s058",
+  "src": "Screenshot 2026-07-06 140355.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 3.0,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s058_02",
+  "screen": "s058",
+  "src": "Screenshot 2026-07-06 140355.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 2.1,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s058_03",
+  "screen": "s058",
+  "src": "Screenshot 2026-07-06 140355.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.7,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s059_01",
+  "screen": "s059",
+  "src": "Screenshot 2026-07-06 140359.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 1.7,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s059_02",
+  "screen": "s059",
+  "src": "Screenshot 2026-07-06 140359.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.5,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s060_01",
+  "screen": "s060",
+  "src": "Screenshot 2026-07-06 140406.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 0.0,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s060_02",
+  "screen": "s060",
+  "src": "Screenshot 2026-07-06 140406.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.0,
+  "fill": 0.999,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s061_01",
+  "screen": "s061",
+  "src": "Screenshot 2026-07-06 140413.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 2.9,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s061_02",
+  "screen": "s061",
+  "src": "Screenshot 2026-07-06 140413.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 2.1,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s061_03",
+  "screen": "s061",
+  "src": "Screenshot 2026-07-06 140413.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.7,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s062_01",
+  "screen": "s062",
+  "src": "Screenshot 2026-07-06 140419.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 2.9,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s062_02",
+  "screen": "s062",
+  "src": "Screenshot 2026-07-06 140419.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 2.1,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s062_03",
+  "screen": "s062",
+  "src": "Screenshot 2026-07-06 140419.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.7,
+  "fill": 1.0,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s063_01",
+  "screen": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.101,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s063_02",
+  "screen": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 0.0,
+  "fill": 0.675,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s063_03",
+  "screen": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.0,
+  "fill": 0.066,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s063_04",
+  "screen": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "box": [
+   62,
+   734,
+   30,
+   30
+  ],
+  "sat": 26.8,
+  "fill": 0.339,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s063_05",
+  "screen": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s064_01",
+  "screen": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.101,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s064_02",
+  "screen": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 0.0,
+  "fill": 0.675,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s064_03",
+  "screen": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.0,
+  "fill": 0.066,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s064_04",
+  "screen": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "box": [
+   62,
+   734,
+   30,
+   30
+  ],
+  "sat": 26.8,
+  "fill": 0.339,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s064_05",
+  "screen": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s065_01",
+  "screen": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.101,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s065_02",
+  "screen": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "box": [
+   149,
+   85,
+   151,
+   151
+  ],
+  "sat": 0.0,
+  "fill": 0.675,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s065_03",
+  "screen": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "box": [
+   131,
+   306,
+   188,
+   188
+  ],
+  "sat": 0.0,
+  "fill": 0.066,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s065_04",
+  "screen": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "box": [
+   62,
+   734,
+   30,
+   30
+  ],
+  "sat": 26.8,
+  "fill": 0.339,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s065_05",
+  "screen": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s066_01",
+  "screen": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.048,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s066_02",
+  "screen": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "box": [
+   116,
+   53,
+   61,
+   37
+  ],
+  "sat": 0.0,
+  "fill": 0.323,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s066_03",
+  "screen": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "box": [
+   265,
+   53,
+   32,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.305,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s066_04",
+  "screen": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "box": [
+   204,
+   55,
+   49,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.385,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s066_05",
+  "screen": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "box": [
+   210,
+   733,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s067_01",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 57.1,
+  "fill": 0.189,
+  "kind": "art"
+ },
+ {
+  "icon": "s067_02",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   195,
+   43,
+   60,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s067_03",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   310,
+   43,
+   76,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.397,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s067_04",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   110,
+   45,
+   71,
+   35
+  ],
+  "sat": 0.0,
+  "fill": 0.282,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s067_05",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   11,
+   399,
+   210,
+   315
+  ],
+  "sat": 120.1,
+  "fill": 0.241,
+  "kind": "art"
+ },
+ {
+  "icon": "s067_06",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   228,
+   399,
+   211,
+   315
+  ],
+  "sat": 112.5,
+  "fill": 0.257,
+  "kind": "art"
+ },
+ {
+  "icon": "s067_07",
+  "screen": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s068_01",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   356,
+   38,
+   94,
+   429
+  ],
+  "sat": 97.8,
+  "fill": 0.274,
+  "kind": "art"
+ },
+ {
+  "icon": "s068_02",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   131,
+   48,
+   188,
+   178
+  ],
+  "sat": 0.0,
+  "fill": 0.666,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s068_03",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   17,
+   81,
+   102,
+   102
+  ],
+  "sat": 124.8,
+  "fill": 0.625,
+  "kind": "art"
+ },
+ {
+  "icon": "s068_04",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   337,
+   83,
+   87,
+   101
+  ],
+  "sat": 91.1,
+  "fill": 0.376,
+  "kind": "art"
+ },
+ {
+  "icon": "s068_05",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   6,
+   273,
+   436,
+   434
+  ],
+  "sat": 151.7,
+  "fill": 0.736,
+  "kind": "art"
+ },
+ {
+  "icon": "s068_06",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   0,
+   515,
+   450,
+   317
+  ],
+  "sat": 109.2,
+  "fill": 0.529,
+  "kind": "art"
+ },
+ {
+  "icon": "s068_07",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s068_08",
+  "screen": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.9,
+  "fill": 0.333,
+  "kind": "art"
+ },
+ {
+  "icon": "s069_01",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.4,
+  "fill": 0.069,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s069_02",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   183,
+   46,
+   64,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.269,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s069_03",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   111,
+   48,
+   66,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.346,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s069_04",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   262,
+   48,
+   77,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.396,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s069_05",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   148,
+   91,
+   151,
+   131
+  ],
+  "sat": 0.1,
+  "fill": 0.37,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s069_06",
+  "screen": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "box": [
+   210,
+   733,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s070_01",
+  "screen": "s070",
+  "src": "Screenshot 2026-07-06 140529.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 7.8,
+  "fill": 0.128,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s070_02",
+  "screen": "s070",
+  "src": "Screenshot 2026-07-06 140529.png",
+  "box": [
+   133,
+   39,
+   185,
+   185
+  ],
+  "sat": 12.7,
+  "fill": 0.782,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s070_03",
+  "screen": "s070",
+  "src": "Screenshot 2026-07-06 140529.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s070_04",
+  "screen": "s070",
+  "src": "Screenshot 2026-07-06 140529.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s071_01",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 30.2,
+  "fill": 0.134,
+  "kind": "art"
+ },
+ {
+  "icon": "s071_02",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   137,
+   69,
+   176,
+   125
+  ],
+  "sat": 115.8,
+  "fill": 0.562,
+  "kind": "art"
+ },
+ {
+  "icon": "s071_03",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   108,
+   256,
+   76,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.344,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s071_04",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   210,
+   258,
+   50,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s071_05",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   302,
+   258,
+   45,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.377,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s071_06",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   37,
+   316,
+   375,
+   407
+  ],
+  "sat": 0.0,
+  "fill": 0.118,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s071_07",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   60,
+   735,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s071_08",
+  "screen": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s072_01",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.7,
+  "fill": 0.126,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_02",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   16,
+   64,
+   187,
+   192
+  ],
+  "sat": 0.9,
+  "fill": 0.192,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_03",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   216,
+   121,
+   44,
+   111
+  ],
+  "sat": 2.2,
+  "fill": 0.292,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_04",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   348,
+   150,
+   41,
+   66
+  ],
+  "sat": 2.3,
+  "fill": 0.366,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_05",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   37,
+   300,
+   375,
+   406
+  ],
+  "sat": 0.0,
+  "fill": 0.118,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_06",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   61,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s072_07",
+  "screen": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s073_01",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 2.9,
+  "fill": 0.147,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s073_02",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   147,
+   54,
+   157,
+   157
+  ],
+  "sat": 7.8,
+  "fill": 0.717,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s073_03",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   290,
+   256,
+   29,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.394,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s073_04",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   37,
+   316,
+   375,
+   407
+  ],
+  "sat": 0.0,
+  "fill": 0.114,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s073_05",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s073_06",
+  "screen": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s074_01",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 20.0,
+  "fill": 0.151,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_02",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   131,
+   40,
+   188,
+   188
+  ],
+  "sat": 60.4,
+  "fill": 0.498,
+  "kind": "art"
+ },
+ {
+  "icon": "s074_03",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   235,
+   254,
+   32,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.366,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_04",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   92,
+   256,
+   39,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.383,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_05",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   280,
+   256,
+   68,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.36,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_06",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   37,
+   316,
+   375,
+   407
+  ],
+  "sat": 0.0,
+  "fill": 0.119,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_07",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   61,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s074_08",
+  "screen": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s075_01",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 42.0,
+  "fill": 0.161,
+  "kind": "art"
+ },
+ {
+  "icon": "s075_02",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   134,
+   49,
+   181,
+   170
+  ],
+  "sat": 101.8,
+  "fill": 0.766,
+  "kind": "art"
+ },
+ {
+  "icon": "s075_03",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   124,
+   251,
+   98,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.322,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s075_04",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   239,
+   251,
+   47,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.396,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s075_05",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   37,
+   316,
+   375,
+   407
+  ],
+  "sat": 0.0,
+  "fill": 0.108,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s075_06",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   61,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s075_07",
+  "screen": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_01",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 97.7,
+  "fill": 0.343,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_02",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   367,
+   38,
+   62,
+   52
+  ],
+  "sat": 110.3,
+  "fill": 0.913,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_03",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   21,
+   47,
+   28,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.321,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_04",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   99,
+   56,
+   40,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.41,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_05",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   24,
+   101,
+   186,
+   118
+  ],
+  "sat": 172.7,
+  "fill": 0.928,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_06",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   236,
+   101,
+   189,
+   118
+  ],
+  "sat": 37.1,
+  "fill": 0.996,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_07",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   31,
+   235,
+   390,
+   89
+  ],
+  "sat": 202.4,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s076_08",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   25,
+   336,
+   185,
+   118
+  ],
+  "sat": 25.2,
+  "fill": 0.478,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_09",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   272,
+   337,
+   122,
+   113
+  ],
+  "sat": 5.3,
+  "fill": 0.381,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_10",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   24,
+   476,
+   186,
+   61
+  ],
+  "sat": 5.6,
+  "fill": 0.126,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_11",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   236,
+   476,
+   189,
+   61
+  ],
+  "sat": 5.1,
+  "fill": 0.136,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_12",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   24,
+   560,
+   186,
+   61
+  ],
+  "sat": 6.7,
+  "fill": 0.12,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_13",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   236,
+   560,
+   189,
+   61
+  ],
+  "sat": 7.2,
+  "fill": 0.11,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_14",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   24,
+   645,
+   186,
+   61
+  ],
+  "sat": 6.3,
+  "fill": 0.127,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_15",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   237,
+   645,
+   188,
+   61
+  ],
+  "sat": 6.6,
+  "fill": 0.121,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s076_16",
+  "screen": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s077_01",
+  "screen": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 50.5,
+  "fill": 0.446,
+  "kind": "art"
+ },
+ {
+  "icon": "s077_02",
+  "screen": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "box": [
+   178,
+   51,
+   44,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.361,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s077_03",
+  "screen": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "box": [
+   227,
+   51,
+   77,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.268,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s077_04",
+  "screen": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "box": [
+   61,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s077_05",
+  "screen": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s078_01",
+  "screen": "s078",
+  "src": "Screenshot 2026-07-06 140619.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.6,
+  "fill": 0.085,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s078_02",
+  "screen": "s078",
+  "src": "Screenshot 2026-07-06 140619.png",
+  "box": [
+   131,
+   74,
+   29,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.506,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s078_03",
+  "screen": "s078",
+  "src": "Screenshot 2026-07-06 140619.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s078_04",
+  "screen": "s078",
+  "src": "Screenshot 2026-07-06 140619.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s079_01",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.4,
+  "fill": 0.115,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_02",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   121,
+   62,
+   88,
+   36
+  ],
+  "sat": 0.0,
+  "fill": 0.477,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_03",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   215,
+   64,
+   115,
+   34
+  ],
+  "sat": 0.0,
+  "fill": 0.495,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_04",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   57,
+   147,
+   57,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_05",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   181,
+   376,
+   74,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.327,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_06",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   133,
+   490,
+   267,
+   83
+  ],
+  "sat": 0.0,
+  "fill": 0.171,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_07",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   57,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s079_08",
+  "screen": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s080_01",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 55.9,
+  "fill": 0.143,
+  "kind": "art"
+ },
+ {
+  "icon": "s080_02",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   12,
+   235,
+   426,
+   457
+  ],
+  "sat": 94.6,
+  "fill": 0.154,
+  "kind": "art"
+ },
+ {
+  "icon": "s080_03",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   397,
+   335,
+   28,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.152,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s080_04",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   396,
+   424,
+   29,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.133,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s080_05",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   397,
+   515,
+   28,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.152,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s080_06",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s080_07",
+  "screen": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s081_01",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.101,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_02",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   114,
+   57,
+   49,
+   36
+  ],
+  "sat": 0.0,
+  "fill": 0.433,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_03",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   168,
+   67,
+   36,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.48,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_04",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   307,
+   67,
+   33,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.474,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_05",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   149,
+   292,
+   151,
+   45
+  ],
+  "sat": 0.0,
+  "fill": 0.178,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_06",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   24,
+   362,
+   401,
+   341
+  ],
+  "sat": 0.0,
+  "fill": 0.099,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_07",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   101,
+   393,
+   33,
+   27
+  ],
+  "sat": 0.0,
+  "fill": 0.489,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_08",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   103,
+   459,
+   36,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.511,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_09",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   197,
+   459,
+   46,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.418,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_10",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s081_11",
+  "screen": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s082_01",
+  "screen": "s082",
+  "src": "Screenshot 2026-07-06 140638.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.5,
+  "fill": 0.088,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s082_02",
+  "screen": "s082",
+  "src": "Screenshot 2026-07-06 140638.png",
+  "box": [
+   123,
+   51,
+   42,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.345,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s082_03",
+  "screen": "s082",
+  "src": "Screenshot 2026-07-06 140638.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s082_04",
+  "screen": "s082",
+  "src": "Screenshot 2026-07-06 140638.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s083_01",
+  "screen": "s083",
+  "src": "Screenshot 2026-07-06 140646.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 4.3,
+  "fill": 0.416,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s083_02",
+  "screen": "s083",
+  "src": "Screenshot 2026-07-06 140646.png",
+  "box": [
+   251,
+   51,
+   68,
+   39
+  ],
+  "sat": 0.0,
+  "fill": 0.252,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s083_03",
+  "screen": "s083",
+  "src": "Screenshot 2026-07-06 140646.png",
+  "box": [
+   62,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s083_04",
+  "screen": "s083",
+  "src": "Screenshot 2026-07-06 140646.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s084_01",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   263,
+   53,
+   54,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.361,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s084_02",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   80,
+   55,
+   28,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.402,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s084_03",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   369,
+   61,
+   40,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.41,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s084_04",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   19,
+   125,
+   420,
+   211
+  ],
+  "sat": 65.0,
+  "fill": 0.47,
+  "kind": "art"
+ },
+ {
+  "icon": "s084_05",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   342,
+   186,
+   28,
+   28
+  ],
+  "sat": 56.9,
+  "fill": 0.536,
+  "kind": "art"
+ },
+ {
+  "icon": "s084_06",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   0,
+   335,
+   450,
+   497
+  ],
+  "sat": 0.6,
+  "fill": 0.175,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s084_07",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   60,
+   735,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s084_08",
+  "screen": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s085_01",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 47.2,
+  "fill": 0.442,
+  "kind": "art"
+ },
+ {
+  "icon": "s085_02",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   241,
+   51,
+   30,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.36,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s085_03",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   179,
+   53,
+   57,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.376,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s085_04",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   159,
+   100,
+   142,
+   66
+  ],
+  "sat": 11.8,
+  "fill": 0.264,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s085_05",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   151,
+   531,
+   149,
+   167
+  ],
+  "sat": 102.7,
+  "fill": 0.55,
+  "kind": "art"
+ },
+ {
+  "icon": "s085_06",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   65,
+   735,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s085_07",
+  "screen": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 29.2,
+  "fill": 0.33,
+  "kind": "art"
+ },
+ {
+  "icon": "s086_01",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 54.8,
+  "fill": 0.131,
+  "kind": "art"
+ },
+ {
+  "icon": "s086_02",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   237,
+   53,
+   67,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.377,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s086_03",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   317,
+   61,
+   40,
+   29
+  ],
+  "sat": 0.0,
+  "fill": 0.408,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s086_04",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   136,
+   101,
+   177,
+   137
+  ],
+  "sat": 184.6,
+  "fill": 0.57,
+  "kind": "art"
+ },
+ {
+  "icon": "s086_05",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   59,
+   735,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s086_06",
+  "screen": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_01",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   124,
+   53,
+   79,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.316,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s087_02",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   295,
+   55,
+   32,
+   35
+  ],
+  "sat": 0.0,
+  "fill": 0.299,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s087_03",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   271,
+   104,
+   52,
+   52
+  ],
+  "sat": 158.8,
+  "fill": 0.813,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_04",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   136,
+   112,
+   46,
+   46
+  ],
+  "sat": 153.0,
+  "fill": 0.764,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_05",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   0,
+   126,
+   450,
+   134
+  ],
+  "sat": 122.8,
+  "fill": 0.597,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_06",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   384,
+   147,
+   27,
+   32
+  ],
+  "sat": 143.7,
+  "fill": 0.785,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_07",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   27,
+   151,
+   27,
+   32
+  ],
+  "sat": 141.8,
+  "fill": 0.803,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_08",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   212,
+   167,
+   32,
+   33
+  ],
+  "sat": 49.6,
+  "fill": 0.813,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_09",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   71,
+   182,
+   59,
+   26
+  ],
+  "sat": 49.3,
+  "fill": 0.802,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_10",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   87,
+   266,
+   315,
+   85
+  ],
+  "sat": 54.1,
+  "fill": 0.272,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_11",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   32,
+   267,
+   114,
+   43
+  ],
+  "sat": 29.0,
+  "fill": 0.285,
+  "kind": "art"
+ },
+ {
+  "icon": "s087_12",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   0,
+   350,
+   450,
+   482
+  ],
+  "sat": 0.5,
+  "fill": 0.153,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s087_13",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   62,
+   732,
+   30,
+   29
+  ],
+  "sat": 26.9,
+  "fill": 0.348,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s087_14",
+  "screen": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "box": [
+   210,
+   735,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s088_01",
+  "screen": "s088",
+  "src": "Screenshot 2026-07-06 140723.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 0.1,
+  "fill": 0.983,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s089_01",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 96.9,
+  "fill": 0.159,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_02",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   372,
+   43,
+   62,
+   58
+  ],
+  "sat": 110.4,
+  "fill": 0.904,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_03",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   191,
+   50,
+   68,
+   69
+  ],
+  "sat": 3.1,
+  "fill": 0.56,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s089_04",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   132,
+   73,
+   74
+  ],
+  "sat": 114.0,
+  "fill": 0.621,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_05",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   217,
+   73,
+   74
+  ],
+  "sat": 84.0,
+  "fill": 1.0,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_06",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   302,
+   73,
+   74
+  ],
+  "sat": 126.0,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_07",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   387,
+   73,
+   74
+  ],
+  "sat": 139.7,
+  "fill": 0.998,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_08",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   472,
+   73,
+   74
+  ],
+  "sat": 208.6,
+  "fill": 1.0,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_09",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   557,
+   73,
+   74
+  ],
+  "sat": 162.6,
+  "fill": 0.994,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_10",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   188,
+   642,
+   73,
+   74
+  ],
+  "sat": 159.9,
+  "fill": 1.0,
+  "kind": "art"
+ },
+ {
+  "icon": "s089_11",
+  "screen": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_01",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 15.7,
+  "fill": 0.185,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_02",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   138,
+   49,
+   173,
+   178
+  ],
+  "sat": 0.0,
+  "fill": 0.469,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_03",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   348,
+   55,
+   70,
+   69
+  ],
+  "sat": 53.7,
+  "fill": 0.808,
+  "kind": "art"
+ },
+ {
+  "icon": "s090_04",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   38,
+   57,
+   65,
+   67
+  ],
+  "sat": 113.7,
+  "fill": 0.913,
+  "kind": "art"
+ },
+ {
+  "icon": "s090_05",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   41,
+   154,
+   58,
+   58
+  ],
+  "sat": 0.0,
+  "fill": 0.544,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_06",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   353,
+   154,
+   58,
+   58
+  ],
+  "sat": 0.0,
+  "fill": 0.541,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_07",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   36,
+   243,
+   375,
+   522
+  ],
+  "sat": 15.0,
+  "fill": 0.127,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_08",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   327,
+   688,
+   62,
+   58
+  ],
+  "sat": 110.4,
+  "fill": 0.904,
+  "kind": "art"
+ },
+ {
+  "icon": "s090_09",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   210,
+   701,
+   30,
+   30
+  ],
+  "sat": 25.5,
+  "fill": 0.331,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s090_10",
+  "screen": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "box": [
+   80,
+   702,
+   30,
+   29
+  ],
+  "sat": 25.0,
+  "fill": 0.375,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s091_01",
+  "screen": "s091",
+  "src": "Screenshot 2026-07-06 140751.png",
+  "box": [
+   0,
+   38,
+   450,
+   762
+  ],
+  "sat": 59.5,
+  "fill": 0.936,
+  "kind": "art"
+ },
+ {
+  "icon": "s092_01",
+  "screen": "s092",
+  "src": "Screenshot 2026-07-06 140755.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 55.9,
+  "fill": 0.968,
+  "kind": "art"
+ },
+ {
+  "icon": "s093_01",
+  "screen": "s093",
+  "src": "Screenshot 2026-07-06 140803.png",
+  "box": [
+   0,
+   38,
+   450,
+   382
+  ],
+  "sat": 8.8,
+  "fill": 0.993,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s094_01",
+  "screen": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 214.7,
+  "fill": 0.966,
+  "kind": "art"
+ },
+ {
+  "icon": "s094_02",
+  "screen": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s094_03",
+  "screen": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s094_04",
+  "screen": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s094_05",
+  "screen": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s095_01",
+  "screen": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 168.0,
+  "fill": 0.966,
+  "kind": "art"
+ },
+ {
+  "icon": "s095_02",
+  "screen": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s095_03",
+  "screen": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s095_04",
+  "screen": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s095_05",
+  "screen": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s096_01",
+  "screen": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 188.1,
+  "fill": 0.96,
+  "kind": "art"
+ },
+ {
+  "icon": "s096_02",
+  "screen": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s096_03",
+  "screen": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s096_04",
+  "screen": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s096_05",
+  "screen": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s097_01",
+  "screen": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 192.6,
+  "fill": 0.961,
+  "kind": "art"
+ },
+ {
+  "icon": "s097_02",
+  "screen": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s097_03",
+  "screen": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s097_04",
+  "screen": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s097_05",
+  "screen": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s098_01",
+  "screen": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 223.6,
+  "fill": 0.966,
+  "kind": "art"
+ },
+ {
+  "icon": "s098_02",
+  "screen": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s098_03",
+  "screen": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s098_04",
+  "screen": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s098_05",
+  "screen": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s099_01",
+  "screen": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 204.0,
+  "fill": 0.961,
+  "kind": "art"
+ },
+ {
+  "icon": "s099_02",
+  "screen": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s099_03",
+  "screen": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "box": [
+   171,
+   700,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s099_04",
+  "screen": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s099_05",
+  "screen": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s100_01",
+  "screen": "s100",
+  "src": "Screenshot 2026-07-06 140841.png",
+  "box": [
+   0,
+   38,
+   372,
+   225
+  ],
+  "sat": 201.8,
+  "fill": 0.965,
+  "kind": "art"
+ },
+ {
+  "icon": "s100_02",
+  "screen": "s100",
+  "src": "Screenshot 2026-07-06 140841.png",
+  "box": [
+   37,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s100_03",
+  "screen": "s100",
+  "src": "Screenshot 2026-07-06 140841.png",
+  "box": [
+   296,
+   700,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s100_04",
+  "screen": "s100",
+  "src": "Screenshot 2026-07-06 140841.png",
+  "box": [
+   0,
+   760,
+   372,
+   72
+  ],
+  "sat": 140.1,
+  "fill": 0.992,
+  "kind": "art"
+ },
+ {
+  "icon": "s101_01",
+  "screen": "s101",
+  "src": "Screenshot 2026-07-06 140847.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s101_02",
+  "screen": "s101",
+  "src": "Screenshot 2026-07-06 140847.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 1.7,
+  "fill": 0.086,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s101_03",
+  "screen": "s101",
+  "src": "Screenshot 2026-07-06 140847.png",
+  "box": [
+   210,
+   704,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s102_01",
+  "screen": "s102",
+  "src": "Screenshot 2026-07-06 140850.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s102_02",
+  "screen": "s102",
+  "src": "Screenshot 2026-07-06 140850.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 1.7,
+  "fill": 0.086,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s102_03",
+  "screen": "s102",
+  "src": "Screenshot 2026-07-06 140850.png",
+  "box": [
+   210,
+   704,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s103_01",
+  "screen": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s103_02",
+  "screen": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 120.7,
+  "fill": 0.949,
+  "kind": "art"
+ },
+ {
+  "icon": "s103_03",
+  "screen": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 48.9,
+  "fill": 0.176,
+  "kind": "art"
+ },
+ {
+  "icon": "s103_04",
+  "screen": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "box": [
+   67,
+   720,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s103_05",
+  "screen": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "box": [
+   210,
+   720,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s104_01",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   133,
+   38,
+   188,
+   184
+  ],
+  "sat": 119.2,
+  "fill": 0.948,
+  "kind": "art"
+ },
+ {
+  "icon": "s104_02",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s104_03",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 39.8,
+  "fill": 0.19,
+  "kind": "art"
+ },
+ {
+  "icon": "s104_04",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   179,
+   231,
+   89,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.329,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s104_05",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   147,
+   732,
+   154,
+   51
+  ],
+  "sat": 6.8,
+  "fill": 0.15,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s104_06",
+  "screen": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "box": [
+   61,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s105_01",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   133,
+   38,
+   188,
+   184
+  ],
+  "sat": 119.2,
+  "fill": 0.948,
+  "kind": "art"
+ },
+ {
+  "icon": "s105_02",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s105_03",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 39.8,
+  "fill": 0.19,
+  "kind": "art"
+ },
+ {
+  "icon": "s105_04",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   179,
+   231,
+   89,
+   28
+  ],
+  "sat": 0.0,
+  "fill": 0.329,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s105_05",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   147,
+   732,
+   154,
+   51
+  ],
+  "sat": 6.8,
+  "fill": 0.15,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s105_06",
+  "screen": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "box": [
+   61,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s106_01",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s106_02",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   104,
+   74,
+   230,
+   147
+  ],
+  "sat": 168.1,
+  "fill": 0.809,
+  "kind": "art"
+ },
+ {
+  "icon": "s106_03",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 72.6,
+  "fill": 0.188,
+  "kind": "art"
+ },
+ {
+  "icon": "s106_04",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   253,
+   272,
+   28,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.308,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s106_05",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   362,
+   277,
+   52,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.378,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s106_06",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   147,
+   732,
+   154,
+   51
+  ],
+  "sat": 6.8,
+  "fill": 0.15,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s106_07",
+  "screen": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "box": [
+   66,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_01",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s107_02",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 120.7,
+  "fill": 0.949,
+  "kind": "art"
+ },
+ {
+  "icon": "s107_03",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 48.8,
+  "fill": 0.202,
+  "kind": "art"
+ },
+ {
+  "icon": "s107_04",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   112,
+   269,
+   31,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.362,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_05",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   230,
+   269,
+   55,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.372,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_06",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   154,
+   270,
+   64,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.296,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_07",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   298,
+   270,
+   71,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.288,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_08",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   381,
+   277,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.407,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_09",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   173,
+   322,
+   107,
+   107
+  ],
+  "sat": 59.6,
+  "fill": 0.668,
+  "kind": "art"
+ },
+ {
+  "icon": "s107_10",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   147,
+   732,
+   154,
+   51
+  ],
+  "sat": 6.8,
+  "fill": 0.15,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s107_11",
+  "screen": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "box": [
+   66,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s108_01",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s108_02",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   133,
+   50,
+   188,
+   188
+  ],
+  "sat": 120.7,
+  "fill": 0.949,
+  "kind": "art"
+ },
+ {
+  "icon": "s108_03",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 53.4,
+  "fill": 0.185,
+  "kind": "art"
+ },
+ {
+  "icon": "s108_04",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   137,
+   271,
+   29,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.385,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s108_05",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   176,
+   271,
+   70,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.401,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s108_06",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   173,
+   360,
+   107,
+   107
+  ],
+  "sat": 59.3,
+  "fill": 0.673,
+  "kind": "art"
+ },
+ {
+  "icon": "s108_07",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   147,
+   732,
+   154,
+   51
+  ],
+  "sat": 6.8,
+  "fill": 0.15,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s108_08",
+  "screen": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "box": [
+   66,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s109_01",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s109_02",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 120.7,
+  "fill": 0.949,
+  "kind": "art"
+ },
+ {
+  "icon": "s109_03",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 51.2,
+  "fill": 0.193,
+  "kind": "art"
+ },
+ {
+  "icon": "s109_04",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   25,
+   269,
+   75,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.352,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s109_05",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   112,
+   269,
+   50,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.361,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s109_06",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   246,
+   269,
+   29,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.385,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s109_07",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   171,
+   324,
+   107,
+   107
+  ],
+  "sat": 59.3,
+  "fill": 0.674,
+  "kind": "art"
+ },
+ {
+  "icon": "s109_08",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   147,
+   716,
+   154,
+   51
+  ],
+  "sat": 6.7,
+  "fill": 0.152,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s109_09",
+  "screen": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "box": [
+   64,
+   727,
+   29,
+   29
+  ],
+  "sat": 26.2,
+  "fill": 0.37,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_01",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s110_02",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 15.8,
+  "fill": 0.189,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_03",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   124,
+   142,
+   201,
+   243
+  ],
+  "sat": 23.8,
+  "fill": 0.837,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_04",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.138,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_05",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.137,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_06",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   67,
+   725,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s110_07",
+  "screen": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "box": [
+   210,
+   725,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s111_01",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s111_02",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 1.9,
+  "fill": 0.142,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_03",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   158,
+   108,
+   128,
+   174
+  ],
+  "sat": 2.6,
+  "fill": 0.39,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_04",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   292,
+   108,
+   122,
+   172
+  ],
+  "sat": 2.6,
+  "fill": 0.613,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_05",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   31,
+   109,
+   119,
+   172
+  ],
+  "sat": 3.9,
+  "fill": 0.231,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_06",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.138,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_07",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.137,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_08",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   67,
+   725,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s111_09",
+  "screen": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "box": [
+   210,
+   725,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s112_01",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s112_02",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   169,
+   50,
+   137,
+   277
+  ],
+  "sat": 70.8,
+  "fill": 0.436,
+  "kind": "art"
+ },
+ {
+  "icon": "s112_03",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 29.0,
+  "fill": 0.113,
+  "kind": "art"
+ },
+ {
+  "icon": "s112_04",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.138,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s112_05",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.137,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s112_06",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   67,
+   725,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s112_07",
+  "screen": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "box": [
+   210,
+   725,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s113_01",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s113_02",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 58.8,
+  "fill": 0.179,
+  "kind": "art"
+ },
+ {
+  "icon": "s113_03",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   74,
+   152,
+   300,
+   125
+  ],
+  "sat": 92.8,
+  "fill": 1.0,
+  "kind": "art"
+ },
+ {
+  "icon": "s113_04",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   126,
+   532,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.138,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s113_05",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   126,
+   612,
+   198,
+   61
+  ],
+  "sat": 0.0,
+  "fill": 0.137,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s113_06",
+  "screen": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "box": [
+   210,
+   728,
+   30,
+   30
+  ],
+  "sat": 27.8,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s114_01",
+  "screen": "s114",
+  "src": "Screenshot 2026-07-06 141005.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s114_02",
+  "screen": "s114",
+  "src": "Screenshot 2026-07-06 141005.png",
+  "box": [
+   99,
+   50,
+   251,
+   251
+  ],
+  "sat": 81.6,
+  "fill": 0.999,
+  "kind": "art"
+ },
+ {
+  "icon": "s114_03",
+  "screen": "s114",
+  "src": "Screenshot 2026-07-06 141005.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 53.9,
+  "fill": 0.234,
+  "kind": "art"
+ },
+ {
+  "icon": "s114_04",
+  "screen": "s114",
+  "src": "Screenshot 2026-07-06 141005.png",
+  "box": [
+   210,
+   734,
+   30,
+   30
+  ],
+  "sat": 28.7,
+  "fill": 0.316,
+  "kind": "art"
+ },
+ {
+  "icon": "s115_01",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s115_02",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 81.7,
+  "fill": 0.999,
+  "kind": "art"
+ },
+ {
+  "icon": "s115_03",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 30.8,
+  "fill": 0.211,
+  "kind": "art"
+ },
+ {
+  "icon": "s115_04",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   30,
+   250,
+   70,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.36,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s115_05",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   278,
+   250,
+   36,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.388,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s115_06",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   151,
+   258,
+   47,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.381,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s115_07",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s115_08",
+  "screen": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s116_01",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s116_02",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   98,
+   50,
+   247,
+   188
+  ],
+  "sat": 16.3,
+  "fill": 0.484,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_03",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 5.2,
+  "fill": 0.179,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_04",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   258,
+   250,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.363,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_05",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   307,
+   250,
+   88,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.374,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_06",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   58,
+   251,
+   65,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.317,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_07",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s116_08",
+  "screen": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s117_01",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s117_02",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   98,
+   50,
+   247,
+   188
+  ],
+  "sat": 16.3,
+  "fill": 0.484,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_03",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 5.2,
+  "fill": 0.179,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_04",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   258,
+   250,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.363,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_05",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   307,
+   250,
+   88,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.374,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_06",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   58,
+   251,
+   65,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.317,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_07",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s117_08",
+  "screen": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s118_01",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s118_02",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   131,
+   50,
+   188,
+   59
+  ],
+  "sat": 0.0,
+  "fill": 0.478,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_03",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 0.3,
+  "fill": 0.175,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_04",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   137,
+   120,
+   36,
+   83
+  ],
+  "sat": 0.0,
+  "fill": 0.719,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_05",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   183,
+   120,
+   36,
+   83
+  ],
+  "sat": 0.0,
+  "fill": 0.719,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_06",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   230,
+   120,
+   36,
+   83
+  ],
+  "sat": 0.0,
+  "fill": 0.695,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_07",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   277,
+   120,
+   36,
+   83
+  ],
+  "sat": 0.0,
+  "fill": 0.719,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_08",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   68,
+   251,
+   65,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.317,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_09",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   335,
+   258,
+   52,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.378,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_10",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s118_11",
+  "screen": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s119_01",
+  "screen": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s119_02",
+  "screen": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "box": [
+   150,
+   62,
+   148,
+   118
+  ],
+  "sat": 106.8,
+  "fill": 0.195,
+  "kind": "art"
+ },
+ {
+  "icon": "s119_03",
+  "screen": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 8.1,
+  "fill": 0.122,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s119_04",
+  "screen": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s119_05",
+  "screen": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s120_01",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s120_02",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   134,
+   56,
+   181,
+   176
+  ],
+  "sat": 86.6,
+  "fill": 0.652,
+  "kind": "art"
+ },
+ {
+  "icon": "s120_03",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 27.2,
+  "fill": 0.189,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s120_04",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   259,
+   250,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.369,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s120_05",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   67,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.5,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s120_06",
+  "screen": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s121_01",
+  "screen": "s121",
+  "src": "Screenshot 2026-07-06 141056.png",
+  "box": [
+   0,
+   38,
+   450,
+   819
+  ],
+  "sat": 9.9,
+  "fill": 0.978,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s122_01",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   154,
+   38,
+   296,
+   175
+  ],
+  "sat": 106.5,
+  "fill": 0.262,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_02",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   77,
+   45,
+   91,
+   36
+  ],
+  "sat": 139.0,
+  "fill": 0.539,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_03",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   84,
+   142,
+   256,
+   32
+  ],
+  "sat": 82.4,
+  "fill": 0.571,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_04",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   0,
+   274,
+   283,
+   140
+  ],
+  "sat": 37.1,
+  "fill": 0.277,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_05",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   0,
+   300,
+   450,
+   532
+  ],
+  "sat": 57.9,
+  "fill": 0.317,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_06",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   88,
+   406,
+   273,
+   61
+  ],
+  "sat": 41.2,
+  "fill": 0.996,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_07",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   145,
+   493,
+   160,
+   161
+  ],
+  "sat": 156.5,
+  "fill": 0.692,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_08",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   44,
+   547,
+   58,
+   60
+  ],
+  "sat": 76.8,
+  "fill": 0.703,
+  "kind": "art"
+ },
+ {
+  "icon": "s122_09",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s122_10",
+  "screen": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s123_01",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   0,
+   38,
+   448,
+   258
+  ],
+  "sat": 66.0,
+  "fill": 0.958,
+  "kind": "art"
+ },
+ {
+  "icon": "s123_02",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   69,
+   437,
+   135,
+   46
+  ],
+  "sat": 0.0,
+  "fill": 0.3,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_03",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   0,
+   489,
+   448,
+   32
+  ],
+  "sat": 56.1,
+  "fill": 0.991,
+  "kind": "art"
+ },
+ {
+  "icon": "s123_04",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   52,
+   580,
+   69,
+   66
+  ],
+  "sat": 0.0,
+  "fill": 0.361,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_05",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   199,
+   599,
+   45,
+   43
+  ],
+  "sat": 0.0,
+  "fill": 0.362,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_06",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   332,
+   599,
+   59,
+   49
+  ],
+  "sat": 87.8,
+  "fill": 0.373,
+  "kind": "art"
+ },
+ {
+  "icon": "s123_07",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   58,
+   672,
+   57,
+   59
+  ],
+  "sat": 0.0,
+  "fill": 0.445,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_08",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   172,
+   675,
+   108,
+   53
+  ],
+  "sat": 17.2,
+  "fill": 0.665,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_09",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   331,
+   675,
+   60,
+   53
+  ],
+  "sat": 152.4,
+  "fill": 0.535,
+  "kind": "art"
+ },
+ {
+  "icon": "s123_10",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   210,
+   743,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.31,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s123_11",
+  "screen": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "box": [
+   76,
+   746,
+   30,
+   29
+  ],
+  "sat": 30.0,
+  "fill": 0.313,
+  "kind": "art"
+ },
+ {
+  "icon": "s124_01",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 70.5,
+  "fill": 0.23,
+  "kind": "art"
+ },
+ {
+  "icon": "s124_02",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   137,
+   51,
+   164,
+   151
+  ],
+  "sat": 83.6,
+  "fill": 0.457,
+  "kind": "art"
+ },
+ {
+  "icon": "s124_03",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   88,
+   216,
+   263,
+   260
+  ],
+  "sat": 139.6,
+  "fill": 0.505,
+  "kind": "art"
+ },
+ {
+  "icon": "s124_04",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   136,
+   524,
+   169,
+   170
+  ],
+  "sat": 0.0,
+  "fill": 0.717,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s124_05",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s124_06",
+  "screen": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s125_01",
+  "screen": "s125",
+  "src": "Screenshot 2026-07-06 141125.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 42.2,
+  "fill": 0.186,
+  "kind": "art"
+ },
+ {
+  "icon": "s125_02",
+  "screen": "s125",
+  "src": "Screenshot 2026-07-06 141125.png",
+  "box": [
+   145,
+   53,
+   160,
+   161
+  ],
+  "sat": 156.5,
+  "fill": 0.692,
+  "kind": "art"
+ },
+ {
+  "icon": "s125_03",
+  "screen": "s125",
+  "src": "Screenshot 2026-07-06 141125.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s125_04",
+  "screen": "s125",
+  "src": "Screenshot 2026-07-06 141125.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s126_01",
+  "screen": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 30.0,
+  "fill": 0.135,
+  "kind": "art"
+ },
+ {
+  "icon": "s126_02",
+  "screen": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "box": [
+   148,
+   67,
+   153,
+   164
+  ],
+  "sat": 80.1,
+  "fill": 0.693,
+  "kind": "art"
+ },
+ {
+  "icon": "s126_03",
+  "screen": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "box": [
+   88,
+   587,
+   273,
+   109
+  ],
+  "sat": 1.8,
+  "fill": 0.169,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s126_04",
+  "screen": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s126_05",
+  "screen": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s127_01",
+  "screen": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 16.1,
+  "fill": 0.243,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s127_02",
+  "screen": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "box": [
+   109,
+   38,
+   101,
+   198
+  ],
+  "sat": 26.9,
+  "fill": 0.98,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s127_03",
+  "screen": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "box": [
+   221,
+   57,
+   117,
+   173
+  ],
+  "sat": 58.1,
+  "fill": 0.729,
+  "kind": "art"
+ },
+ {
+  "icon": "s127_04",
+  "screen": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "box": [
+   77,
+   753,
+   30,
+   30
+  ],
+  "sat": 27.0,
+  "fill": 0.336,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s127_05",
+  "screen": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "box": [
+   210,
+   753,
+   30,
+   30
+  ],
+  "sat": 26.0,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s128_01",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   27,
+   75,
+   180,
+   59
+  ],
+  "sat": 78.4,
+  "fill": 0.539,
+  "kind": "art"
+ },
+ {
+  "icon": "s128_02",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   253,
+   75,
+   140,
+   58
+  ],
+  "sat": 77.9,
+  "fill": 0.575,
+  "kind": "art"
+ },
+ {
+  "icon": "s128_03",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   154,
+   161,
+   240,
+   60
+  ],
+  "sat": 77.8,
+  "fill": 0.537,
+  "kind": "art"
+ },
+ {
+  "icon": "s128_04",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   20,
+   163,
+   129,
+   72
+  ],
+  "sat": 78.5,
+  "fill": 0.474,
+  "kind": "art"
+ },
+ {
+  "icon": "s128_05",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   0,
+   583,
+   450,
+   249
+  ],
+  "sat": 0.9,
+  "fill": 0.159,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s128_06",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s128_07",
+  "screen": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s129_01",
+  "screen": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 7.2,
+  "fill": 0.224,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s129_02",
+  "screen": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "box": [
+   131,
+   38,
+   190,
+   195
+  ],
+  "sat": 15.5,
+  "fill": 0.979,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s129_03",
+  "screen": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "box": [
+   217,
+   259,
+   82,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.355,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s129_04",
+  "screen": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s129_05",
+  "screen": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s130_01",
+  "screen": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 40.9,
+  "fill": 0.219,
+  "kind": "art"
+ },
+ {
+  "icon": "s130_02",
+  "screen": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "box": [
+   131,
+   43,
+   188,
+   187
+  ],
+  "sat": 90.6,
+  "fill": 0.999,
+  "kind": "art"
+ },
+ {
+  "icon": "s130_03",
+  "screen": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "box": [
+   240,
+   251,
+   104,
+   33
+  ],
+  "sat": 0.0,
+  "fill": 0.279,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s130_04",
+  "screen": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "box": [
+   76,
+   745,
+   30,
+   30
+  ],
+  "sat": 27.2,
+  "fill": 0.333,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s130_05",
+  "screen": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s131_01",
+  "screen": "s131",
+  "src": "Screenshot 2026-07-06 141227.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 44.4,
+  "fill": 0.426,
+  "kind": "art"
+ },
+ {
+  "icon": "s131_02",
+  "screen": "s131",
+  "src": "Screenshot 2026-07-06 141227.png",
+  "box": [
+   76,
+   753,
+   30,
+   30
+  ],
+  "sat": 27.7,
+  "fill": 0.328,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s131_03",
+  "screen": "s131",
+  "src": "Screenshot 2026-07-06 141227.png",
+  "box": [
+   210,
+   753,
+   30,
+   30
+  ],
+  "sat": 26.0,
+  "fill": 0.326,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s132_01",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 14.1,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s132_02",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   372,
+   38,
+   62,
+   58
+  ],
+  "sat": 110.4,
+  "fill": 0.904,
+  "kind": "art"
+ },
+ {
+  "icon": "s132_03",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   96,
+   279,
+   55,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.329,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s132_04",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   244,
+   279,
+   71,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.389,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s132_05",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   326,
+   282,
+   27,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.319,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s132_06",
+  "screen": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_01",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 21.0,
+  "fill": 0.149,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_02",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   107,
+   77,
+   239,
+   80
+  ],
+  "sat": 88.2,
+  "fill": 0.6,
+  "kind": "art"
+ },
+ {
+  "icon": "s133_03",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   146,
+   207,
+   37,
+   36
+  ],
+  "sat": 0.0,
+  "fill": 0.492,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_04",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   201,
+   217,
+   39,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.464,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_05",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   199,
+   291,
+   80,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.349,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_06",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   290,
+   291,
+   30,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.383,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_07",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   343,
+   291,
+   55,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.338,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_08",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   129,
+   338,
+   51,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.424,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_09",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   211,
+   341,
+   28,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.308,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_10",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   374,
+   384,
+   36,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.39,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_11",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   211,
+   430,
+   35,
+   34
+  ],
+  "sat": 0.0,
+  "fill": 0.293,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_12",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   382,
+   438,
+   36,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.417,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_13",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   65,
+   476,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.374,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_14",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   114,
+   476,
+   85,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.337,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_15",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   252,
+   476,
+   48,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.36,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_16",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   375,
+   476,
+   31,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.345,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_17",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   204,
+   484,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.407,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_18",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   121,
+   523,
+   52,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.365,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_19",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   252,
+   526,
+   35,
+   31
+  ],
+  "sat": 0.0,
+  "fill": 0.329,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_20",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   265,
+   569,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.355,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_21",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   235,
+   615,
+   31,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.345,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_22",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   276,
+   615,
+   82,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.355,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_23",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   164,
+   661,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.33,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_24",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   212,
+   669,
+   52,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.378,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_25",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s133_26",
+  "screen": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s134_01",
+  "screen": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 27.9,
+  "fill": 0.226,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s134_02",
+  "screen": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "box": [
+   150,
+   79,
+   150,
+   150
+  ],
+  "sat": 0.0,
+  "fill": 0.117,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s134_03",
+  "screen": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "box": [
+   12,
+   375,
+   425,
+   303
+  ],
+  "sat": 45.0,
+  "fill": 0.385,
+  "kind": "art"
+ },
+ {
+  "icon": "s134_04",
+  "screen": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s134_05",
+  "screen": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s135_01",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 28.7,
+  "fill": 0.212,
+  "kind": "art"
+ },
+ {
+  "icon": "s135_02",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   142,
+   42,
+   43,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.349,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s135_03",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   300,
+   42,
+   64,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.358,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s135_04",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   12,
+   84,
+   426,
+   227
+  ],
+  "sat": 0.0,
+  "fill": 0.043,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s135_05",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   388,
+   334,
+   30,
+   30
+  ],
+  "sat": 0.0,
+  "fill": 0.766,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s135_06",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   12,
+   384,
+   425,
+   294
+  ],
+  "sat": 45.0,
+  "fill": 0.385,
+  "kind": "art"
+ },
+ {
+  "icon": "s135_07",
+  "screen": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 26.6,
+  "fill": 0.341,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s136_01",
+  "screen": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "box": [
+   384,
+   38,
+   63,
+   52
+  ],
+  "sat": 109.0,
+  "fill": 0.909,
+  "kind": "art"
+ },
+ {
+  "icon": "s136_02",
+  "screen": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 168.5,
+  "fill": 0.944,
+  "kind": "art"
+ },
+ {
+  "icon": "s136_03",
+  "screen": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "box": [
+   0,
+   94,
+   450,
+   738
+  ],
+  "sat": 78.2,
+  "fill": 0.159,
+  "kind": "art"
+ },
+ {
+  "icon": "s136_04",
+  "screen": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s136_05",
+  "screen": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s137_01",
+  "screen": "s137",
+  "src": "Screenshot 2026-07-06 141300.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 0.4,
+  "fill": 0.137,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s137_02",
+  "screen": "s137",
+  "src": "Screenshot 2026-07-06 141300.png",
+  "box": [
+   131,
+   50,
+   188,
+   188
+  ],
+  "sat": 0.1,
+  "fill": 0.521,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s137_03",
+  "screen": "s137",
+  "src": "Screenshot 2026-07-06 141300.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s137_04",
+  "screen": "s137",
+  "src": "Screenshot 2026-07-06 141300.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s138_01",
+  "screen": "s138",
+  "src": "Screenshot 2026-07-06 141306.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 61.3,
+  "fill": 0.371,
+  "kind": "art"
+ },
+ {
+  "icon": "s138_02",
+  "screen": "s138",
+  "src": "Screenshot 2026-07-06 141306.png",
+  "box": [
+   271,
+   294,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.369,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s138_03",
+  "screen": "s138",
+  "src": "Screenshot 2026-07-06 141306.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s138_04",
+  "screen": "s138",
+  "src": "Screenshot 2026-07-06 141306.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_01",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   202,
+   38,
+   227,
+   147
+  ],
+  "sat": 50.4,
+  "fill": 0.285,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_02",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   113,
+   40,
+   95,
+   62
+  ],
+  "sat": 60.3,
+  "fill": 0.366,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_03",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   17,
+   41,
+   76,
+   64
+  ],
+  "sat": 64.0,
+  "fill": 0.471,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_04",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   15,
+   114,
+   256,
+   84
+  ],
+  "sat": 61.3,
+  "fill": 0.475,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_05",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   0,
+   156,
+   450,
+   676
+  ],
+  "sat": 22.1,
+  "fill": 0.16,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s139_06",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   214,
+   203,
+   190,
+   77
+  ],
+  "sat": 58.7,
+  "fill": 0.305,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_07",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   25,
+   211,
+   178,
+   72
+  ],
+  "sat": 64.0,
+  "fill": 0.375,
+  "kind": "art"
+ },
+ {
+  "icon": "s139_08",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s139_09",
+  "screen": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s140_01",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 65.7,
+  "fill": 0.184,
+  "kind": "art"
+ },
+ {
+  "icon": "s140_02",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   106,
+   40,
+   237,
+   246
+  ],
+  "sat": 125.2,
+  "fill": 0.591,
+  "kind": "art"
+ },
+ {
+  "icon": "s140_03",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   97,
+   300,
+   31,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.362,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_04",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   200,
+   300,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.446,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_05",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   285,
+   300,
+   64,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.43,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_06",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   354,
+   300,
+   35,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.388,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_07",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   401,
+   308,
+   36,
+   26
+  ],
+  "sat": 0.0,
+  "fill": 0.417,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_08",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s140_09",
+  "screen": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s141_01",
+  "screen": "s141",
+  "src": "Screenshot 2026-07-06 141324.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 44.2,
+  "fill": 0.145,
+  "kind": "art"
+ },
+ {
+  "icon": "s141_02",
+  "screen": "s141",
+  "src": "Screenshot 2026-07-06 141324.png",
+  "box": [
+   133,
+   54,
+   183,
+   182
+  ],
+  "sat": 111.2,
+  "fill": 0.612,
+  "kind": "art"
+ },
+ {
+  "icon": "s141_03",
+  "screen": "s141",
+  "src": "Screenshot 2026-07-06 141324.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s141_04",
+  "screen": "s141",
+  "src": "Screenshot 2026-07-06 141324.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s142_01",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   11,
+   45,
+   367,
+   212
+  ],
+  "sat": 84.0,
+  "fill": 0.297,
+  "kind": "art"
+ },
+ {
+  "icon": "s142_02",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   371,
+   70,
+   68,
+   76
+  ],
+  "sat": 80.3,
+  "fill": 0.723,
+  "kind": "art"
+ },
+ {
+  "icon": "s142_03",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   0,
+   275,
+   450,
+   557
+  ],
+  "sat": 0.6,
+  "fill": 0.122,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s142_04",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   225,
+   276,
+   103,
+   34
+  ],
+  "sat": 0.0,
+  "fill": 0.28,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s142_05",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s142_06",
+  "screen": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ },
+ {
+  "icon": "s143_01",
+  "screen": "s143",
+  "src": "Screenshot 2026-07-06 141337.png",
+  "box": [
+   0,
+   38,
+   450,
+   794
+  ],
+  "sat": 70.0,
+  "fill": 0.156,
+  "kind": "art"
+ },
+ {
+  "icon": "s143_02",
+  "screen": "s143",
+  "src": "Screenshot 2026-07-06 141337.png",
+  "box": [
+   129,
+   65,
+   191,
+   190
+  ],
+  "sat": 157.0,
+  "fill": 0.681,
+  "kind": "art"
+ },
+ {
+  "icon": "s143_03",
+  "screen": "s143",
+  "src": "Screenshot 2026-07-06 141337.png",
+  "box": [
+   74,
+   745,
+   29,
+   30
+  ],
+  "sat": 27.6,
+  "fill": 0.34,
+  "kind": "glyph"
+ },
+ {
+  "icon": "s143_04",
+  "screen": "s143",
+  "src": "Screenshot 2026-07-06 141337.png",
+  "box": [
+   210,
+   745,
+   30,
+   30
+  ],
+  "sat": 28.6,
+  "fill": 0.337,
+  "kind": "art"
+ }
+]

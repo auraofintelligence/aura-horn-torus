@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>App · Aura Horn Torus</title>
+<title>Aura app · Aura Horn Torus</title>
 <style>
   :root{
     --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
@@ -11,574 +11,405 @@
   }
   *{box-sizing:border-box}
   body{margin:0;min-height:100vh;color:var(--ink);
-    background:radial-gradient(ellipse at 50% 20%, #12151f 0%, #05060a 72%);
-    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
-    line-height:1.55}
-  main{max-width:820px;margin:0 auto;padding:44px 20px 90px}
-  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--accent);margin:0 0 4px}
-  .crumb{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
-  .crumb a{color:var(--accent);text-decoration:none}
-  .honest{font-size:12px;color:var(--ink-soft);margin:0 0 20px;line-height:1.5}
-  button,input,select{font:500 12.5px/1.2 inherit;color:var(--ink)}
+    background:radial-gradient(ellipse at 50% 16%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;line-height:1.55}
+  main{max-width:960px;margin:0 auto;padding:36px 20px 110px}
+  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+  .site{font-size:13px;color:var(--ink-soft);margin:0 0 18px}
+  .site a{color:var(--accent);text-decoration:none}
+  button,input,select{font:500 12.5px/1.3 inherit;color:var(--ink)}
   button{padding:8px 13px;border-radius:9px;border:1px solid var(--line);
     background:rgba(255,255,255,.05);cursor:pointer}
-  button.on{background:rgba(216,179,106,.16);color:var(--accent);
-    border-color:rgba(216,179,106,.5);box-shadow:0 0 10px var(--glow)}
-  input,select{padding:8px 11px;border-radius:9px;border:1px solid var(--line);
-    background:rgba(255,255,255,.05)}
+  button:hover{border-color:rgba(216,179,106,.45)}
+  button.on{background:rgba(216,179,106,.16);color:var(--accent);border-color:rgba(216,179,106,.5);
+    box-shadow:0 0 10px var(--glow)}
+  input{padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);width:100%}
   input::placeholder{color:var(--ink-soft)}
-  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;
-    padding:18px;margin:0 0 20px;scroll-margin-top:16px}
-  .shead{display:flex;align-items:center;gap:12px;margin:0 0 12px}
-  .shead h2{font-size:14.5px;margin:0}
-  .shead .sub{font-size:11.5px;color:var(--ink-soft);margin:1px 0 0}
-  .note{font-size:11px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
-  /* icon boxes — every one of these is user-replaceable */
-  .ico{width:42px;height:42px;flex:0 0 auto;border-radius:12px;overflow:hidden;
+
+  /* the bar that never moves */
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+  .bar .grow{flex:1 1 240px;min-width:170px}
+
+  /* trail */
+  .trail{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin:0 0 14px}
+  .trail a{color:var(--accent);text-decoration:none;cursor:pointer}
+  .trail span.sep{color:var(--ink-soft)}
+  .trail span.here{color:var(--ink-soft)}
+
+  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 18px}
+  .shead{display:flex;align-items:flex-start;gap:13px;margin:0 0 14px}
+  .shead h2{font-size:15px;margin:0}
+  .shead .sub{font-size:11.5px;color:var(--ink-soft);margin:2px 0 0}
+
+  /* every tile carries an icon. That is the point. */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+  .tile{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;
+    padding:14px 8px 12px;border:1px solid var(--line);border-radius:15px;cursor:pointer;
+    background:rgba(255,255,255,.02);font-size:11.5px;color:var(--ink);text-decoration:none;
+    transition:border-color .15s,transform .15s}
+  .tile:hover{border-color:rgba(216,179,106,.45);transform:translateY(-1px)}
+  .tile .cap{line-height:1.35}
+  .tile .n{font-size:10px;color:var(--ink-soft)}
+  .ico{width:52px;height:52px;flex:0 0 auto;border-radius:14px;overflow:hidden;
     border:1px solid var(--line);background:rgba(255,255,255,.04);
-    display:flex;align-items:center;justify-content:center}
-  .ico svg{width:22px;height:22px;stroke:var(--accent);fill:none;
-    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-  .ico img{width:100%;height:100%;object-fit:cover}
-  .ico .glyph{font-size:22px;line-height:1}
-  .ico.small{width:34px;height:34px;border-radius:10px}
-  .ico.small svg{width:18px;height:18px}
-  .ico.small .glyph{font-size:18px}
-  body.editicons .ico{outline:2px dashed rgba(216,179,106,.6);outline-offset:2px;cursor:pointer}
-  /* tile grids */
-  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
-  .tile{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;
-    padding:12px 6px;border:1px solid var(--line);border-radius:14px;cursor:pointer;
-    background:rgba(255,255,255,.02);font-size:11px;color:var(--ink);text-decoration:none}
-  .tile:hover{border-color:rgba(216,179,106,.45)}
-  .tile.on{background:rgba(216,179,106,.1);border-color:rgba(216,179,106,.5)}
-  .tile.dim{opacity:.55}
-  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 0}
-  /* quick nav grid */
-  #qngrid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-  #qngrid .slot{position:relative;aspect-ratio:1;border:1px dashed var(--line);
-    border-radius:13px;background:rgba(255,255,255,.03);cursor:pointer;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-    text-align:center;font-size:10px;color:var(--ink-soft);padding:4px}
-  #qngrid .slot.filled{border-style:solid;color:var(--ink);
-    border-color:rgba(216,179,106,.45);background:rgba(216,179,106,.07)}
-  #qngrid .slot .x{position:absolute;top:2px;right:6px;font-size:11px;
-    color:var(--ink-soft);display:none}
-  #qngrid .slot.filled .x{display:block}
-  /* facts */
-  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-top:12px}
-  .fact{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
-  .fact b{display:block;font-size:18px;color:var(--accent);font-weight:650}
-  .fact span{font-size:10px;color:var(--ink-soft);letter-spacing:.07em;text-transform:uppercase}
-  /* memory bars */
-  .bar{display:flex;align-items:center;gap:9px;margin:7px 0}
-  .bar .lab{flex:0 0 118px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .bar .track{flex:1;height:13px;border-radius:7px;background:rgba(255,255,255,.06);overflow:hidden}
-  .bar .fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#8a5a2b,var(--accent))}
-  .bar .gb{flex:0 0 62px;text-align:right;font:11px/1 ui-monospace,Menlo,monospace;color:var(--ink-soft)}
-  .bar .del{flex:0 0 auto;padding:3px 8px;font-size:11px}
-  /* icon editor */
-  #iconEd{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:40;
-    display:none;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
-    padding:12px 14px;border-radius:14px;background:var(--panel);
-    backdrop-filter:blur(18px);border:1px solid rgba(216,179,106,.5);
-    width:min(430px,calc(100vw - 24px))}
-  #iconEd.open{display:flex}
-  #iconEd .hint{width:100%;text-align:center;font-size:11px;color:var(--ink-soft)}
-  #icoText{width:90px;text-align:center;font-size:16px}
-  .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+    display:flex;align-items:center;justify-content:center;position:relative}
+  .ico img{max-width:82%;max-height:82%;object-fit:contain}
+  .ico .glyph{font-size:24px;line-height:1}
+  .ico.sm{width:38px;height:38px;border-radius:11px}
+  .ico.sm .glyph{font-size:18px}
+  body.editing .tile .ico{outline:2px dashed rgba(216,179,106,.65);outline-offset:2px}
+  .mine{position:absolute;right:2px;bottom:2px;width:7px;height:7px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 6px var(--glow)}
+
+  .note{font-size:11px;color:var(--ink-soft);line-height:1.55;margin:14px 0 0}
+  .empty{font-size:12px;color:var(--ink-soft);padding:20px 0;text-align:center}
+  .count{font-size:11px;color:var(--ink-soft);margin:12px 0 0}
+
+  /* icon picker */
+  .sheet{position:fixed;inset:0;background:rgba(3,4,7,.72);backdrop-filter:blur(6px);
+    display:flex;align-items:flex-end;justify-content:center;z-index:40}
+  .sheet[hidden]{display:none}
+  .sheet .inner{width:100%;max-width:720px;max-height:86vh;overflow:auto;
+    background:#0b0d13;border:1px solid var(--line);border-top-left-radius:20px;border-top-right-radius:20px;
+    padding:20px 20px 30px}
+  .sheet h3{font-size:14px;margin:0 0 3px}
+  .sheet .sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 14px}
+  .pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;margin:12px 0 0}
+  .pick .p{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);
+    padding:9px 4px 7px;text-align:center;cursor:pointer}
+  .pick .p:hover{border-color:rgba(216,179,106,.5)}
+  .pick .p img{max-width:100%;max-height:42px}
+  .pick .p .t{font-size:9px;color:var(--ink-soft);margin-top:5px;line-height:1.3}
+  .prompt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--ink-soft);
+    border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0 0;
+    white-space:pre-wrap;word-break:break-word;max-height:120px;overflow:auto}
+  @media(max-width:520px){ .tiles{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))} }
 </style>
 </head>
 <body>
 <main>
-  <h1>Aura Menu</h1>
-  <p class="crumb"><a href="index.html">← demo</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
-  <p class="honest">A working sketch of the app pages, for play. Everything stays in this browser only. No default is sacred: your aura wears your icons.</p>
+  <h1>Aura</h1>
+  <p class="site"><a href="index.html">← demo</a> · <a href="icons.html">icon library</a> ·
+     <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
 
-  <div class="toolbar">
-    <button id="editIcons" type="button">Edit icons</button>
-    <button id="resetall" type="button">Reset this page</button>
+  <div class="bar">
+    <span class="grow"><input id="q" placeholder="Search the whole app"></span>
+    <button id="editBtn">Edit icons</button>
+    <button id="homeBtn">Home</button>
   </div>
 
-  <!-- ================= QuickStart Aura ================= -->
-  <section id="qs">
-    <div class="shead">
-      <span class="ico" data-icon="sec.qs"></span>
-      <div><h2>QuickStart Aura</h2>
-        <p class="sub">Build your aura step by step</p></div>
-    </div>
-    <div class="tiles">
-      <a class="tile" href="index.html"><span class="ico" data-icon="qs.guide"></span>Aura constructor</a>
-      <a class="tile" href="index.html"><span class="ico" data-icon="qs.torus"></span>Enter the torus</a>
-    </div>
-  </section>
+  <div class="trail" id="trail"></div>
+  <div id="view"></div>
 
-  <!-- ================= Quick Navigation ================= -->
-  <section id="qn">
-    <div class="shead">
-      <span class="ico" data-icon="sec.qn"></span>
-      <div><h2>Quick Navigation</h2>
-        <p class="sub">Build your favourite pages here for quick access</p></div>
-    </div>
-    <div id="qngrid"></div>
-    <div class="row" id="qnpicker" style="display:none">
-      <select id="qnselect"></select>
-      <button id="qnassign" type="button">Assign</button>
-      <button id="qncancel" type="button">Cancel</button>
-    </div>
-    <p class="note">User built quick navigation menus.</p>
+  <section>
+    <h2 style="font-size:14px;margin:0 0 4px">About this directory</h2>
+    <p class="note">This is the page list from the Aura workbook, laid out as the app would carry it: every section,
+      every group, every page and every item, each one addressable. Icons come from the original prototype screens
+      where a screen existed, and fall back to a plain glyph where one did not. Tap <b>Edit icons</b> and then any
+      icon to swap it for another from the library, upload your own, or copy a prompt and generate one. Your choices
+      live in this browser only. There is no account and nothing is uploaded.</p>
   </section>
-
-  <!-- ================= Site Map ================= -->
-  <section id="sitemap">
-    <div class="shead">
-      <span class="ico" data-icon="sec.map"></span>
-      <div><h2>Site Map</h2>
-        <p class="sub">Every page, one glance</p></div>
-    </div>
-    <div class="tiles" id="mapTiles"></div>
-  </section>
-
-  <!-- ================= Aura Menu · Social Web ================= -->
-  <section id="sw">
-    <div class="shead">
-      <span class="ico" data-icon="sec.sw"></span>
-      <div><h2>Aura Menu · Social Web</h2>
-        <p class="sub">Choose what your aura organises. Toggles are preferences only.</p></div>
-    </div>
-    <div class="tiles" id="swTiles"></div>
-    <div class="row">
-      <input id="swother" placeholder="Request a different platform">
-      <button id="swadd" type="button">Add</button>
-    </div>
-  </section>
-
-  <!-- ================= Aura Menu · Timing & Signals ================= -->
-  <section id="ts">
-    <div class="shead">
-      <span class="ico" data-icon="sec.ts"></span>
-      <div><h2>Aura Menu · Timing &amp; Signals</h2>
-        <p class="sub">Birthdays, age calculator, countdowns</p></div>
-    </div>
-    <div class="row" style="margin-top:0">
-      <input type="date" id="bday">
-      <button id="bdaysave" type="button">Save</button>
-    </div>
-    <div class="facts" id="tsfacts" style="display:none">
-      <div class="fact"><b id="fAge">–</b><span>years old</span></div>
-      <div class="fact"><b id="fDays">–</b><span>days to birthday</span></div>
-      <div class="fact"><b id="fSign">–</b><span>star sign</span></div>
-      <div class="fact"><b id="fDow">–</b><span>born on a</span></div>
-      <div class="fact"><b id="fHeart">–</b><span>heartbeats</span></div>
-      <div class="fact"><b id="fOrbits">–</b><span>orbits of the sun</span></div>
-    </div>
-  </section>
-
-  <!-- ================= Aura Menu · Matrix Programmer ================= -->
-  <section id="mp">
-    <div class="shead">
-      <span class="ico" data-icon="sec.mp"></span>
-      <div><h2>Aura Menu · Matrix Programmer</h2>
-        <p class="sub">Tool inventory, finite and infinite maps</p></div>
-    </div>
-    <div class="tiles" id="toolTiles"></div>
-    <p class="note">Move your lists, timelines and data sets into your personal space, then into the aura layers to form programs. The larger tori (24 by 45 up to 90 by 200) are the advanced ladder, listed here and not yet built.</p>
-  </section>
-
-  <!-- ================= System Preferences · Memory ================= -->
-  <section id="mem">
-    <div class="shead">
-      <span class="ico" data-icon="sec.mem"></span>
-      <div><h2>System Preferences · Memory</h2>
-        <p class="sub">Add a network or device for storage</p></div>
-    </div>
-    <div class="row" style="margin-top:0">
-      <input id="memname" placeholder="Device or place">
-      <input id="memgb" type="number" min="1" placeholder="GB" style="width:84px">
-      <button id="memadd" type="button">Add</button>
-    </div>
-    <div id="membars"></div>
-    <p class="note" id="memtotal"></p>
-  </section>
-
-  <!-- ================= Algorithms ================= -->
-  <!-- licence notice: see LICENCE.md — commercial rights reserved -->
-  <section id="alg">
-    <div class="shead">
-      <span class="ico" data-icon="sec.alg"></span>
-      <div><h2>Algorithms</h2>
-        <p class="sub">Planned capabilities. Switches record a preference; nothing runs here.</p></div>
-    </div>
-    <div class="tiles" id="algTiles"></div>
-  </section>
-
-  <p class="note" style="text-align:center">© Luke Nathan Hayes · Aura of Intelligence ·
-    <a href="https://github.com/auraofintelligence/aura-horn-torus/blob/main/LICENCE.md" style="color:var(--accent);text-decoration:none">Public Source Licence</a>:
-    non-commercial use free, commercial rights reserved.</p>
 </main>
 
-<div id="iconEd">
-  <span class="hint" id="icoHint">Tap any icon to make it yours</span>
-  <input id="icoText" placeholder="type one" maxlength="4">
-  <button id="icoApplyText" type="button">Use text</button>
-  <label class="on" style="padding:8px 13px;border-radius:9px;border:1px solid rgba(216,179,106,.5);cursor:pointer;font-size:12.5px">
-    Upload image<input id="icoFile" type="file" accept="image/*" style="display:none"></label>
-  <button id="icoReset" type="button">Default</button>
-  <button id="icoClose" type="button">Done</button>
+<div class="sheet" id="sheet" hidden>
+  <div class="inner">
+    <h3 id="pkName">Choose an icon</h3>
+    <p class="sub" id="pkPath"></p>
+    <div class="bar">
+      <span class="grow"><input id="pkQ" placeholder="Search the icon library"></span>
+      <button id="pkUpload">Upload</button>
+      <button id="pkClear">Use the default</button>
+      <button id="pkClose">Done</button>
+      <input id="pkFile" type="file" accept="image/*" hidden>
+    </div>
+    <div class="pick" id="pkGrid"></div>
+    <div class="prompt" id="pkPrompt" hidden></div>
+    <div class="bar" style="margin-top:10px">
+      <button id="pkCopy" hidden>Copy this prompt</button>
+      <a class="site" href="icons.html" style="margin:0 0 0 4px">open the full icon library →</a>
+    </div>
+  </div>
 </div>
 
+<script src="assets/pages.js"></script>
+<script src="assets/icons.js"></script>
 <script>
 (function(){
-'use strict';
-var LS = 'aura.app.';
-function load(k, d){ try{ var v = localStorage.getItem(LS + k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }
-function save(k, v){ try{ localStorage.setItem(LS + k, JSON.stringify(v)); }catch(e){} }
-
-/* ================= icons: defaults are a starting skin, never the law ===== */
-var SVGS = {
-  'sec.qs':   '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
-  'qs.guide': '<path d="M4 5h16v12H4z"/><path d="M9 17l-2 3M15 17l2 3"/><path d="M8 9h8M8 12h5"/>',
-  'qs.torus': '<ellipse cx="12" cy="12" rx="9" ry="5"/><ellipse cx="12" cy="12" rx="3" ry="1.5"/>',
-  'sec.qn':   '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
-  'sec.map':  '<path d="M9 4L4 6v14l5-2 6 2 5-2V4l-5 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
-  'sec.sw':   '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
-  'sec.ts':   '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><circle cx="15" cy="15" r="2.5"/>',
-  'sec.mp':   '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9h16M4 14h16M9 4v16M14 4v16"/>',
-  'sec.mem':  '<rect x="4" y="7" width="16" height="10" rx="2"/><circle cx="8" cy="12" r="1.2"/><path d="M12 12h5"/>',
-  'sec.alg':  '<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/>',
-  'tool.Lists':'<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
-  'tool.Timelines':'<path d="M3 12h18"/><circle cx="7" cy="12" r="2"/><circle cx="14" cy="12" r="2"/><circle cx="20" cy="12" r="1.4"/>',
-  'tool.Memory Palace':'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>',
-  'tool.Tool Inventory':'<path d="M14 6a4 4 0 1 0-4 6l-6 6 2 2 6-6a4 4 0 0 0 6-4z"/>',
-  'tool.Finite Map':'<rect x="4" y="6" width="16" height="12" rx="1"/><path d="M4 12h16M12 6v12"/>',
-  'tool.Infinite Map':'<path d="M8 12c0-2 1.5-3.5 3.5-3.5S15 10 15 12s-1.5 3.5-3.5 3.5S8 14 8 12z"/><path d="M2 12c2-5 6-5 8 0s6 5 8 0"/>',
-  'tool.Enter the Matrix':'<ellipse cx="12" cy="12" rx="9" ry="5"/><path d="M12 3v18"/>',
-  'tool.Advanced Ladder':'<path d="M8 3v18M16 3v18M8 7h8M8 12h8M8 17h8"/>',
-  'alg.Gaze Tracking':'<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/>',
-  'alg.Face Recognition':'<circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M9 15c1.5 1.5 4.5 1.5 6 0"/>',
-  'alg.Object Detection':'<path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/><rect x="9" y="9" width="6" height="6" rx="1"/>',
-  'alg.Hand Tracking':'<path d="M8 13V6a1.5 1.5 0 0 1 3 0v5V4a1.5 1.5 0 0 1 3 0v7V6a1.5 1.5 0 0 1 3 0v9a6 6 0 0 1-6 6 6 6 0 0 1-6-6v-3a1.5 1.5 0 0 1 3 0z"/>',
-  'alg.Recommendations':'<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
-  'alg.Nearby Friends':'<circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.2"/><path d="M4 20c0-3 2.5-5 5-5s5 2 5 5M14.5 20c0-2.4 1.4-4 3-4s3 1.6 3 4"/>',
-  'alg.Navigation Pathfinder':'<path d="M5 20c8 0 2-13 10-13"/><circle cx="5" cy="20" r="1.6"/><path d="M15 4l4 3-4 3z"/>',
-  'alg.Multi-Stop Journey Planner':'<path d="M4 19c4 0 3-6 7-6s3-6 7-6"/><circle cx="4" cy="19" r="1.6"/><circle cx="11" cy="13" r="1.6"/><circle cx="18" cy="7" r="1.6"/>',
-  'alg.Anomaly Detection':'<path d="M12 3l10 18H2z"/><path d="M12 10v5"/><circle cx="12" cy="18" r="0.4"/>',
-  'dest': '<path d="M5 12h14M13 6l6 6-6 6"/>',
-  'plat': '<circle cx="12" cy="12" r="9"/>'
-};
-var icons = load('icons', {});
-function svgFor(key){
-  var body = SVGS[key] || SVGS[key.split('.')[0]] || SVGS['dest'];
-  return '<svg viewBox="0 0 24 24">' + body + '</svg>';
-}
-function letterGlyph(key){
-  var name = key.split('.').slice(1).join('.');
-  return name ? name.slice(0, 1).toUpperCase() : '?';
-}
-function renderIcon(el){
-  var key = el.getAttribute('data-icon');
-  var ov = icons[key];
-  if(ov && ov.t === 'img'){ el.innerHTML = '<img alt="">'; el.querySelector('img').src = ov.v; }
-  else if(ov && ov.t === 'txt'){ el.innerHTML = '<span class="glyph"></span>'; el.querySelector('.glyph').textContent = ov.v; }
-  else if(SVGS[key]){ el.innerHTML = svgFor(key); }
-  else if(key.indexOf('plat.') === 0){ el.innerHTML = '<span class="glyph"></span>'; el.querySelector('.glyph').textContent = letterGlyph(key); }
-  else { el.innerHTML = svgFor(key); }
-}
-function renderAllIcons(){
-  document.querySelectorAll('[data-icon]').forEach(renderIcon);
-}
-function makeIco(key, small){
-  var s = document.createElement('span');
-  s.className = 'ico' + (small ? ' small' : '');
-  s.setAttribute('data-icon', key);
-  renderIcon(s);
-  return s;
-}
-
-/* icon editor */
-var edMode = false, edKey = null;
-var edPanel = document.getElementById('iconEd');
-document.getElementById('editIcons').addEventListener('click', function(){
-  edMode = !edMode;
-  this.classList.toggle('on', edMode);
-  document.body.classList.toggle('editicons', edMode);
-  edPanel.classList.toggle('open', edMode);
-  if(!edMode) edKey = null;
-});
-document.addEventListener('click', function(e){
-  if(!edMode) return;
-  var ic = e.target.closest ? e.target.closest('[data-icon]') : null;
-  if(!ic) return;
-  e.preventDefault(); e.stopPropagation();
-  edKey = ic.getAttribute('data-icon');
-  document.getElementById('icoHint').textContent = 'Editing: ' + edKey;
-}, true);
-function saveIcons(){ save('icons', icons); renderAllIcons(); }
-document.getElementById('icoApplyText').addEventListener('click', function(){
-  var v = document.getElementById('icoText').value.trim();
-  if(!edKey || !v) return;
-  icons[edKey] = {t:'txt', v:v};
-  saveIcons();
-});
-document.getElementById('icoFile').addEventListener('change', function(e){
-  var f = e.target.files && e.target.files[0];
-  if(!f || !edKey) return;
-  var rd = new FileReader();
-  rd.onload = function(){
-    var img = new Image();
-    img.onload = function(){
-      var c = document.createElement('canvas');
-      c.width = c.height = 96;
-      var x = c.getContext('2d');
-      var s = Math.min(img.width, img.height);
-      x.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, 96, 96);
-      icons[edKey] = {t:'img', v:c.toDataURL('image/jpeg', 0.82)};
-      saveIcons();
-    };
-    img.src = rd.result;
+  var PAGES  = (window.AURA_PAGES && window.AURA_PAGES.sections) || [];
+  var ICONS  = (window.AURA_ICONS && window.AURA_ICONS.icons) || [];
+  var ASSIGN = (window.AURA_ICONS && window.AURA_ICONS.assign) || {};
+  var HOW    = (window.AURA_ICONS && window.AURA_ICONS.assignBy) || {};
+  var HOWTXT = {
+    screen: 'This icon was cut from the prototype screen for this page.',
+    child:  'Borrowed from a page beneath this one, because this one had no screen of its own.',
+    name:   'Matched by wording alone, not taken from this page. A rough guess worth replacing.'
   };
-  rd.readAsDataURL(f);
-  e.target.value = '';
-});
-document.getElementById('icoReset').addEventListener('click', function(){
-  if(!edKey) return;
-  delete icons[edKey];
-  saveIcons();
-});
-document.getElementById('icoClose').addEventListener('click', function(){
-  document.getElementById('editIcons').click();
-});
+  var KEY = 'aura.app.icons.v2';
+  var mine = load(), editing = false;
 
-/* ================= QuickStart / destinations ================= */
-var DESTS = [
-  {n:'Demo', h:'index.html'},
-  {n:'Tables', h:'tables.html'},
-  {n:'Geometry', h:'geometry.html'},
-  {n:'About', h:'about.html'},
-  {n:'Social Web', h:'#sw'},
-  {n:'Timing & Signals', h:'#ts'},
-  {n:'Matrix Programmer', h:'#mp'},
-  {n:'Memory', h:'#mem'},
-  {n:'Algorithms', h:'#alg'}
-];
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(mine)); }catch(e){} }
+  function el(id){ return document.getElementById(id); }
+  function slug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+  var byId = {}; ICONS.forEach(function(i){ byId[i.id] = i; });
 
-/* Quick Navigation */
-var qn = load('qn', new Array(25).fill(null));
-var qnGrid = document.getElementById('qngrid');
-var picker = document.getElementById('qnpicker');
-var pickSlot = -1;
-var sel = document.getElementById('qnselect');
-DESTS.forEach(function(d, i){
-  var o = document.createElement('option');
-  o.value = i; o.textContent = d.n;
-  sel.appendChild(o);
-});
-function renderQn(){
-  qnGrid.innerHTML = '';
-  qn.forEach(function(v, i){
-    var s = document.createElement('div');
-    s.className = 'slot' + (v !== null ? ' filled' : '');
-    if(v !== null){
-      s.appendChild(makeIco('dest.' + DESTS[v].n, true));
-      var lab = document.createElement('span');
-      lab.textContent = DESTS[v].n;
-      s.appendChild(lab);
+  /* a glyph for anything with no picture, so no tile is ever bare */
+  var WORDS = [
+    [/chakra|crown|root|sacral|solar/i,'🔆'], [/torus|matrix|lattice|program/i,'🌀'],
+    [/map|place|travel|world|earth|geo|region|oceania|asia|africa|europe|america/i,'🗺'],
+    [/birthday|celebrat|party|gift|congratul/i,'🎁'], [/time|clock|timer|countdown|schedul|calendar|date/i,'⏱'],
+    [/family|mother|father|brother|sister|ancest|partner|friend|people|person/i,'👥'],
+    [/social|facebook|instagram|twitter|tiktok|linked|pinterest|youtube/i,'💬'],
+    [/memory|remember|recall|journal|note/i,'🧠'], [/algorithm|ai|machine|learn|model|comput/i,'⚙'],
+    [/data|upload|api|embed|analys|set|inventory/i,'🗄'], [/health|heart|body|breath|weight|medic/i,'❤'],
+    [/music|film|tv|game|book|art|media|show/i,'🎬'], [/money|market|token|crypt|blockchain|trade|shop/i,'🪙'],
+    [/star|celestial|astro|zodiac|moon|solar|meteor|constellat|satellite|space/i,'✦'],
+    [/weather|climate|rain|storm/i,'🌦'], [/goal|wish|bucket|dream|vision|milestone/i,'🎯'],
+    [/security|privacy|permission|lock|encrypt/i,'🔒'], [/search|find|discover|explore/i,'🔍'],
+    [/avatar|face|pose|expression|ratio/i,'🧍'], [/palace|home|house|room|build|estate|resort/i,'🏠'],
+    [/vr|virtual|reality|glasses|immers/i,'🥽'], [/preference|setting|system|option|config/i,'🎚'],
+    [/advertis|sponsor|ad\b/i,'📣'], [/iot|device|sensor|network|connect/i,'📡'],
+    [/member|join|sign|account|profile/i,'🪪'], [/learn|course|study|skill|educat|instruct/i,'📚'],
+    [/work|task|project|team|product/i,'🧰'], [/community|civic|volunt|neighbour|neighbor|public/i,'🤝'],
+    [/plant|garden|nature|environment|tree|water/i,'🌿'], [/list|favourite|favorite|value|virtue/i,'📋']
+  ];
+  function glyphFor(name){
+    for(var i=0;i<WORDS.length;i++) if(WORDS[i][0].test(name)) return WORDS[i][1];
+    return '◇';
+  }
+
+  function iconHTML(key, name, small){
+    var custom = mine[key], id = ASSIGN[key], ic = id && byId[id];
+    var cls = 'ico' + (small ? ' sm' : '');
+    var body;
+    if(custom)   body = '<img alt="" src="' + custom + '">';
+    else if(ic)  body = '<img alt="" loading="lazy" src="' + ic.file + '">';
+    else         body = '<span class="glyph">' + glyphFor(name) + '</span>';
+    return '<span class="' + cls + '" data-key="' + key + '" data-name="' + esc(name) + '">' + body +
+           (custom ? '<span class="mine"></span>' : '') + '</span>';
+  }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+  /* ---------- routing: every directory has its own address ---------- */
+  function route(){
+    var h = (location.hash || '').replace(/^#\/?/, '');
+    return h ? h.split('/').filter(Boolean) : [];
+  }
+  function go(parts){ location.hash = '#/' + parts.join('/'); }
+
+  function findSection(s){ return PAGES.filter(function(x){ return x.slug === s; })[0]; }
+  function findGroup(S, g){ return S ? S.groups.filter(function(x){ return x.slug === g; })[0] : null; }
+  function findPage(G, p){ return G ? G.pages.filter(function(x){ return x.slug === p; })[0] : null; }
+
+  function tile(key, name, sub, onclick){
+    var a = document.createElement('a');
+    a.className = 'tile'; a.href = 'javascript:void(0)';
+    a.innerHTML = iconHTML(key, name) + '<span class="cap">' + esc(name) + '</span>' +
+                  (sub ? '<span class="n">' + esc(sub) + '</span>' : '');
+    a.onclick = function(e){
+      var ico = e.target.closest && e.target.closest('.ico');
+      if(editing && ico){ e.preventDefault(); openPicker(key, name); return; }
+      if(onclick) onclick();
+    };
+    return a;
+  }
+
+  function panel(title, sub, key){
+    var s = document.createElement('section');
+    s.innerHTML = '<div class="shead">' + iconHTML(key || ('h/' + slug(title)), title, true) +
+      '<div><h2>' + esc(title) + '</h2>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '') + '</div></div>';
+    var grid = document.createElement('div'); grid.className = 'tiles';
+    s.appendChild(grid); s._grid = grid;
+    return s;
+  }
+
+  function render(){
+    var r = route(), v = el('view'); v.innerHTML = '';
+    var t = el('trail');
+    var crumbs = [['Aura', []]];
+    var S = findSection(r[0]), G = findGroup(S, r[1]), P = findPage(G, r[2]);
+    if(S) crumbs.push([S.name, [S.slug]]);
+    if(G) crumbs.push([G.name, [S.slug, G.slug]]);
+    if(P) crumbs.push([P.name, [S.slug, G.slug, P.slug]]);
+    t.innerHTML = '';
+    crumbs.forEach(function(c, i){
+      if(i) t.insertAdjacentHTML('beforeend', '<span class="sep">›</span>');
+      if(i === crumbs.length - 1){ t.insertAdjacentHTML('beforeend', '<span class="here">' + esc(c[0]) + '</span>'); }
+      else { var a = document.createElement('a'); a.textContent = c[0];
+             a.onclick = function(){ go(c[1]); }; t.appendChild(a); }
+    });
+
+    if(P){                                   /* a page: its items */
+      var sec = panel(P.name, P.items.length + (P.items.length === 1 ? ' entry' : ' entries') +
+        ' under ' + G.name, [S.slug, G.slug, P.slug].join('/'));
+      P.items.forEach(function(it){
+        sec._grid.appendChild(tile([S.slug, G.slug, P.slug, slug(it)].join('/'), it, null, null));
+      });
+      if(!P.items.length) sec._grid.outerHTML = '<p class="empty">A single page with no entries beneath it.</p>';
+      v.appendChild(sec);
+      return;
     }
-    var x = document.createElement('span');
-    x.className = 'x'; x.textContent = '×';
-    x.addEventListener('click', function(e){
-      e.stopPropagation();
-      qn[i] = null; save('qn', qn); renderQn();
+    if(G){                                   /* a group: its pages */
+      var sec2 = panel(G.name, G.pages.length + ' pages in ' + S.name, [S.slug, G.slug].join('/'));
+      G.pages.forEach(function(p){
+        sec2._grid.appendChild(tile([S.slug, G.slug, p.slug].join('/'), p.name,
+          p.items.length ? p.items.length + ' inside' : null,
+          function(){ go([S.slug, G.slug, p.slug]); }));
+      });
+      v.appendChild(sec2);
+      if(G.more && G.more.length){
+        var m = panel('Also under ' + G.name, 'Named in the workbook, not yet given a page of their own',
+          [S.slug, G.slug, 'more'].join('/'));
+        G.more.forEach(function(it){
+          m._grid.appendChild(tile([S.slug, G.slug, 'more', slug(it)].join('/'), it, null, null));
+        });
+        v.appendChild(m);
+      }
+      if(!G.pages.length && !(G.more || []).length)
+        v.appendChild(document.createRange().createContextualFragment('<p class="empty">A single page with nothing beneath it.</p>'));
+      return;
+    }
+    if(S){                                   /* a section: its groups */
+      var sec3 = panel(S.name, S.groups.length + ' groups', S.slug);
+      S.groups.forEach(function(g){
+        var n = g.pages.length + (g.more || []).length;
+        sec3._grid.appendChild(tile([S.slug, g.slug].join('/'), g.name, n ? n + ' inside' : null,
+          function(){ go([S.slug, g.slug]); }));
+      });
+      if(!S.groups.length) sec3._grid.outerHTML = '<p class="empty">This section is a single page.</p>';
+      v.appendChild(sec3);
+      return;
+    }
+    /* home */
+    var home = panel('Aura', PAGES.length + ' sections, ' + count() + ' addressable names', 'home');
+    PAGES.forEach(function(s){
+      home._grid.appendChild(tile(s.slug, s.name, s.groups.length ? s.groups.length + ' groups' : null,
+        function(){ go([s.slug]); }));
     });
-    s.appendChild(x);
-    s.addEventListener('click', function(){
-      if(edMode) return;
-      if(qn[i] !== null){ location.href = DESTS[qn[i]].h; return; }
-      pickSlot = i; picker.style.display = 'flex';
+    v.appendChild(home);
+  }
+
+  function count(){
+    var n = 0;
+    PAGES.forEach(function(S){
+      n++;
+      S.groups.forEach(function(G){
+        n++; G.pages.forEach(function(P){ n += 1 + P.items.length; });
+        n += (G.more || []).length;
+      });
     });
-    qnGrid.appendChild(s);
-  });
-}
-document.getElementById('qnassign').addEventListener('click', function(){
-  if(pickSlot >= 0){ qn[pickSlot] = parseInt(sel.value, 10); save('qn', qn); }
-  picker.style.display = 'none'; pickSlot = -1; renderQn();
-});
-document.getElementById('qncancel').addEventListener('click', function(){
-  picker.style.display = 'none'; pickSlot = -1;
-});
-renderQn();
+    return n;
+  }
 
-/* Site Map */
-var mapBox = document.getElementById('mapTiles');
-DESTS.forEach(function(d){
-  var a = document.createElement('a');
-  a.className = 'tile';
-  a.href = d.h;
-  a.appendChild(makeIco('dest.' + d.n, false));
-  a.appendChild(document.createTextNode(d.n));
-  a.addEventListener('click', function(e){ if(edMode) e.preventDefault(); });
-  mapBox.appendChild(a);
-});
-
-/* ================= Social Web (his batch, first in the Aura Menu) ======== */
-var PLATFORMS = ['Facebook','X / Twitter','Instagram','TikTok','LinkedIn','Pinterest',
-  'YouTube','Family Tree','Dating Apps','Trello','A Small World','MyHeritage'];
-var swState = load('sw', {on:[], extra:[]});
-var swBox = document.getElementById('swTiles');
-function renderSw(){
-  swBox.innerHTML = '';
-  PLATFORMS.concat(swState.extra).forEach(function(p){
-    var t = document.createElement('div');
-    t.className = 'tile' + (swState.on.indexOf(p) !== -1 ? ' on' : ' dim');
-    t.appendChild(makeIco('plat.' + p, false));
-    t.appendChild(document.createTextNode(p));
-    t.addEventListener('click', function(){
-      if(edMode) return;
-      var i = swState.on.indexOf(p);
-      if(i === -1) swState.on.push(p); else swState.on.splice(i, 1);
-      save('sw', swState); renderSw();
+  /* ---------- search across everything ---------- */
+  function search(q){
+    q = q.toLowerCase(); var hits = [];
+    PAGES.forEach(function(S){
+      if(S.name.toLowerCase().indexOf(q) >= 0) hits.push({k:S.slug, n:S.name, w:'section', go:[S.slug]});
+      S.groups.forEach(function(G){
+        var gk = [S.slug, G.slug].join('/');
+        if(G.name.toLowerCase().indexOf(q) >= 0) hits.push({k:gk, n:G.name, w:S.name, go:[S.slug, G.slug]});
+        G.pages.forEach(function(P){
+          var pk = [S.slug, G.slug, P.slug].join('/');
+          if(P.name.toLowerCase().indexOf(q) >= 0) hits.push({k:pk, n:P.name, w:S.name + ' · ' + G.name, go:[S.slug, G.slug, P.slug]});
+          P.items.forEach(function(it){
+            if(it.toLowerCase().indexOf(q) >= 0)
+              hits.push({k:pk + '/' + slug(it), n:it, w:G.name + ' · ' + P.name, go:[S.slug, G.slug, P.slug]});
+          });
+        });
+        (G.more || []).forEach(function(it){
+          if(it.toLowerCase().indexOf(q) >= 0)
+            hits.push({k:gk + '/more/' + slug(it), n:it, w:S.name + ' · ' + G.name, go:[S.slug, G.slug]});
+        });
+      });
     });
-    swBox.appendChild(t);
-  });
-}
-document.getElementById('swadd').addEventListener('click', function(){
-  var v = document.getElementById('swother').value.trim();
-  if(!v || swState.extra.indexOf(v) !== -1) return;
-  swState.extra.push(v); swState.on.push(v);
-  document.getElementById('swother').value = '';
-  save('sw', swState); renderSw();
-});
-renderSw();
+    return hits;
+  }
 
-/* ================= Timing & Signals ================= */
-var SIGNS = [
-  ['Capricorn', 120], ['Aquarius', 219], ['Pisces', 321], ['Aries', 420],
-  ['Taurus', 521], ['Gemini', 621], ['Cancer', 723], ['Leo', 823],
-  ['Virgo', 923], ['Libra', 1023], ['Scorpio', 1122], ['Sagittarius', 1222], ['Capricorn', 1231]
-];
-function starSign(d){
-  var md = (d.getMonth() + 1) * 100 + d.getDate();
-  for(var i = 0; i < SIGNS.length; i++) if(md <= SIGNS[i][1]) return SIGNS[i][0];
-  return 'Capricorn';
-}
-function showSignals(iso){
-  var d = new Date(iso + 'T00:00:00');
-  if(isNaN(d)) return;
-  var now = new Date();
-  var age = now.getFullYear() - d.getFullYear();
-  if(now.getMonth() < d.getMonth() ||
-     (now.getMonth() === d.getMonth() && now.getDate() < d.getDate())) age--;
-  var next = new Date(now.getFullYear(), d.getMonth(), d.getDate());
-  if(next < now) next = new Date(now.getFullYear() + 1, d.getMonth(), d.getDate());
-  var days = Math.ceil((next - now) / 86400000);
-  var lived = Math.floor((now - d) / 86400000);
-  document.getElementById('fAge').textContent = age;
-  document.getElementById('fDays').textContent = days >= 365 ? 'today!' : days;
-  document.getElementById('fSign').textContent = starSign(d);
-  document.getElementById('fDow').textContent = d.toLocaleDateString('en-AU', {weekday:'long'});
-  document.getElementById('fHeart').textContent = (lived * 1440 * 70 / 1e9).toFixed(1) + ' billion';
-  document.getElementById('fOrbits').textContent = (lived / 365.25).toFixed(1);
-  document.getElementById('tsfacts').style.display = 'grid';
-}
-var savedBday = load('bday', null);
-if(savedBday){ document.getElementById('bday').value = savedBday; showSignals(savedBday); }
-document.getElementById('bdaysave').addEventListener('click', function(){
-  var v = document.getElementById('bday').value;
-  if(!v) return;
-  save('bday', v); showSignals(v);
-});
-
-/* ================= Matrix Programmer tools ================= */
-var TOOLS = [
-  ['Tool Inventory', null],
-  ['Lists', null],
-  ['Timelines', null],
-  ['Memory Palace', null],
-  ['Finite Map', 'tables.html'],
-  ['Infinite Map', 'geometry.html'],
-  ['Enter the Matrix', 'index.html'],
-  ['Advanced Ladder', null]
-];
-var tt = document.getElementById('toolTiles');
-TOOLS.forEach(function(t){
-  var el = document.createElement(t[1] ? 'a' : 'div');
-  el.className = 'tile';
-  if(t[1]) el.href = t[1];
-  el.appendChild(makeIco('tool.' + t[0], false));
-  el.appendChild(document.createTextNode(t[0]));
-  if(t[1]) el.addEventListener('click', function(e){ if(edMode) e.preventDefault(); });
-  tt.appendChild(el);
-});
-
-/* ================= Memory ================= */
-var mem = load('mem', [{n:'This browser', gb:1}]);
-function renderMem(){
-  var box = document.getElementById('membars');
-  box.innerHTML = '';
-  var max = Math.max.apply(null, mem.map(function(m){ return m.gb; }).concat([1]));
-  var total = 0;
-  mem.forEach(function(m, i){
-    total += m.gb;
-    var row = document.createElement('div');
-    row.className = 'bar';
-    row.innerHTML = '<span class="lab"></span><span class="track"><span class="fill"></span></span>' +
-      '<span class="gb"></span>';
-    row.querySelector('.lab').textContent = m.n;
-    row.querySelector('.fill').style.width = (m.gb / max * 100) + '%';
-    row.querySelector('.gb').textContent = m.gb + ' GB';
-    var del = document.createElement('button');
-    del.className = 'del'; del.type = 'button'; del.textContent = '×';
-    del.addEventListener('click', function(){ mem.splice(i, 1); save('mem', mem); renderMem(); });
-    row.appendChild(del);
-    box.appendChild(row);
-  });
-  document.getElementById('memtotal').textContent =
-    'Memory storage per location · ' + total + ' GB across ' + mem.length +
-    (mem.length === 1 ? ' location' : ' locations') + '.';
-}
-document.getElementById('memadd').addEventListener('click', function(){
-  var n = document.getElementById('memname').value.trim();
-  var gb = parseInt(document.getElementById('memgb').value, 10);
-  if(!n || !gb || gb < 1) return;
-  mem.push({n:n, gb:gb});
-  document.getElementById('memname').value = '';
-  document.getElementById('memgb').value = '';
-  save('mem', mem); renderMem();
-});
-renderMem();
-
-/* ================= Algorithms — his list, his order ================= */
-var ALGOS = ['Gaze Tracking','Face Recognition','Object Detection','Hand Tracking',
-  'Recommendations','Nearby Friends','Navigation Pathfinder','Multi-Stop Journey Planner',
-  'Anomaly Detection'];
-var alg = load('alg', []);
-var ag = document.getElementById('algTiles');
-function renderAlg(){
-  ag.innerHTML = '';
-  ALGOS.forEach(function(a){
-    var t = document.createElement('div');
-    t.className = 'tile' + (alg.indexOf(a) !== -1 ? ' on' : ' dim');
-    t.appendChild(makeIco('alg.' + a, false));
-    t.appendChild(document.createTextNode(a));
-    t.addEventListener('click', function(){
-      if(edMode) return;
-      var i = alg.indexOf(a);
-      if(i === -1) alg.push(a); else alg.splice(i, 1);
-      save('alg', alg); renderAlg();
+  el('q').oninput = function(){
+    var q = this.value.trim();
+    if(!q){ render(); return; }
+    var hits = search(q), v = el('view');
+    v.innerHTML = '';
+    var sec = panel('Search', hits.length + ' matches for “' + q + '”', 'search');
+    hits.slice(0, 120).forEach(function(h){
+      sec._grid.appendChild(tile(h.k, h.n, h.w, function(){ go(h.go); el('q').value = ''; }));
     });
-    ag.appendChild(t);
-  });
-}
-renderAlg();
+    v.appendChild(sec);
+    if(hits.length > 120) v.insertAdjacentHTML('beforeend', '<p class="count">Showing the first 120.</p>');
+    if(!hits.length) v.innerHTML = '<p class="empty">Nothing in the directory matches that.</p>';
+  };
 
-/* reset */
-document.getElementById('resetall').addEventListener('click', function(){
-  ['qn','bday','sw','mem','alg','icons'].forEach(function(k){ localStorage.removeItem(LS + k); });
-  location.reload();
-});
+  /* ---------- icon picker ---------- */
+  var pkKey = null;
+  function openPicker(key, name){
+    pkKey = key;
+    el('pkName').textContent = name;
+    el('pkPath').textContent = key.split('/').join(' › ');
+    el('pkQ').value = ''; drawPick('');
+    var id = ASSIGN[key], ic = id && byId[id];
+    el('pkPrompt').hidden = !ic; el('pkCopy').hidden = !ic;
+    if(ic) el('pkPrompt').textContent =
+      (HOWTXT[HOW[key]] || '') + '\n\nNow showing: ' + ic.name + '. ' + ic.desc +
+      '\n\nPrompt\n' + (ic.prompt || '').replace('{STYLE}', 'in my own style');
+    el('sheet').hidden = false;
+  }
+  function drawPick(q){
+    q = q.toLowerCase();
+    var list = ICONS.filter(function(i){
+      return !q || (i.name + ' ' + (i.desc || '') + ' ' + (i.category || '')).toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 96);
+    var g = el('pkGrid'); g.innerHTML = '';
+    list.forEach(function(i){
+      var d = document.createElement('div');
+      d.className = 'p';
+      d.innerHTML = '<img loading="lazy" alt="" src="' + i.file + '"><div class="t">' + esc(i.name) + '</div>';
+      d.onclick = function(){
+        var img = new Image();
+        img.onload = function(){
+          var c = document.createElement('canvas');
+          var s = Math.min(1, 128 / Math.max(img.width, img.height));
+          c.width = Math.max(1, img.width * s); c.height = Math.max(1, img.height * s);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          try{ mine[pkKey] = c.toDataURL('image/png'); }catch(e){ mine[pkKey] = i.file; }
+          save(); render(); el('sheet').hidden = true;
+        };
+        img.onerror = function(){ mine[pkKey] = i.file; save(); render(); el('sheet').hidden = true; };
+        img.src = i.file;
+      };
+      g.appendChild(d);
+    });
+    if(!list.length) g.innerHTML = '<p class="empty">No icon in the library matches that.</p>';
+  }
+  el('pkQ').oninput = function(){ drawPick(this.value.trim()); };
+  el('pkUpload').onclick = function(){ el('pkFile').click(); };
+  el('pkFile').onchange = function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){ mine[pkKey] = r.result; save(); render(); el('sheet').hidden = true; };
+    r.readAsDataURL(f); e.target.value = '';
+  };
+  el('pkClear').onclick = function(){ delete mine[pkKey]; save(); render(); el('sheet').hidden = true; };
+  el('pkClose').onclick = function(){ el('sheet').hidden = true; };
+  el('sheet').onclick = function(e){ if(e.target === this) this.hidden = true; };
+  el('pkCopy').onclick = function(){
+    var t = el('pkPrompt').textContent, b = this;
+    var done = function(){ b.textContent = 'Copied'; setTimeout(function(){ b.textContent = 'Copy this prompt'; }, 1300); };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(done, done); else done();
+  };
 
-renderAllIcons();
+  el('editBtn').onclick = function(){
+    editing = !editing;
+    document.body.classList.toggle('editing', editing);
+    this.classList.toggle('on', editing);
+    this.textContent = editing ? 'Done editing' : 'Edit icons';
+  };
+  el('homeBtn').onclick = function(){ el('q').value = ''; location.hash = ''; render(); };
+  window.addEventListener('hashchange', render);
+
+  if(!PAGES.length){
+    el('view').innerHTML = '<p class="empty">The directory data file has not been built yet.</p>';
+  } else render();
 })();
 </script>
 </body>

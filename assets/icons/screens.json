@@ -1,0 +1,1861 @@
+[
+ {
+  "id": "s001",
+  "src": "Screenshot 2026-07-06 135316.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s002",
+  "src": "Screenshot 2026-07-06 135339.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s003",
+  "src": "Screenshot 2026-07-06 135420.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s004",
+  "src": "Screenshot 2026-07-06 135448.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s005",
+  "src": "Screenshot 2026-07-06 135501.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s006",
+  "src": "Screenshot 2026-07-06 135642.png",
+  "rect": [
+   936,
+   101,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 891,
+  "fallback": false
+ },
+ {
+  "id": "s007",
+  "src": "Screenshot 2026-07-06 135648.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s008",
+  "src": "Screenshot 2026-07-06 135654.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s009",
+  "src": "Screenshot 2026-07-06 135658.png",
+  "rect": [
+   900,
+   82,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s010",
+  "src": "Screenshot 2026-07-06 135705.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s011",
+  "src": "Screenshot 2026-07-06 135710.png",
+  "rect": [
+   900,
+   82,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s012",
+  "src": "Screenshot 2026-07-06 135717.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s013",
+  "src": "Screenshot 2026-07-06 135719.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s014",
+  "src": "Screenshot 2026-07-06 135724.png",
+  "rect": [
+   1007,
+   82,
+   1500,
+   992
+  ],
+  "w": 493,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s015",
+  "src": "Screenshot 2026-07-06 135730.png",
+  "rect": [
+   900,
+   82,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s016",
+  "src": "Screenshot 2026-07-06 135734.png",
+  "rect": [
+   900,
+   82,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s017",
+  "src": "Screenshot 2026-07-06 135749.png",
+  "rect": [
+   900,
+   81,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 911,
+  "fallback": false
+ },
+ {
+  "id": "s018",
+  "src": "Screenshot 2026-07-06 135755.png",
+  "rect": [
+   900,
+   82,
+   1500,
+   992
+  ],
+  "w": 600,
+  "h": 910,
+  "fallback": false
+ },
+ {
+  "id": "s019",
+  "src": "Screenshot 2026-07-06 135804.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s020",
+  "src": "Screenshot 2026-07-06 135810.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s021",
+  "src": "Screenshot 2026-07-06 135819.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s022",
+  "src": "Screenshot 2026-07-06 135836.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s023",
+  "src": "Screenshot 2026-07-06 135842.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s024",
+  "src": "Screenshot 2026-07-06 135847.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s025",
+  "src": "Screenshot 2026-07-06 135852.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s026",
+  "src": "Screenshot 2026-07-06 135901.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s027",
+  "src": "Screenshot 2026-07-06 135909.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s028",
+  "src": "Screenshot 2026-07-06 135917.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s029",
+  "src": "Screenshot 2026-07-06 135925.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s030",
+  "src": "Screenshot 2026-07-06 135933.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s031",
+  "src": "Screenshot 2026-07-06 135938.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s032",
+  "src": "Screenshot 2026-07-06 135944.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s033",
+  "src": "Screenshot 2026-07-06 135952.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s034",
+  "src": "Screenshot 2026-07-06 140001.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s035",
+  "src": "Screenshot 2026-07-06 140007.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s036",
+  "src": "Screenshot 2026-07-06 140013.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s037",
+  "src": "Screenshot 2026-07-06 140019.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s038",
+  "src": "Screenshot 2026-07-06 140023.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s039",
+  "src": "Screenshot 2026-07-06 140029.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s040",
+  "src": "Screenshot 2026-07-06 140113.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s041",
+  "src": "Screenshot 2026-07-06 140122.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s042",
+  "src": "Screenshot 2026-07-06 140126.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s043",
+  "src": "Screenshot 2026-07-06 140137.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s044",
+  "src": "Screenshot 2026-07-06 140147.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s045",
+  "src": "Screenshot 2026-07-06 140156.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s046",
+  "src": "Screenshot 2026-07-06 140229.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s047",
+  "src": "Screenshot 2026-07-06 140236.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s048",
+  "src": "Screenshot 2026-07-06 140242.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s049",
+  "src": "Screenshot 2026-07-06 140301.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s050",
+  "src": "Screenshot 2026-07-06 140306.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s051",
+  "src": "Screenshot 2026-07-06 140311.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s052",
+  "src": "Screenshot 2026-07-06 140319.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s053",
+  "src": "Screenshot 2026-07-06 140325.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s054",
+  "src": "Screenshot 2026-07-06 140331.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s055",
+  "src": "Screenshot 2026-07-06 140338.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s056",
+  "src": "Screenshot 2026-07-06 140344.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s057",
+  "src": "Screenshot 2026-07-06 140350.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s058",
+  "src": "Screenshot 2026-07-06 140355.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s059",
+  "src": "Screenshot 2026-07-06 140359.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s060",
+  "src": "Screenshot 2026-07-06 140406.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s061",
+  "src": "Screenshot 2026-07-06 140413.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s062",
+  "src": "Screenshot 2026-07-06 140419.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s063",
+  "src": "Screenshot 2026-07-06 140426.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s064",
+  "src": "Screenshot 2026-07-06 140433.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s065",
+  "src": "Screenshot 2026-07-06 140444.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s066",
+  "src": "Screenshot 2026-07-06 140450.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s067",
+  "src": "Screenshot 2026-07-06 140501.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s068",
+  "src": "Screenshot 2026-07-06 140511.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s069",
+  "src": "Screenshot 2026-07-06 140521.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s070",
+  "src": "Screenshot 2026-07-06 140529.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s071",
+  "src": "Screenshot 2026-07-06 140535.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s072",
+  "src": "Screenshot 2026-07-06 140541.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s073",
+  "src": "Screenshot 2026-07-06 140547.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s074",
+  "src": "Screenshot 2026-07-06 140552.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s075",
+  "src": "Screenshot 2026-07-06 140600.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s076",
+  "src": "Screenshot 2026-07-06 140605.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s077",
+  "src": "Screenshot 2026-07-06 140610.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s078",
+  "src": "Screenshot 2026-07-06 140619.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s079",
+  "src": "Screenshot 2026-07-06 140622.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s080",
+  "src": "Screenshot 2026-07-06 140628.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s081",
+  "src": "Screenshot 2026-07-06 140634.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s082",
+  "src": "Screenshot 2026-07-06 140638.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s083",
+  "src": "Screenshot 2026-07-06 140646.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s084",
+  "src": "Screenshot 2026-07-06 140650.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s085",
+  "src": "Screenshot 2026-07-06 140658.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s086",
+  "src": "Screenshot 2026-07-06 140706.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s087",
+  "src": "Screenshot 2026-07-06 140716.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s088",
+  "src": "Screenshot 2026-07-06 140723.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s089",
+  "src": "Screenshot 2026-07-06 140741.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s090",
+  "src": "Screenshot 2026-07-06 140748.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s091",
+  "src": "Screenshot 2026-07-06 140751.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s092",
+  "src": "Screenshot 2026-07-06 140755.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s093",
+  "src": "Screenshot 2026-07-06 140803.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": true
+ },
+ {
+  "id": "s094",
+  "src": "Screenshot 2026-07-06 140808.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s095",
+  "src": "Screenshot 2026-07-06 140814.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s096",
+  "src": "Screenshot 2026-07-06 140821.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s097",
+  "src": "Screenshot 2026-07-06 140825.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s098",
+  "src": "Screenshot 2026-07-06 140830.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s099",
+  "src": "Screenshot 2026-07-06 140835.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s100",
+  "src": "Screenshot 2026-07-06 140841.png",
+  "rect": [
+   975,
+   135,
+   1347,
+   992
+  ],
+  "w": 372,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s101",
+  "src": "Screenshot 2026-07-06 140847.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s102",
+  "src": "Screenshot 2026-07-06 140850.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s103",
+  "src": "Screenshot 2026-07-06 140900.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s104",
+  "src": "Screenshot 2026-07-06 140905.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s105",
+  "src": "Screenshot 2026-07-06 140908.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s106",
+  "src": "Screenshot 2026-07-06 140914.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s107",
+  "src": "Screenshot 2026-07-06 140921.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s108",
+  "src": "Screenshot 2026-07-06 140925.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s109",
+  "src": "Screenshot 2026-07-06 140930.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s110",
+  "src": "Screenshot 2026-07-06 140937.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s111",
+  "src": "Screenshot 2026-07-06 140942.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s112",
+  "src": "Screenshot 2026-07-06 140948.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s113",
+  "src": "Screenshot 2026-07-06 140956.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s114",
+  "src": "Screenshot 2026-07-06 141005.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s115",
+  "src": "Screenshot 2026-07-06 141011.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s116",
+  "src": "Screenshot 2026-07-06 141020.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s117",
+  "src": "Screenshot 2026-07-06 141026.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s118",
+  "src": "Screenshot 2026-07-06 141035.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s119",
+  "src": "Screenshot 2026-07-06 141042.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s120",
+  "src": "Screenshot 2026-07-06 141047.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s121",
+  "src": "Screenshot 2026-07-06 141056.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s122",
+  "src": "Screenshot 2026-07-06 141101.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s123",
+  "src": "Screenshot 2026-07-06 141107.png",
+  "rect": [
+   936,
+   135,
+   1384,
+   992
+  ],
+  "w": 448,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s124",
+  "src": "Screenshot 2026-07-06 141117.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s125",
+  "src": "Screenshot 2026-07-06 141125.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s126",
+  "src": "Screenshot 2026-07-06 141136.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s127",
+  "src": "Screenshot 2026-07-06 141144.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s128",
+  "src": "Screenshot 2026-07-06 141149.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s129",
+  "src": "Screenshot 2026-07-06 141217.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s130",
+  "src": "Screenshot 2026-07-06 141222.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s131",
+  "src": "Screenshot 2026-07-06 141227.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s132",
+  "src": "Screenshot 2026-07-06 141233.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s133",
+  "src": "Screenshot 2026-07-06 141237.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s134",
+  "src": "Screenshot 2026-07-06 141242.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s135",
+  "src": "Screenshot 2026-07-06 141250.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s136",
+  "src": "Screenshot 2026-07-06 141254.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s137",
+  "src": "Screenshot 2026-07-06 141300.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s138",
+  "src": "Screenshot 2026-07-06 141306.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s139",
+  "src": "Screenshot 2026-07-06 141313.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s140",
+  "src": "Screenshot 2026-07-06 141318.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s141",
+  "src": "Screenshot 2026-07-06 141324.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s142",
+  "src": "Screenshot 2026-07-06 141331.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ },
+ {
+  "id": "s143",
+  "src": "Screenshot 2026-07-06 141337.png",
+  "rect": [
+   936,
+   135,
+   1386,
+   992
+  ],
+  "w": 450,
+  "h": 857,
+  "fallback": false
+ }
+]

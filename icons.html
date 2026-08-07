@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon library · Aura Horn Torus</title>
+<style>
+  :root{
+    --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
+    --panel:rgba(12,14,20,.62); --accent:#d8b36a; --glow:rgba(216,179,106,.35);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--ink);
+    background:radial-gradient(ellipse at 50% 18%, #12151f 0%, #05060a 72%);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;line-height:1.55}
+  main{max-width:1080px;margin:0 auto;padding:40px 20px 100px}
+  h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+  .crumb{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+  .crumb a{color:var(--accent);text-decoration:none}
+  .lede{font-size:13px;color:var(--ink-soft);max-width:64ch;margin:0 0 22px}
+  button,input,select,textarea{font:500 12.5px/1.35 inherit;color:var(--ink)}
+  button{padding:8px 13px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);cursor:pointer}
+  button:hover{border-color:rgba(216,179,106,.45)}
+  button.on{background:rgba(216,179,106,.16);color:var(--accent);border-color:rgba(216,179,106,.5)}
+  input,select,textarea{padding:8px 11px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);width:100%}
+  input::placeholder,textarea::placeholder{color:var(--ink-soft)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 18px}
+  h2{font-size:14px;margin:0 0 4px}
+  .sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 12px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .bar .grow{flex:1 1 220px;min-width:180px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
+  .chip{padding:5px 10px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);font-size:11px;cursor:pointer;color:var(--ink-soft)}
+  .chip.on{color:var(--accent);border-color:rgba(216,179,106,.5);background:rgba(216,179,106,.12)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;margin:14px 0 0}
+  .cell{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);
+    padding:10px 6px 9px;text-align:center;cursor:pointer}
+  .cell:hover{border-color:rgba(216,179,106,.45)}
+  .cell.on{border-color:rgba(216,179,106,.7);background:rgba(216,179,106,.1)}
+  .cell .box{height:66px;display:flex;align-items:center;justify-content:center;margin:0 0 7px}
+  .cell img{max-width:100%;max-height:66px;image-rendering:auto}
+  .cell .nm{font-size:10.5px;line-height:1.35;color:var(--ink)}
+  .cell .id{font-size:9.5px;color:var(--ink-soft);letter-spacing:.06em}
+  .detail{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start}
+  .detail .shot{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.04);
+    padding:14px;display:flex;align-items:center;justify-content:center;min-height:130px}
+  .detail img{max-width:100%;max-height:150px}
+  .kv{font-size:12px;color:var(--ink-soft);margin:0 0 8px}
+  .kv b{color:var(--ink);font-weight:600}
+  label{display:block;font-size:11px;color:var(--ink-soft);margin:12px 0 5px;
+    letter-spacing:.08em;text-transform:uppercase}
+  textarea{min-height:92px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+  .note{font-size:11px;color:var(--ink-soft);line-height:1.55;margin:12px 0 0}
+  .count{font-size:11px;color:var(--ink-soft);margin:10px 0 0}
+  .empty{font-size:12px;color:var(--ink-soft);padding:22px 0;text-align:center}
+  @media(max-width:640px){ .detail{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<main>
+  <h1>Icon library</h1>
+  <p class="crumb"><a href="index.html">← demo</a> · <a href="app.html">app</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+  <p class="lede">Every icon here was cut out of the original Aura prototype screens, then named and described so
+  it can be swapped for one of your own. Pick an icon to read its description, set your own style, and copy a
+  prompt you can run through an image generator. Nothing is fixed: the library is a starting set, not a house style.</p>
+
+  <section>
+    <h2>Your style</h2>
+    <p class="sub">One line, written once. It is added to the end of every prompt below, so a whole icon set comes
+      out in the same hand.</p>
+    <input id="style" placeholder="for example: soft hand drawn ink, warm ochre and charcoal, paper texture, no outline box">
+    <div class="bar" style="margin-top:10px">
+      <button id="saveStyle">Save style</button>
+      <button id="exportSet">Export my set</button>
+      <button id="importSet">Import a set</button>
+      <input id="importFile" type="file" accept="application/json" hidden>
+    </div>
+    <p class="note" id="styleNote">Saved in this browser only. Nothing leaves the page.</p>
+  </section>
+
+  <section>
+    <h2>Browse</h2>
+    <div class="bar">
+      <span class="grow"><input id="q" placeholder="Search name, description or screen id"></span>
+      <button id="onlyMine">Only my replacements</button>
+    </div>
+    <div class="chips" id="cats"></div>
+    <p class="count" id="count"></p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="detailWrap" hidden>
+    <h2 id="dName">–</h2>
+    <p class="sub" id="dMeta"></p>
+    <div class="detail">
+      <div>
+        <div class="shot"><img id="dImg" alt=""></div>
+        <div class="bar" style="margin-top:10px">
+          <button id="replace">Replace</button>
+          <button id="revert">Revert</button>
+        </div>
+        <input id="repFile" type="file" accept="image/*" hidden>
+      </div>
+      <div>
+        <p class="kv" id="dDesc"></p>
+        <p class="kv" id="dWhere"></p>
+        <label for="dPrompt">Generation prompt</label>
+        <textarea id="dPrompt" readonly></textarea>
+        <div class="bar" style="margin-top:9px">
+          <button id="copyPrompt">Copy prompt</button>
+          <button id="copyAll">Copy prompts for everything shown</button>
+        </div>
+        <p class="note">The prompt describes the subject only. Your style line is added at the end, so the same
+          subject can come back as a pencil sketch, a glass panel or a woodcut without touching the app.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How the library was made</h2>
+    <p class="sub">Kept short and honest, because it changes how much you should trust each entry.</p>
+    <p class="note">The screens came from the Aura prototype. A script found the artwork on each screen and cut it
+      out, duplicates were folded together so a shared icon like the back arrow appears once, and each remaining
+      cut-out was described by a reading pass. Sizes are the original pixel sizes. The "seen on" count tells you how
+      widely an icon was used in the prototype, which is a fair guide to how central it is. Some entries are rough:
+      where a cut-out was unclear the description says so rather than inventing a meaning.</p>
+  </section>
+</main>
+
+<script src="assets/icons.js"></script>
+<script>
+(function(){
+  var LIB = (window.AURA_ICONS && window.AURA_ICONS.icons) || [];
+  var KEY = 'aura.icons.personal';
+  var store = load();
+
+  function load(){
+    try{ return JSON.parse(localStorage.getItem(KEY)) || {style:'', custom:{}}; }
+    catch(e){ return {style:'', custom:{}}; }
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+  function el(id){ return document.getElementById(id); }
+  function src(ic){ return store.custom[ic.id] || ic.file; }
+  function prompt(ic){
+    var s = (store.style || '').trim();
+    return (ic.prompt || '').replace('{STYLE}', s || 'Match the style of the rest of my icon set.');
+  }
+
+  /* ---- filters ---- */
+  var cats = [], curCat = 'all', mineOnly = false;
+  LIB.forEach(function(i){ if(cats.indexOf(i.category) < 0 && i.category) cats.push(i.category); });
+  cats.sort();
+  var catBox = el('cats');
+  ['all'].concat(cats).forEach(function(c){
+    var b = document.createElement('span');
+    b.className = 'chip' + (c === 'all' ? ' on' : '');
+    b.textContent = c === 'all' ? 'everything' : c;
+    b.onclick = function(){
+      curCat = c;
+      [].forEach.call(catBox.children, function(x){ x.classList.remove('on'); });
+      b.classList.add('on'); draw();
+    };
+    catBox.appendChild(b);
+  });
+
+  function shown(){
+    var q = el('q').value.trim().toLowerCase();
+    return LIB.filter(function(i){
+      if(curCat !== 'all' && i.category !== curCat) return false;
+      if(mineOnly && !store.custom[i.id]) return false;
+      if(!q) return true;
+      return (i.name + ' ' + (i.desc||'') + ' ' + i.id + ' ' + (i.screens||[]).join(' ')).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+
+  var sel = null;
+  function draw(){
+    var list = shown(), g = el('grid');
+    g.innerHTML = '';
+    el('count').textContent = list.length + ' of ' + LIB.length + ' icons' +
+      (Object.keys(store.custom).length ? ' · ' + Object.keys(store.custom).length + ' replaced by you' : '');
+    if(!list.length){ g.innerHTML = '<p class="empty">Nothing matches that.</p>'; return; }
+    list.forEach(function(ic){
+      var c = document.createElement('div');
+      c.className = 'cell' + (sel && sel.id === ic.id ? ' on' : '');
+      c.innerHTML = '<div class="box"><img loading="lazy" alt=""></div>' +
+        '<div class="nm"></div><div class="id"></div>';
+      c.querySelector('img').src = src(ic);
+      c.querySelector('.nm').textContent = ic.name;
+      c.querySelector('.id').textContent = ic.id + (store.custom[ic.id] ? ' · yours' : '');
+      c.onclick = function(){ sel = ic; draw(); show(ic); };
+      g.appendChild(c);
+    });
+  }
+
+  function show(ic){
+    el('detailWrap').hidden = false;
+    el('dName').textContent = ic.name;
+    el('dMeta').textContent = ic.id + ' · ' + ic.category + ' · ' + ic.w + ' by ' + ic.h + ' pixels · seen on ' +
+      ic.uses + (ic.uses === 1 ? ' screen' : ' screens');
+    el('dImg').src = src(ic);
+    el('dDesc').innerHTML = '<b>What it shows.</b> ' + (ic.desc || 'No description recorded.');
+    el('dWhere').innerHTML = '<b>Where it came from.</b> ' +
+      ((ic.pages && ic.pages.length) ? ic.pages.join(' · ')
+        : 'Screens ' + (ic.screens || []).slice(0, 6).join(', ') + ((ic.screens || []).length > 6 ? ' and more' : ''));
+    el('dPrompt').value = prompt(ic);
+    el('detailWrap').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  /* ---- style ---- */
+  el('style').value = store.style || '';
+  el('saveStyle').onclick = function(){
+    store.style = el('style').value; save();
+    el('styleNote').textContent = 'Style saved. Every prompt now ends with it.';
+    if(sel) show(sel);
+  };
+
+  /* ---- replace with your own ---- */
+  el('replace').onclick = function(){ el('repFile').click(); };
+  el('repFile').onchange = function(e){
+    var f = e.target.files[0]; if(!f || !sel) return;
+    var r = new FileReader();
+    r.onload = function(){ store.custom[sel.id] = r.result; save(); show(sel); draw(); };
+    r.readAsDataURL(f);
+    e.target.value = '';
+  };
+  el('revert').onclick = function(){
+    if(!sel) return;
+    delete store.custom[sel.id]; save(); show(sel); draw();
+  };
+
+  /* ---- copy and carry ---- */
+  function copy(t, btn, label){
+    var done = function(){ var o = btn.textContent; btn.textContent = label; setTimeout(function(){ btn.textContent = o; }, 1300); };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(done, done);
+    else { var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select();
+           try{ document.execCommand('copy'); }catch(e){} a.remove(); done(); }
+  }
+  el('copyPrompt').onclick = function(){ if(sel) copy(prompt(sel), this, 'Copied'); };
+  el('copyAll').onclick = function(){
+    var t = shown().map(function(i){ return i.id + '  ' + i.name + '\n' + prompt(i); }).join('\n\n');
+    copy(t, this, 'Copied ' + shown().length);
+  };
+  el('onlyMine').onclick = function(){ mineOnly = !mineOnly; this.classList.toggle('on', mineOnly); draw(); };
+  el('q').oninput = draw;
+
+  el('exportSet').onclick = function(){
+    var blob = new Blob([JSON.stringify(store, null, 1)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'aura-icon-set.json'; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  };
+  el('importSet').onclick = function(){ el('importFile').click(); };
+  el('importFile').onchange = function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try{
+        var v = JSON.parse(r.result);
+        store.style = v.style || store.style;
+        Object.keys(v.custom || {}).forEach(function(k){ store.custom[k] = v.custom[k]; });
+        save(); el('style').value = store.style || ''; draw(); if(sel) show(sel);
+        el('styleNote').textContent = 'Set imported.';
+      }catch(err){ el('styleNote').textContent = 'That file could not be read as an icon set.'; }
+    };
+    r.readAsText(f); e.target.value = '';
+  };
+
+  if(!LIB.length){
+    el('grid').innerHTML = '<p class="empty">The icon data file has not been built yet.</p>';
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
