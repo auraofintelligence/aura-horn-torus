@@ -8,111 +8,113 @@
   :root{
     --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
     --panel:rgba(12,14,20,.62); --accent:#d8b36a; --glow:rgba(216,179,106,.35);
+    /* the app's own colours, taken off the prototype screens */
+    --app-bg:#ffffff; --app-ink:#1c1c1c; --app-line:#c8c8c8; --app-soft:#6a6a6a;
+    --app-grey:#808080;
   }
   *{box-sizing:border-box}
   body{margin:0;min-height:100vh;color:var(--ink);
-    background:radial-gradient(ellipse at 50% 16%, #12151f 0%, #05060a 72%);
+    background:radial-gradient(ellipse at 50% 14%, #12151f 0%, #05060a 72%);
     font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;line-height:1.55}
-  main{max-width:960px;margin:0 auto;padding:36px 20px 110px}
+  main{max-width:1100px;margin:0 auto;padding:32px 20px 90px}
   h1{font-size:15px;font-weight:650;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
   .site{font-size:13px;color:var(--ink-soft);margin:0 0 18px}
   .site a{color:var(--accent);text-decoration:none}
-  button,input,select{font:500 12.5px/1.3 inherit;color:var(--ink)}
+  button,input{font:500 12.5px/1.3 inherit;color:var(--ink)}
   button{padding:8px 13px;border-radius:9px;border:1px solid var(--line);
     background:rgba(255,255,255,.05);cursor:pointer}
   button:hover{border-color:rgba(216,179,106,.45)}
-  button.on{background:rgba(216,179,106,.16);color:var(--accent);border-color:rgba(216,179,106,.5);
-    box-shadow:0 0 10px var(--glow)}
-  input{padding:9px 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);width:100%}
+  button.on{background:rgba(216,179,106,.16);color:var(--accent);border-color:rgba(216,179,106,.5)}
+  input{padding:9px 12px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);width:100%}
   input::placeholder{color:var(--ink-soft)}
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 18px}
+  .bar .grow{flex:1 1 220px;min-width:170px}
 
-  /* the bar that never moves */
-  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
-  .bar .grow{flex:1 1 240px;min-width:170px}
+  /* ------- the stage: the app on the left, what we know about it on the right ------- */
+  .stage{display:grid;grid-template-columns:392px 1fr;gap:26px;align-items:start}
+  @media(max-width:900px){ .stage{grid-template-columns:1fr} }
 
-  /* trail */
-  .trail{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin:0 0 14px}
+  /* ------- the app itself, drawn the way the prototype draws it ------- */
+  .phone{width:392px;max-width:100%;background:#2f2f2f;border-radius:22px;padding:16px;
+    box-shadow:0 22px 60px rgba(0,0,0,.5);position:sticky;top:20px}
+  @media(max-width:900px){ .phone{position:static;margin:0 auto} }
+  .screen{background:var(--app-bg);border-radius:4px;overflow:hidden;
+    display:flex;flex-direction:column;min-height:640px;position:relative}
+  .statusbar{background:#000;color:#fff;font-size:10px;display:flex;justify-content:flex-end;
+    gap:7px;align-items:center;padding:4px 9px;letter-spacing:.02em;flex:0 0 auto}
+  .statusbar .dot{opacity:.85}
+  .appbody{flex:1 1 auto;padding:16px 14px 8px;color:var(--app-ink);
+    display:flex;flex-direction:column;position:relative}
+  .qs{position:absolute;top:8px;right:10px;width:44px;z-index:2}
+  .qs img{width:100%;display:block}
+  .apptitle{font-size:24px;line-height:1.2;text-align:center;font-weight:400;
+    color:var(--app-ink);margin:6px 26px 12px;letter-spacing:-.01em}
+  .apptitle.small{font-size:19px}
+  .hero{display:flex;justify-content:center;margin:2px 0 14px}
+  .hero img{max-width:60%;max-height:132px;object-fit:contain}
+  .appnote{font-size:12px;color:var(--app-ink);text-align:center;margin:0 6px 14px;line-height:1.5}
+  .rows{display:flex;flex-direction:column;gap:8px;margin:0 2px}
+  .rows.boxed{border:1px solid var(--app-line);border-radius:4px;padding:9px;gap:7px}
+  .rw{border:1px solid var(--app-line);border-radius:5px;background:#fff;color:var(--app-ink);
+    padding:9px 11px;font-size:12.5px;text-align:left;cursor:pointer;text-decoration:none;
+    display:flex;align-items:center;gap:9px;line-height:1.35}
+  .rw:hover{border-color:#8a8a8a;background:#fafafa}
+  .rw.centre{justify-content:center;text-align:center}
+  .rw img{width:22px;height:22px;object-fit:contain;flex:0 0 auto}
+  .rw .chev{margin-left:auto;color:#b0b0b0;font-size:14px}
+  .rw.flat{cursor:default}
+  .rw.flat:hover{border-color:var(--app-line);background:#fff}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px}
+  .g3{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;
+    border-radius:8px;cursor:pointer;text-decoration:none;color:var(--app-ink);font-size:10.5px;
+    text-align:center;line-height:1.3}
+  .g3:hover{background:#f2f2f2}
+  .g3 img{width:52px;height:52px;object-fit:contain}
+  .g3 .ph{width:52px;height:52px;border:1px solid var(--app-line);border-radius:8px}
+  .appfoot{display:flex;align-items:center;justify-content:space-around;
+    padding:12px 18px 16px;flex:0 0 auto}
+  .nav{background:none;border:0;padding:6px;cursor:pointer;line-height:0}
+  .nav svg{width:34px;height:34px;fill:var(--app-grey)}
+  .nav:disabled{opacity:.22;cursor:default}
+  .homebar{height:5px;width:110px;background:#d5d5d5;border-radius:3px;margin:0 auto 10px}
+  body.editing .hero img, body.editing .rw img, body.editing .g3 img,
+  body.editing .g3 .ph{outline:2px dashed rgba(216,179,106,.9);outline-offset:2px;cursor:pointer}
+
+  /* ------- the panel beside it: what the app itself does not carry ------- */
+  aside section{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:17px;margin:0 0 15px}
+  aside h2{font-size:13.5px;margin:0 0 3px}
+  aside .sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 11px}
+  .trail{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px;margin:0 0 14px}
   .trail a{color:var(--accent);text-decoration:none;cursor:pointer}
-  .trail span.sep{color:var(--ink-soft)}
-  .trail span.here{color:var(--ink-soft)}
-
-  section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 18px}
-  .shead{display:flex;align-items:flex-start;gap:13px;margin:0 0 14px}
-  .shead h2{font-size:15px;margin:0}
-  .shead .sub{font-size:11.5px;color:var(--ink-soft);margin:2px 0 0}
-
-  /* every tile carries an icon. That is the point. */
-  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
-  .tile{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;
-    padding:14px 8px 12px;border:1px solid var(--line);border-radius:15px;cursor:pointer;
-    background:rgba(255,255,255,.02);font-size:11.5px;color:var(--ink);text-decoration:none;
-    transition:border-color .15s,transform .15s}
-  .tile:hover{border-color:rgba(216,179,106,.45);transform:translateY(-1px)}
-  .tile .cap{line-height:1.35}
-  .tile .n{font-size:10px;color:var(--ink-soft)}
-  .ico{width:52px;height:52px;flex:0 0 auto;border-radius:14px;overflow:hidden;
-    border:1px solid var(--line);background:rgba(255,255,255,.04);
-    display:flex;align-items:center;justify-content:center;position:relative}
-  .ico img{max-width:82%;max-height:82%;object-fit:contain}
-  .ico .glyph{font-size:24px;line-height:1}
-  .ico.sm{width:38px;height:38px;border-radius:11px}
-  .ico.sm .glyph{font-size:18px}
-  body.editing .tile .ico{outline:2px dashed rgba(216,179,106,.65);outline-offset:2px}
-  .mine{position:absolute;right:2px;bottom:2px;width:7px;height:7px;border-radius:50%;
-    background:var(--accent);box-shadow:0 0 6px var(--glow)}
-
-  .note{font-size:11px;color:var(--ink-soft);line-height:1.55;margin:14px 0 0}
-  .empty{font-size:12px;color:var(--ink-soft);padding:20px 0;text-align:center}
-  /* the page itself, when you have arrived rather than passed through */
-  .hero{display:flex;gap:16px;align-items:flex-start}
-  .hero .ico{width:84px;height:84px;border-radius:20px}
-  .hero .ico .glyph{font-size:38px}
-  .hero h2{font-size:19px;margin:2px 0 3px;letter-spacing:-.01em}
-  .hero .where{font-size:11.5px;color:var(--ink-soft)}
-  .hero .desc{font-size:12.5px;color:var(--ink-soft);margin:9px 0 0;max-width:60ch}
-  .prov{font-size:11px;color:var(--ink-soft);margin:10px 0 0;padding:8px 11px;border-radius:9px;
-    border:1px solid var(--line);background:rgba(255,255,255,.02);max-width:66ch}
-  .shots{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0 0}
-  .shot{width:210px}
-  .shot img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#fff}
-  .shot .cap{font-size:10.5px;color:var(--ink-soft);margin:6px 0 0;line-height:1.4}
-  /* what the page holds, straight off the prototype */
-  .body{font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;max-width:62ch;line-height:1.6}
-  .holds{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px}
-  .hold{display:flex;gap:9px;align-items:baseline;padding:9px 12px;border-radius:10px;
-    border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:12px;line-height:1.4}
-  .hold .b{width:5px;height:5px;flex:0 0 auto;border-radius:50%;background:var(--accent);
-    opacity:.65;transform:translateY(-2px)}
-  /* the address on the lattice */
-  .addrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-  .addr{display:flex;flex-direction:column;gap:3px;padding:14px 15px;border-radius:14px;
+  .trail span.sep,.trail span.here{color:var(--ink-soft)}
+  .addrs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:520px){ .addrs{grid-template-columns:1fr} }
+  .addr{display:flex;flex-direction:column;gap:2px;padding:12px 13px;border-radius:12px;
     border:1px solid var(--line);background:rgba(255,255,255,.02);text-decoration:none;color:var(--ink)}
   .addr:hover{border-color:rgba(216,179,106,.5)}
-  .addr .t{font-size:10px;color:var(--ink-soft);letter-spacing:.09em;text-transform:uppercase}
-  .addr .a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:var(--accent);
-    letter-spacing:.02em;margin:2px 0}
+  .addr .t{font-size:9.5px;color:var(--ink-soft);letter-spacing:.09em;text-transform:uppercase}
+  .addr .a{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:var(--accent);margin:2px 0}
   .addr.in{border-left:2px solid rgba(216,179,106,.55)}
   .addr.out{border-left:2px solid rgba(140,170,220,.5)}
   .addr.out .a{color:#9dbbe8}
-  .sibs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0}
-  .sib{display:flex;align-items:center;gap:7px;padding:6px 11px 6px 7px;border-radius:999px;
-    border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:11px;
-    color:var(--ink-soft);cursor:pointer;text-decoration:none}
-  .sib:hover{border-color:rgba(216,179,106,.45);color:var(--ink)}
-  .sib.on{color:var(--accent);border-color:rgba(216,179,106,.5);background:rgba(216,179,106,.1)}
-  .sib .ico{width:24px;height:24px;border-radius:8px}
-  .sib .ico .glyph{font-size:13px}
-  .count{font-size:11px;color:var(--ink-soft);margin:12px 0 0}
+  .links{display:flex;flex-wrap:wrap;gap:6px}
+  .lk{padding:6px 11px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.02);font-size:11px;color:var(--ink-soft);cursor:pointer;text-decoration:none}
+  .lk:hover{border-color:rgba(216,179,106,.45);color:var(--ink)}
+  .note{font-size:11px;color:var(--ink-soft);line-height:1.55;margin:10px 0 0}
+  .shots{display:flex;gap:10px;flex-wrap:wrap}
+  .shots img{width:118px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer}
 
   /* icon picker */
   .sheet{position:fixed;inset:0;background:rgba(3,4,7,.72);backdrop-filter:blur(6px);
     display:flex;align-items:flex-end;justify-content:center;z-index:40}
   .sheet[hidden]{display:none}
-  .sheet .inner{width:100%;max-width:720px;max-height:86vh;overflow:auto;
-    background:#0b0d13;border:1px solid var(--line);border-top-left-radius:20px;border-top-right-radius:20px;
-    padding:20px 20px 30px}
+  .sheet .inner{width:100%;max-width:720px;max-height:86vh;overflow:auto;background:#0b0d13;
+    border:1px solid var(--line);border-radius:20px 20px 0 0;padding:20px 20px 30px}
   .sheet h3{font-size:14px;margin:0 0 3px}
-  .sheet .sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 14px}
+  .sheet .sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 12px}
   .pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;margin:12px 0 0}
   .pick .p{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);
     padding:9px 4px 7px;text-align:center;cursor:pointer}
@@ -120,9 +122,9 @@
   .pick .p img{max-width:100%;max-height:42px}
   .pick .p .t{font-size:9px;color:var(--ink-soft);margin-top:5px;line-height:1.3}
   .prompt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--ink-soft);
-    border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0 0;
-    white-space:pre-wrap;word-break:break-word;max-height:120px;overflow:auto}
-  @media(max-width:520px){ .tiles{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))} }
+    border:1px solid var(--line);border-radius:10px;padding:10px;margin:12px 0 0;white-space:pre-wrap;
+    word-break:break-word;max-height:130px;overflow:auto}
+  .empty{font-size:12px;color:var(--ink-soft);padding:18px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -134,20 +136,22 @@
   <div class="bar">
     <span class="grow"><input id="q" placeholder="Search the whole app"></span>
     <button id="editBtn">Edit icons</button>
+    <button id="origBtn">Show the original</button>
     <button id="homeBtn">Home</button>
   </div>
 
-  <div class="trail" id="trail"></div>
-  <div id="view"></div>
+  <div class="stage">
+    <div class="phone">
+      <div class="screen">
+        <div class="statusbar"><span class="dot">▮▮▯</span><span class="dot">▰</span><span>02:18 PM</span></div>
+        <div class="appbody" id="appbody"></div>
+        <div class="appfoot" id="appfoot"></div>
+        <div class="homebar"></div>
+      </div>
+    </div>
 
-  <section>
-    <h2 style="font-size:14px;margin:0 0 4px">About this directory</h2>
-    <p class="note">This is the page list from the Aura workbook, laid out as the app would carry it: every section,
-      every group, every page and every item, each one addressable. Icons come from the original prototype screens
-      where a screen existed, and fall back to a plain glyph where one did not. Tap <b>Edit icons</b> and then any
-      icon to swap it for another from the library, upload your own, or copy a prompt and generate one. Your choices
-      live in this browser only. There is no account and nothing is uploaded.</p>
-  </section>
+    <aside id="aside"></aside>
+  </div>
 </main>
 
 <div class="sheet" id="sheet" hidden>
@@ -176,363 +180,375 @@
 <script src="assets/holds.js"></script>
 <script>
 (function(){
-  var PAGES  = (window.AURA_PAGES && window.AURA_PAGES.sections) || [];
-  var ICONS  = (window.AURA_ICONS && window.AURA_ICONS.icons) || [];
-  var ASSIGN = (window.AURA_ICONS && window.AURA_ICONS.assign) || {};
-  var HOW    = (window.AURA_ICONS && window.AURA_ICONS.assignBy) || {};
+  var PAGES   = (window.AURA_PAGES && window.AURA_PAGES.sections) || [];
+  var ICONS   = (window.AURA_ICONS && window.AURA_ICONS.icons) || [];
+  var ASSIGN  = (window.AURA_ICONS && window.AURA_ICONS.assign) || {};
+  var HOW     = (window.AURA_ICONS && window.AURA_ICONS.assignBy) || {};
   var SCREENS = (window.AURA_ICONS && window.AURA_ICONS.screens) || {};
   var SCRDIR  = (window.AURA_ICONS && window.AURA_ICONS.screenDir) || 'assets/screens/';
   var REL     = window.AURA_REL || {shells:[], registers:{}, related:{}, note:''};
-  var REG     = REL.registers || {};
-  var RELATED = REL.related || {};
   var HOLDS   = (window.AURA_HOLDS && window.AURA_HOLDS.pages) || {};
-  var HOWTXT = {
-    screen: 'This icon was cut from the prototype screen for this page.',
-    child:  'Borrowed from a page beneath this one, because this one had no screen of its own.',
-    name:   'Matched by wording alone, not taken from this page. A rough guess worth replacing.'
-  };
   var KEY = 'aura.app.icons.v2';
-  var mine = load(), editing = false;
+  var mine = load(), editing = false, showOrig = false;
 
   function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(mine)); }catch(e){} }
   function el(id){ return document.getElementById(id); }
   function slug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
   var byId = {}; ICONS.forEach(function(i){ byId[i.id] = i; });
 
-  /* a glyph for anything with no picture, so no tile is ever bare */
-  var WORDS = [
-    [/chakra|crown|root|sacral|solar/i,'🔆'], [/torus|matrix|lattice|program/i,'🌀'],
-    [/map|place|travel|world|earth|geo|region|oceania|asia|africa|europe|america/i,'🗺'],
-    [/birthday|celebrat|party|gift|congratul/i,'🎁'], [/time|clock|timer|countdown|schedul|calendar|date/i,'⏱'],
-    [/family|mother|father|brother|sister|ancest|partner|friend|people|person/i,'👥'],
-    [/social|facebook|instagram|twitter|tiktok|linked|pinterest|youtube/i,'💬'],
-    [/memory|remember|recall|journal|note/i,'🧠'], [/algorithm|ai|machine|learn|model|comput/i,'⚙'],
-    [/data|upload|api|embed|analys|set|inventory/i,'🗄'], [/health|heart|body|breath|weight|medic/i,'❤'],
-    [/music|film|tv|game|book|art|media|show/i,'🎬'], [/money|market|token|crypt|blockchain|trade|shop/i,'🪙'],
-    [/star|celestial|astro|zodiac|moon|solar|meteor|constellat|satellite|space/i,'✦'],
-    [/weather|climate|rain|storm/i,'🌦'], [/goal|wish|bucket|dream|vision|milestone/i,'🎯'],
-    [/security|privacy|permission|lock|encrypt/i,'🔒'], [/search|find|discover|explore/i,'🔍'],
-    [/avatar|face|pose|expression|ratio/i,'🧍'], [/palace|home|house|room|build|estate|resort/i,'🏠'],
-    [/vr|virtual|reality|glasses|immers/i,'🥽'], [/preference|setting|system|option|config/i,'🎚'],
-    [/advertis|sponsor|ad\b/i,'📣'], [/iot|device|sensor|network|connect/i,'📡'],
-    [/member|join|sign|account|profile/i,'🪪'], [/learn|course|study|skill|educat|instruct/i,'📚'],
-    [/work|task|project|team|product/i,'🧰'], [/community|civic|volunt|neighbour|neighbor|public/i,'🤝'],
-    [/plant|garden|nature|environment|tree|water/i,'🌿'], [/list|favourite|favorite|value|virtue/i,'📋']
-  ];
-  function glyphFor(name){
-    for(var i=0;i<WORDS.length;i++) if(WORDS[i][0].test(name)) return WORDS[i][1];
-    return '◇';
+  /* An icon only stands in for a page if it was actually cut from that page.
+     A guess by wording is not good enough to put on the app itself: it is
+     offered in the panel beside instead, where it can be labelled as a guess. */
+  function realIcon(key){
+    var c = mine[key];
+    if(c) return {src:c, mine:true};
+    var id = ASSIGN[key];
+    if(id && byId[id] && (HOW[key] === 'screen' || HOW[key] === 'child'))
+      return {src:byId[id].file, mine:false, ic:byId[id]};
+    return null;
   }
 
-  function iconHTML(key, name, small){
-    var custom = mine[key], id = ASSIGN[key], ic = id && byId[id];
-    var cls = 'ico' + (small ? ' sm' : '');
-    var body;
-    if(custom)   body = '<img alt="" src="' + custom + '">';
-    else if(ic)  body = '<img alt="" loading="lazy" src="' + ic.file + '">';
-    else         body = '<span class="glyph">' + glyphFor(name) + '</span>';
-    return '<span class="' + cls + '" data-key="' + key + '" data-name="' + esc(name) + '">' + body +
-           (custom ? '<span class="mine"></span>' : '') + '</span>';
-  }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-
-  /* ---------- routing: every directory has its own address ---------- */
+  /* ---------------- routing ---------------- */
   function route(){
     var h = (location.hash || '').replace(/^#\/?/, '');
     return h ? h.split('/').filter(Boolean) : [];
   }
-  function go(parts){ location.hash = '#/' + parts.join('/'); }
+  function go(parts){ location.hash = parts.length ? '#/' + parts.join('/') : ''; }
 
-  /* One resolver for every depth, so arriving anywhere gives you a real page.
-     A node knows its name, its children, its trail, and who sits beside it. */
   function resolve(parts){
-    var node = {key:'', name:'Aura', kind:'root', children:[], trail:[], sibs:[], parent:null};
+    var root = {key:'', name:'Aura', kind:'root', trail:[], parent:null,
+      children:PAGES.map(function(s){ return {key:s.slug, name:s.name, n:s.groups.length}; })};
     var S = PAGES.filter(function(x){ return x.slug === parts[0]; })[0];
-    node.children = PAGES.map(function(s){
-      return {key:s.slug, name:s.name, n:s.groups.length, unit:'groups'}; });
-    if(!S) return node;
+    if(!S) return root;
 
-    node = {key:S.slug, name:S.name, kind:'section', parent:'',
-      trail:[[S.name, S.slug]], sibs:PAGES.map(function(s){ return {key:s.slug, name:s.name}; }),
+    var node = {key:S.slug, name:S.name, kind:'section', parent:'', trail:[[S.name, S.slug]],
       children:S.groups.map(function(g){
-        return {key:S.slug + '/' + g.slug, name:g.name,
-                n:g.pages.length + (g.more || []).length, unit:'inside'}; })};
+        return {key:S.slug + '/' + g.slug, name:g.name, n:g.pages.length + (g.more || []).length}; })};
     var G = S.groups.filter(function(x){ return x.slug === parts[1]; })[0];
     if(!G) return node;
 
     var gk = S.slug + '/' + G.slug;
-    node = {key:gk, name:G.name, kind:'group', parent:S.slug,
-      trail:[[S.name, S.slug], [G.name, gk]],
-      sibs:S.groups.map(function(g){ return {key:S.slug + '/' + g.slug, name:g.name}; }),
-      children:G.pages.map(function(p){
-        return {key:gk + '/' + p.slug, name:p.name, n:p.items.length, unit:'inside'}; })
+    node = {key:gk, name:G.name, kind:'group', parent:S.slug, trail:[[S.name, S.slug], [G.name, gk]],
+      children:G.pages.map(function(p){ return {key:gk + '/' + p.slug, name:p.name, n:p.items.length}; })
         .concat((G.more || []).map(function(it){
-          return {key:gk + '/more/' + slug(it), name:it, n:0, unit:''}; }))};
+          return {key:gk + '/more/' + slug(it), name:it, n:0}; }))};
     if(!parts[2]) return node;
 
     if(parts[2] === 'more'){
       var mi = (G.more || []).filter(function(it){ return slug(it) === parts[3]; })[0];
       if(!mi) return node;
       var mk = gk + '/more/' + slug(mi);
-      return {key:mk, name:mi, kind:'item', parent:gk,
-        trail:[[S.name, S.slug], [G.name, gk], [mi, mk]], children:[],
-        sibs:(G.more || []).map(function(it){ return {key:gk + '/more/' + slug(it), name:it}; })};
+      return {key:mk, name:mi, kind:'entry', parent:gk, children:[],
+        trail:[[S.name, S.slug], [G.name, gk], [mi, mk]]};
     }
     var P = G.pages.filter(function(x){ return x.slug === parts[2]; })[0];
     if(!P) return node;
 
     var pk = gk + '/' + P.slug;
-    node = {key:pk, name:P.name, kind:'page', parent:gk,
-      trail:[[S.name, S.slug], [G.name, gk], [P.name, pk]],
-      sibs:G.pages.map(function(p){ return {key:gk + '/' + p.slug, name:p.name}; }),
-      children:P.items.map(function(it){
-        return {key:pk + '/' + slug(it), name:it, n:0, unit:''}; })};
+    node = {key:pk, name:P.name, kind:'page', parent:gk, trail:[[S.name, S.slug], [G.name, gk], [P.name, pk]],
+      children:P.items.map(function(it){ return {key:pk + '/' + slug(it), name:it, n:0}; })};
     if(!parts[3]) return node;
 
     var it = P.items.filter(function(x){ return slug(x) === parts[3]; })[0];
     if(!it) return node;
     var ik = pk + '/' + slug(it);
-    return {key:ik, name:it, kind:'entry', parent:pk,
-      trail:[[S.name, S.slug], [G.name, gk], [P.name, pk], [it, ik]], children:[],
-      sibs:P.items.map(function(x){ return {key:pk + '/' + slug(x), name:x}; })};
+    return {key:ik, name:it, kind:'entry', parent:pk, children:[],
+      trail:[[S.name, S.slug], [G.name, gk], [P.name, pk], [it, ik]]};
   }
 
-  /* every tile goes somewhere. Nothing is a dead click. */
-  function tile(key, name, sub, onclick){
-    var a = document.createElement('a');
-    a.className = 'tile'; a.href = 'javascript:void(0)';
-    a.innerHTML = iconHTML(key, name) + '<span class="cap">' + esc(name) + '</span>' +
-                  (sub ? '<span class="n">' + esc(sub) + '</span>' : '');
-    a.onclick = function(e){
-      var ico = e.target.closest && e.target.closest('.ico');
-      if(editing && ico){ e.preventDefault(); openPicker(key, name); return; }
-      if(onclick) onclick(); else go(key.split('/'));
-    };
-    return a;
+  /* ---------------- the app screen ---------------- */
+  var ARROWS = {
+    back:'M20 6 L8 17 L20 28 M8 17 L30 17',
+    down:'M6 14 L17 26 L28 14 M17 26 L17 4',
+    up:'M6 20 L17 8 L28 20 M17 8 L17 30'
+  };
+  function navBtn(dir, title, fn, off){
+    var b = document.createElement('button');
+    b.className = 'nav'; b.title = title; b.disabled = !!off;
+    b.innerHTML = '<svg viewBox="0 0 36 36"><path d="' + ARROWS[dir] + '" fill="none" stroke="' +
+      '#808080" stroke-width="5" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
+    if(!off) b.onclick = fn;
+    return b;
   }
 
-  function panel(title, sub, key, noIcon){
-    var s = document.createElement('section');
-    s.innerHTML = '<div class="shead">' +
-      (noIcon ? '' : iconHTML(key || ('h/' + slug(title)), title, true)) +
-      '<div><h2>' + esc(title) + '</h2>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '') + '</div></div>';
-    var grid = document.createElement('div'); grid.className = 'tiles';
-    s.appendChild(grid); s._grid = grid;
-    return s;
+  function iconTag(key, name, cls){
+    var r = realIcon(key);
+    if(r) return '<img alt="' + esc(name) + '" loading="lazy" src="' + r.src + '" data-key="' +
+                 esc(key) + '" data-name="' + esc(name) + '">';
+    return '<span class="' + (cls || 'ph') + '" data-key="' + esc(key) + '" data-name="' + esc(name) + '"></span>';
   }
 
-  var KINDNAME = {root:'', section:'Section', group:'Group', page:'Page', item:'Entry', entry:'Entry'};
+  function renderApp(node){
+    var body = el('appbody'), foot = el('appfoot');
+    body.innerHTML = ''; foot.innerHTML = '';
 
-  function render(){
-    var node = resolve(route()), v = el('view'), t = el('trail');
-    v.innerHTML = ''; t.innerHTML = '';
+    if(showOrig){
+      var shots = SCREENS[node.key] || [];
+      if(shots.length){
+        body.innerHTML = '<div style="padding:0;margin:-16px -14px -8px">' +
+          shots.map(function(s){ return '<img alt="" style="width:100%;display:block" src="' +
+            SCRDIR + s + '.webp">'; }).join('') + '</div>';
+      } else {
+        body.innerHTML = '<p class="appnote" style="margin-top:60px;color:#6a6a6a">' +
+          'No prototype screen was drawn for this page.</p>';
+      }
+      foot.appendChild(navBtn('back', 'Back', function(){
+        go(node.trail.length > 1 ? node.trail[node.trail.length - 2][1].split('/') : []); },
+        node.kind === 'root'));
+      return;
+    }
 
+    /* the QUICK START badge sits on almost every screen in the prototype */
+    var qs = byId[Object.keys(byId).filter(function(k){ return /quick start/i.test(byId[k].name); })[0]];
+    if(qs && node.kind !== 'root')
+      body.insertAdjacentHTML('beforeend', '<div class="qs"><img alt="Quick start" src="' + qs.file + '"></div>');
+
+    body.insertAdjacentHTML('beforeend',
+      '<p class="apptitle' + (node.name.length > 24 ? ' small' : '') + '">' + esc(node.name) + '</p>');
+
+    var ic = realIcon(node.key);
+    if(ic) body.insertAdjacentHTML('beforeend',
+      '<div class="hero">' + iconTag(node.key, node.name) + '</div>');
+
+    var held = HOLDS[node.key];
+    if(held && held.body)
+      body.insertAdjacentHTML('beforeend', '<p class="appnote">' + esc(held.body) + '</p>');
+
+    /* children become the buttons, exactly as the prototype lays them out.
+       With no children, whatever the page holds is listed instead. */
+    var kids = node.children || [];
+    if(kids.length){
+      var withArt = kids.filter(function(k){ return realIcon(k.key); }).length;
+      if(withArt >= Math.max(3, kids.length * 0.6) && kids.length >= 4){
+        var g = document.createElement('div'); g.className = 'grid3';
+        kids.forEach(function(k){
+          var a = document.createElement('a');
+          a.className = 'g3'; a.href = 'javascript:void(0)';
+          a.innerHTML = iconTag(k.key, k.name) + '<span>' + esc(k.name) + '</span>';
+          a.onclick = function(e){ tap(e, k.key, k.name); };
+          g.appendChild(a);
+        });
+        body.appendChild(g);
+      } else {
+        var rows = document.createElement('div');
+        rows.className = 'rows' + (kids.length > 5 ? ' boxed' : '');
+        kids.forEach(function(k){
+          var a = document.createElement('a');
+          a.className = 'rw' + (kids.length <= 5 ? ' centre' : '');
+          a.href = 'javascript:void(0)';
+          var r = realIcon(k.key);
+          a.innerHTML = (r ? iconTag(k.key, k.name) : '') + '<span>' + esc(k.name) + '</span>' +
+                        (k.n ? '<span class="chev">›</span>' : '');
+          a.onclick = function(e){ tap(e, k.key, k.name); };
+          rows.appendChild(a);
+        });
+        body.appendChild(rows);
+      }
+    } else if(held && held.rows.length){
+      var rw = document.createElement('div');
+      rw.className = 'rows' + (held.rows.length > 5 ? ' boxed' : '');
+      var CAP = 14;
+      held.rows.slice(0, CAP).forEach(function(t){
+        var d = document.createElement('div');
+        d.className = 'rw flat'; d.innerHTML = '<span>' + esc(t) + '</span>';
+        rw.appendChild(d);
+      });
+      body.appendChild(rw);
+      if(held.rows.length > CAP)
+        body.insertAdjacentHTML('beforeend',
+          '<p class="appnote" style="margin-top:12px;color:#6a6a6a;font-size:11px">and ' +
+          (held.rows.length - CAP) + ' more, listed beside</p>');
+    } else if(node.kind !== 'root'){
+      body.insertAdjacentHTML('beforeend',
+        '<p class="appnote" style="color:#6a6a6a">This page is named in the workbook and has not been ' +
+        'designed yet.</p>');
+    }
+
+    /* the prototype puts a back arrow at the foot, and a down arrow to go on */
+    foot.appendChild(navBtn('back', 'Back', function(){
+      go(node.trail.length > 1 ? node.trail[node.trail.length - 2][1].split('/') : []); },
+      node.kind === 'root'));
+    var first = (node.children || [])[0];
+    foot.appendChild(navBtn('down', 'Go in', function(){ go(first.key.split('/')); }, !first));
+  }
+
+  function tap(e, key, name){
+    var img = e.target.closest && (e.target.closest('img') || e.target.closest('.ph'));
+    if(editing && img){ e.preventDefault(); openPicker(key, name); return; }
+    go(key.split('/'));
+  }
+
+  /* ---------------- the panel beside the app ---------------- */
+  function renderAside(node){
+    var a = el('aside'); a.innerHTML = '';
+
+    var t = document.createElement('div'); t.className = 'trail';
     var crumbs = [['Aura', []]].concat(node.trail.map(function(c){ return [c[0], c[1].split('/')]; }));
     crumbs.forEach(function(c, i){
       if(i) t.insertAdjacentHTML('beforeend', '<span class="sep">›</span>');
       if(i === crumbs.length - 1) t.insertAdjacentHTML('beforeend', '<span class="here">' + esc(c[0]) + '</span>');
-      else { var a = document.createElement('a'); a.textContent = c[0];
-             a.onclick = function(){ go(c[1]); }; t.appendChild(a); }
+      else { var lk = document.createElement('a'); lk.textContent = c[0];
+             lk.onclick = function(){ go(c[1]); }; t.appendChild(lk); }
     });
+    a.appendChild(t);
 
     if(node.kind === 'root'){
-      var home = panel('Aura', PAGES.length + ' sections, ' + count() + ' addressable names', 'home');
-      node.children.forEach(function(c){
-        home._grid.appendChild(tile(c.key, c.name, c.n ? c.n + ' ' + c.unit : null));
-      });
-      v.appendChild(home);
+      a.insertAdjacentHTML('beforeend',
+        '<section><h2>The app</h2><p class="sub">Drawn the way the prototype draws it</p>' +
+        '<p class="note">Eight sections and every name beneath them, from the Aura workbook page list. ' +
+        'Tap through on the left. This panel carries what the app itself does not: where each page would ' +
+        'sit on the lattice, what it relates to elsewhere, and where its icon came from.</p></section>');
       return;
     }
 
-    /* who this page is */
-    var id = ASSIGN[node.key], ic = id && byId[id];
-    var hero = document.createElement('section');
-    var where = KINDNAME[node.kind] +
-      (node.trail.length > 1 ? ' in ' + node.trail[node.trail.length - 2][0] : ' of the Aura app');
-    hero.innerHTML =
-      '<div class="hero">' + iconHTML(node.key, node.name) +
-      '<div><div class="where">' + esc(where) + '</div><h2>' + esc(node.name) + '</h2>' +
-      (ic && HOW[node.key] === 'screen' ? '<p class="desc">' + esc(ic.desc) + '</p>' : '') +
-      '</div></div>';
-    if(ic) hero.insertAdjacentHTML('beforeend',
-      '<p class="prov"><b>' + esc(ic.name) + '.</b> ' + esc(HOWTXT[HOW[node.key]] || '') +
-      ' Turn on Edit icons and tap it to change it.</p>');
-    v.appendChild(hero);
-
-    /* the prototype screens drawn for this page, if any were */
-    var shots = SCREENS[node.key] || [];
-    if(shots.length){
-      var ss = document.createElement('section');
-      ss.innerHTML = '<div class="shead"><div><h2>Drawn in the prototype</h2>' +
-        '<p class="sub">' + shots.length + (shots.length === 1 ? ' screen' : ' screens') +
-        ' from the original Aura prototype for this page</p></div></div>';
-      var row = document.createElement('div'); row.className = 'shots';
-      shots.forEach(function(s){
-        var d = document.createElement('div'); d.className = 'shot';
-        d.innerHTML = '<img loading="lazy" alt="Prototype screen ' + s + '" src="' + SCRDIR + s + '.webp">' +
-                      '<p class="cap">' + s + '</p>';
-        row.appendChild(d);
-      });
-      ss.appendChild(row); v.appendChild(ss);
+    /* where the icon came from, said plainly */
+    var id = ASSIGN[node.key], ic = id && byId[id], how = HOW[node.key];
+    var s1 = document.createElement('section');
+    s1.innerHTML = '<h2>This page’s icon</h2><p class="sub">' +
+      (mine[node.key] ? 'Yours' :
+       how === 'screen' ? 'Cut from this page’s own prototype screen' :
+       how === 'child'  ? 'Borrowed from a page beneath this one' :
+       ic ? 'Only a guess, so the app is not using it' : 'None') + '</p>' +
+      (ic ? '<p class="note"><b>' + esc(ic.name) + '.</b> ' + esc(ic.desc) + '</p>' : '') +
+      (how === 'name' && ic ? '<p class="note">Matched by wording alone. The app leaves the space empty ' +
+        'rather than show a guess. Turn on Edit icons to set it yourself, or take this one.</p>' : '') +
+      (!ic && !mine[node.key] ? '<p class="note">No icon was drawn for this page. Turn on Edit icons and ' +
+        'tap the empty square to choose or generate one.</p>' : '');
+    var row = document.createElement('div'); row.className = 'links'; row.style.marginTop = '10px';
+    var eb = document.createElement('a'); eb.className = 'lk'; eb.href = 'javascript:void(0)';
+    eb.textContent = mine[node.key] ? 'Change this icon' : 'Choose an icon';
+    eb.onclick = function(){ openPicker(node.key, node.name); };
+    row.appendChild(eb);
+    if(how === 'name' && ic){
+      var tk = document.createElement('a'); tk.className = 'lk'; tk.href = 'javascript:void(0)';
+      tk.textContent = 'Use the guess anyway';
+      tk.onclick = function(){ mine[node.key] = ic.file; save(); render(); };
+      row.appendChild(tk);
     }
+    s1.appendChild(row);
+    a.appendChild(s1);
 
-    /* what this page holds, as the prototype spelled it out */
-    var held = HOLDS[node.key];
-    if(held && (held.rows.length || held.body)){
-      var hs = document.createElement('section');
-      hs.innerHTML = '<div class="shead"><div><h2>What it holds</h2>' +
-        '<p class="sub">Transcribed from the prototype screen, not written for this page</p></div></div>';
-      if(held.body) hs.insertAdjacentHTML('beforeend', '<p class="body">' + esc(held.body) + '</p>');
-      if(held.rows.length){
-        var ul = document.createElement('div'); ul.className = 'holds';
-        var CAP = 36, shown = Math.min(CAP, held.rows.length);
-        function paint(n){
-          ul.innerHTML = '';
-          held.rows.slice(0, n).forEach(function(rw){
-            var d = document.createElement('div'); d.className = 'hold';
-            d.innerHTML = '<span class="b"></span><span>' + esc(rw) + '</span>';
-            ul.appendChild(d);
-          });
-        }
-        paint(shown);
-        hs.appendChild(ul);
-        if(held.rows.length > CAP){
-          var more = document.createElement('button');
-          more.style.marginTop = '12px';
-          more.textContent = 'Show the other ' + (held.rows.length - CAP);
-          more.onclick = function(){ paint(held.rows.length); more.remove(); };
-          hs.appendChild(more);
-        }
-        hs.querySelector('.sub').textContent += ' · ' + held.rows.length +
-          (held.rows.length === 1 ? ' entry' : ' entries');
-      }
-      v.appendChild(hs);
-    }
-
-    /* where it would live on the lattice */
-    var rg = REG[node.key];
+    /* the address on the lattice */
+    var rg = REL.registers[node.key];
     if(rg){
       var k = REL.shells.indexOf(rg.shell) + 1;
       var pad = function(n){ return ('00' + n).slice(-3); };
       var span = rg.n === 1 ? pad(rg.from) : pad(rg.from) + ' to ' + pad(rg.to);
-      var ls = document.createElement('section');
-      ls.innerHTML = '<div class="shead"><div><h2>Where it lives</h2>' +
-        '<p class="sub">' + rg.n + (rg.n === 1 ? ' facet' : ' facets') + ' on the ' + rg.shell.toLowerCase() +
-        ' torus</p></div></div>' +
-        '<div class="addrs">' +
-          '<a class="addr in" href="index.html#addr=' + k + ',' + rg.from + ',in">' +
-            '<span class="t">Interior, personal</span><span class="a">' + rg.shell + ' I-' + span + '</span>' +
-            '<span class="t">private encrypted record</span></a>' +
-          '<a class="addr out" href="index.html#addr=' + k + ',' + rg.from + ',out">' +
-            '<span class="t">Exterior, observer</span><span class="a">' + rg.shell + ' O-' + span + '</span>' +
-            '<span class="t">public permissioned record</span></a>' +
-        '</div>' +
+      a.insertAdjacentHTML('beforeend',
+        '<section><h2>Where it lives</h2><p class="sub">' + rg.n + (rg.n === 1 ? ' facet' : ' facets') +
+        ' on the ' + rg.shell.toLowerCase() + ' torus</p><div class="addrs">' +
+        '<a class="addr in" href="index.html#addr=' + k + ',' + rg.from + ',in">' +
+          '<span class="t">Interior, personal</span><span class="a">' + rg.shell + ' I-' + span + '</span>' +
+          '<span class="t">private encrypted</span></a>' +
+        '<a class="addr out" href="index.html#addr=' + k + ',' + rg.from + ',out">' +
+          '<span class="t">Exterior, observer</span><span class="a">' + rg.shell + ' O-' + span + '</span>' +
+          '<span class="t">public permissioned</span></a></div>' +
         '<p class="note">Same facet numbers on both faces, and the letter says which register you are reading. ' +
-        'Tap either one to open it on the torus. ' + esc(REL.note) + '</p>';
-      v.appendChild(ls);
+        esc(REL.note) + '</p></section>');
     }
 
-    /* what it relates to elsewhere in the app */
-    var rl = RELATED[node.key];
+    /* everything the page holds, in full, where the screen only had room for some */
+    var held = HOLDS[node.key];
+    if(held && held.rows.length > 14){
+      var hs = document.createElement('section');
+      hs.innerHTML = '<h2>Everything it holds</h2><p class="sub">' + held.rows.length +
+        ' entries, transcribed from the prototype</p>';
+      var box = document.createElement('div'); box.className = 'links';
+      held.rows.forEach(function(r){
+        var sp = document.createElement('span'); sp.className = 'lk';
+        sp.style.cursor = 'default'; sp.textContent = r; box.appendChild(sp);
+      });
+      hs.appendChild(box); a.appendChild(hs);
+    }
+
+    /* what it relates to elsewhere */
+    var rl = REL.related[node.key];
     if(rl && rl.length){
-      var rs = panel('Related elsewhere',
-        'Other pages that share this one’s wording, found across the whole directory', null, true);
-      rl.forEach(function(x){ rs._grid.appendChild(tile(x.key, x.name, x.where || null)); });
-      v.appendChild(rs);
+      var rs = document.createElement('section');
+      rs.innerHTML = '<h2>Related elsewhere</h2><p class="sub">Pages that share a distinctive word with this one</p>';
+      var ln = document.createElement('div'); ln.className = 'links';
+      rl.forEach(function(x){
+        var b = document.createElement('a'); b.className = 'lk'; b.href = 'javascript:void(0)';
+        b.textContent = x.name + (x.where ? '  ·  ' + x.where : '');
+        b.onclick = function(){ go(x.key.split('/')); };
+        ln.appendChild(b);
+      });
+      rs.appendChild(ln); a.appendChild(rs);
     }
 
-    /* what is beneath */
-    if(node.children.length){
-      var kids = panel('Inside ' + node.name,
-        node.children.length + (node.children.length === 1 ? ' page' : ' pages'), null, true);
-      node.children.forEach(function(c){
-        kids._grid.appendChild(tile(c.key, c.name, c.n ? c.n + ' ' + c.unit : null));
+    /* the original screens */
+    var shots = SCREENS[node.key] || [];
+    if(shots.length){
+      var ss = document.createElement('section');
+      ss.innerHTML = '<h2>Drawn in the prototype</h2><p class="sub">' + shots.length +
+        (shots.length === 1 ? ' screen' : ' screens') + ' for this page</p>';
+      var sr = document.createElement('div'); sr.className = 'shots';
+      shots.forEach(function(s){
+        var im = document.createElement('img');
+        im.loading = 'lazy'; im.src = SCRDIR + s + '.webp'; im.alt = 'Prototype screen ' + s;
+        im.title = s + ' · tap to show it on the phone';
+        im.onclick = function(){ showOrig = true; el('origBtn').classList.add('on');
+          el('origBtn').textContent = 'Show the rebuild'; render(); };
+        sr.appendChild(im);
       });
-      v.appendChild(kids);
-    } else if(!shots.length){
-      var none = document.createElement('section');
-      none.innerHTML = '<p class="note" style="margin:0">Nothing sits beneath this one in the workbook, and no ' +
-        'prototype screen was drawn for it. It is a named place in the app that has not been designed yet. ' +
-        'The name is the whole record, and that is worth saying rather than hiding.</p>';
-      v.appendChild(none);
-    }
-
-    /* move sideways without going back up */
-    if(node.sibs && node.sibs.length > 1){
-      var sb = document.createElement('section');
-      sb.innerHTML = '<div class="shead"><div><h2>Beside this</h2>' +
-        '<p class="sub">The rest of ' + esc(node.trail.length > 1 ? node.trail[node.trail.length - 2][0] : 'the app') +
-        '</p></div></div>';
-      var strip = document.createElement('div'); strip.className = 'sibs';
-      node.sibs.forEach(function(s){
-        var a = document.createElement('a');
-        a.className = 'sib' + (s.key === node.key ? ' on' : '');
-        a.href = 'javascript:void(0)';
-        a.innerHTML = iconHTML(s.key, s.name, true) + '<span>' + esc(s.name) + '</span>';
-        a.onclick = function(e){
-          var box = e.target.closest && e.target.closest('.ico');
-          if(editing && box){ openPicker(s.key, s.name); return; }
-          go(s.key.split('/'));
-        };
-        strip.appendChild(a);
-      });
-      sb.appendChild(strip); v.appendChild(sb);
+      ss.appendChild(sr); a.appendChild(ss);
     }
   }
 
-  function count(){
-    var n = 0;
-    PAGES.forEach(function(S){
-      n++;
-      S.groups.forEach(function(G){
-        n++; G.pages.forEach(function(P){ n += 1 + P.items.length; });
-        n += (G.more || []).length;
-      });
-    });
-    return n;
+  function render(){
+    var node = resolve(route());
+    renderApp(node);
+    renderAside(node);
   }
 
-  /* ---------- search across everything ---------- */
+  /* ---------------- search ---------------- */
   function search(q){
     q = q.toLowerCase(); var hits = [];
     PAGES.forEach(function(S){
-      if(S.name.toLowerCase().indexOf(q) >= 0) hits.push({k:S.slug, n:S.name, w:'section', go:[S.slug]});
+      if(S.name.toLowerCase().indexOf(q) >= 0) hits.push({k:S.slug, n:S.name, w:'section'});
       S.groups.forEach(function(G){
-        var gk = [S.slug, G.slug].join('/');
-        if(G.name.toLowerCase().indexOf(q) >= 0) hits.push({k:gk, n:G.name, w:S.name, go:[S.slug, G.slug]});
+        var gk = S.slug + '/' + G.slug;
+        if(G.name.toLowerCase().indexOf(q) >= 0) hits.push({k:gk, n:G.name, w:S.name});
         G.pages.forEach(function(P){
-          var pk = [S.slug, G.slug, P.slug].join('/');
-          if(P.name.toLowerCase().indexOf(q) >= 0) hits.push({k:pk, n:P.name, w:S.name + ' · ' + G.name, go:[S.slug, G.slug, P.slug]});
+          var pk = gk + '/' + P.slug;
+          if(P.name.toLowerCase().indexOf(q) >= 0) hits.push({k:pk, n:P.name, w:S.name + ' · ' + G.name});
           P.items.forEach(function(it){
             if(it.toLowerCase().indexOf(q) >= 0)
-              hits.push({k:pk + '/' + slug(it), n:it, w:G.name + ' · ' + P.name, go:[S.slug, G.slug, P.slug]});
+              hits.push({k:pk + '/' + slug(it), n:it, w:G.name + ' · ' + P.name});
           });
         });
         (G.more || []).forEach(function(it){
           if(it.toLowerCase().indexOf(q) >= 0)
-            hits.push({k:gk + '/more/' + slug(it), n:it, w:S.name + ' · ' + G.name, go:[S.slug, G.slug]});
+            hits.push({k:gk + '/more/' + slug(it), n:it, w:S.name + ' · ' + G.name});
         });
       });
     });
     return hits;
   }
-
   el('q').oninput = function(){
     var q = this.value.trim();
     if(!q){ render(); return; }
-    var hits = search(q), v = el('view');
-    v.innerHTML = '';
-    var sec = panel('Search', hits.length + ' matches for “' + q + '”', null, true);
-    hits.slice(0, 120).forEach(function(h){
-      sec._grid.appendChild(tile(h.k, h.n, h.w, function(){ el('q').value = ''; go(h.k.split('/')); }));
+    var hits = search(q), body = el('appbody'), foot = el('appfoot');
+    body.innerHTML = '<p class="apptitle small">Search</p>'; foot.innerHTML = '';
+    var rows = document.createElement('div'); rows.className = 'rows boxed';
+    hits.slice(0, 30).forEach(function(h){
+      var a = document.createElement('a'); a.className = 'rw'; a.href = 'javascript:void(0)';
+      var r = realIcon(h.k);
+      a.innerHTML = (r ? '<img alt="" src="' + r.src + '">' : '') + '<span>' + esc(h.n) + '</span>';
+      a.onclick = function(){ el('q').value = ''; go(h.k.split('/')); };
+      rows.appendChild(a);
     });
-    v.appendChild(sec);
-    if(hits.length > 120) v.insertAdjacentHTML('beforeend', '<p class="count">Showing the first 120.</p>');
-    if(!hits.length) v.innerHTML = '<p class="empty">Nothing in the directory matches that.</p>';
+    if(!hits.length) rows.innerHTML = '<p class="appnote" style="color:#6a6a6a">Nothing matches that.</p>';
+    body.appendChild(rows);
+    if(hits.length > 30) body.insertAdjacentHTML('beforeend',
+      '<p class="appnote" style="font-size:11px;color:#6a6a6a">' + hits.length + ' matches, showing 30</p>');
+    el('aside').innerHTML = '<section><h2>Search</h2><p class="sub">' + hits.length +
+      ' matches across the whole directory</p></section>';
   };
 
-  /* ---------- icon picker ---------- */
+  /* ---------------- icon picker ---------------- */
   var pkKey = null;
   function openPicker(key, name){
     pkKey = key;
@@ -541,9 +557,7 @@
     el('pkQ').value = ''; drawPick('');
     var id = ASSIGN[key], ic = id && byId[id];
     el('pkPrompt').hidden = !ic; el('pkCopy').hidden = !ic;
-    if(ic) el('pkPrompt').textContent =
-      (HOWTXT[HOW[key]] || '') + '\n\nNow showing: ' + ic.name + '. ' + ic.desc +
-      '\n\nPrompt\n' + (ic.prompt || '').replace('{STYLE}', 'in my own style');
+    if(ic) el('pkPrompt').textContent = (ic.prompt || '').replace('{STYLE}', 'in my own style');
     el('sheet').hidden = false;
   }
   function drawPick(q){
@@ -553,22 +567,9 @@
     }).slice(0, 96);
     var g = el('pkGrid'); g.innerHTML = '';
     list.forEach(function(i){
-      var d = document.createElement('div');
-      d.className = 'p';
+      var d = document.createElement('div'); d.className = 'p';
       d.innerHTML = '<img loading="lazy" alt="" src="' + i.file + '"><div class="t">' + esc(i.name) + '</div>';
-      d.onclick = function(){
-        var img = new Image();
-        img.onload = function(){
-          var c = document.createElement('canvas');
-          var s = Math.min(1, 128 / Math.max(img.width, img.height));
-          c.width = Math.max(1, img.width * s); c.height = Math.max(1, img.height * s);
-          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-          try{ mine[pkKey] = c.toDataURL('image/png'); }catch(e){ mine[pkKey] = i.file; }
-          save(); render(); el('sheet').hidden = true;
-        };
-        img.onerror = function(){ mine[pkKey] = i.file; save(); render(); el('sheet').hidden = true; };
-        img.src = i.file;
-      };
+      d.onclick = function(){ mine[pkKey] = i.file; save(); render(); el('sheet').hidden = true; };
       g.appendChild(d);
     });
     if(!list.length) g.innerHTML = '<p class="empty">No icon in the library matches that.</p>';
@@ -596,12 +597,17 @@
     this.classList.toggle('on', editing);
     this.textContent = editing ? 'Done editing' : 'Edit icons';
   };
+  el('origBtn').onclick = function(){
+    showOrig = !showOrig;
+    this.classList.toggle('on', showOrig);
+    this.textContent = showOrig ? 'Show the rebuild' : 'Show the original';
+    render();
+  };
   el('homeBtn').onclick = function(){ el('q').value = ''; location.hash = ''; render(); };
   window.addEventListener('hashchange', render);
 
-  if(!PAGES.length){
-    el('view').innerHTML = '<p class="empty">The directory data file has not been built yet.</p>';
-  } else render();
+  if(!PAGES.length) el('appbody').innerHTML = '<p class="empty">The directory data file is missing.</p>';
+  else render();
 })();
 </script>
 </body>
