@@ -158,14 +158,22 @@
   @media (max-width:819px){body.sheet-open #dock{opacity:0;pointer-events:none}}
   @media (min-width:820px){#dock{bottom:22px;left:calc(50% - 190px)}}
   @media (prefers-reduced-motion: reduce){#sheet{transition:none}}
+  /* the grip is a real collapse control at every width, not just on a phone */
+  #grip::after{content:'';width:9px;height:9px;border-right:1.6px solid var(--ink-soft);
+    border-bottom:1.6px solid var(--ink-soft);transform:rotate(-135deg);margin-left:10px;
+    transition:transform .28s cubic-bezier(.4,.05,.2,1)}
+  #sheet.open #grip::after{transform:rotate(45deg)}
+  #grip em{margin-left:auto}
   @media (min-width:820px){
     #sheet{left:auto;right:20px;bottom:20px;width:360px;border-radius:16px;
       border:1px solid var(--line);transform:none}
+    /* collapsed on a big screen means the grip only, so the stage is clear */
+    #sheet:not(.open) #body{display:none}
     #body{max-height:min(68vh,640px)}
   }
 </style>
 </head>
-<body class="seven guided">
+<body class="seven">
 
 <div id="stage"></div>
 <div id="err" role="alert"></div>
@@ -181,7 +189,6 @@
 <nav id="menu" aria-label="Pages">
   <span class="mh">Pages</span>
   <a href="index.html">Demo</a>
-  <a href="app.html">App</a>
   <a href="icons.html">Icons</a>
   <a href="tables.html">Tables</a>
   <a href="geometry.html">Geometry</a>
@@ -304,6 +311,7 @@
           <button data-side="in">I · inside</button>
         </div>
         <button id="goaddr">Find</button>
+        <button id="multiBtn" type="button" aria-pressed="false">Multi select</button>
         <button id="clearaddr">Clear</button>
       </div>
       <p class="note" id="addrnote">O is the exterior observer face, the public permissioned database. I is the interior personal face, the private encrypted database. Same 1–288 numbers on both. Tap any cell to read its address.</p>
@@ -478,7 +486,7 @@
     </div>
 
     <p class="note" style="text-align:center;padding:10px 0 2px">
-      <a href="app.html">app</a> · <a href="icons.html">icon library</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
+      <a href="icons.html">icon library</a> · <a href="tables.html">tables</a> · <a href="geometry.html">geometry</a> · <a href="about.html">about</a></p>
     <p class="note" style="text-align:center;padding:0 0 4px">© Luke Nathan Hayes ·
       <a href="https://github.com/auraofintelligence/aura-horn-torus/blob/main/LICENCE.md">Public Source Licence</a>: commercial rights reserved</p>
 
@@ -1055,7 +1063,9 @@ function buildShells(){
 
   makeRayDefs();
   rebuildRayLines();
-  window.__htl = {shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
+  window.__htl = {setSel:setSel, selection:selection, clearSel:clearSel,
+    setMulti:function(v){ multi=v; },
+    shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
     P:P, renderer:renderer, drive:drive, cam:cam,
     diag:function(){ return {r:stageRadius(), focus:P.focus, dist:cam.dist,
       fit:drive.fit, lock:drive.camLock, scale:shellS(P.focus > 0 ? P.focus - 1 : 6)}; },
@@ -1510,8 +1520,39 @@ function clearSelDraw(){
   if(P.shellsMode !== 'seven' && mats.length && mats[wasSel.cell]) styleAll();
 }
 
+/* Multi select. With it on, tapping adds a facet to the set and tapping an
+   already chosen facet takes it out again. The readout names the newest one
+   and counts the rest, so a set is still an address you can read. */
+var multi = false, selMore = [];
+function drawOne(s, on){
+  if(!(P.shellsMode === 'seven' && shells.length)) return;
+  var cols = P.cols, r = (s.cell / cols) | 0, c = s.cell % cols;
+  var atl = s.inside ? shells[s.k].atlIn : shells[s.k].atlOut;
+  drawAtlasCell(atl.canvas.getContext('2d'), atl.px, r, c, P.rows, cols, s.k, s.inside, on);
+  atl.tex.needsUpdate = true;
+}
+function sameCell(a, b){ return a.k === b.k && a.cell === b.cell && a.inside === b.inside; }
+function multiCount(){ return selMore.length + (sel ? 1 : 0); }
+function clearMulti(){
+  for(var i = 0; i < selMore.length; i++) drawOne(selMore[i], false);
+  selMore = [];
+}
 function setSel(k, cell, inside){
-  clearSelDraw();
+  var hit = {k:k, cell:cell, inside:inside};
+  if(multi){
+    if(sel && sameCell(sel, hit)){                  // tapping the newest drops it
+      drawOne(sel, false); sel = selMore.pop() || null;
+      if(sel) drawOne(sel, true);
+      updateSelNote(); return;
+    }
+    var at = -1;
+    for(var i = 0; i < selMore.length; i++) if(sameCell(selMore[i], hit)) at = i;
+    if(at >= 0){ drawOne(selMore[at], false); selMore.splice(at, 1); updateSelNote(); return; }
+    if(sel) selMore.push(sel);                      // keep the previous one lit
+  } else {
+    clearMulti();
+    clearSelDraw();
+  }
   sel = {k:k, cell:cell, inside:inside};
   var rows = P.rows, cols = P.cols;
   var r = (cell / cols) | 0, c = cell % cols;
@@ -1522,7 +1563,7 @@ function setSel(k, cell, inside){
   } else {
     styleAll();
   }
-  document.getElementById('addrnote').textContent = addrLabel(k, cell, inside);
+  updateSelNote();
   switchTab('find');   // surface the readout wherever the tap came from
   P.addrshell = k + 1; P.addrcell = cell + 1; P.addrside = inside ? 'in' : 'out';
   document.getElementById('addrshell').value = k + 1; sync('addrshell', String(k + 1));
@@ -1533,10 +1574,20 @@ function setSel(k, cell, inside){
   if(P.rays === 'cell' || P.rays === 'row') rebuildRayLines();
 }
 
-function clearSel(){
-  clearSelDraw();
-  document.getElementById('addrnote').textContent = ADDR_HELP;
+function updateSelNote(){
+  var n = document.getElementById('addrnote');
+  if(!sel){ n.textContent = multi ? 'Multi select is on. Tap facets to add them.' : ADDR_HELP; return; }
+  var extra = selMore.length;
+  n.textContent = addrLabel(sel.k, sel.cell, sel.inside) +
+    (extra ? '  ·  ' + (extra + 1) + ' facets selected' : '');
 }
+function clearSel(){
+  clearMulti();
+  clearSelDraw();
+  updateSelNote();
+}
+/* every selected facet, newest last, for anything that wants the whole set */
+function selection(){ return selMore.concat(sel ? [sel] : []); }
 
 function pick(e){
   var rect = el.getBoundingClientRect();
@@ -1926,6 +1977,13 @@ document.querySelectorAll('#sideseg button').forEach(function(b){
 });
 document.getElementById('goaddr').addEventListener('click', findAddress);
 document.getElementById('clearaddr').addEventListener('click', clearSel);
+document.getElementById('multiBtn').addEventListener('click', function(){
+  multi = !multi;
+  this.classList.toggle('on', multi);
+  this.setAttribute('aria-pressed', multi ? 'true' : 'false');
+  if(!multi) clearMulti();
+  updateSelNote();
+});
 
 var placeList = document.getElementById('places');
 PLACES.forEach(function(p){
@@ -2716,8 +2774,7 @@ document.getElementById('seqSel').addEventListener('change', function(){
 });
 document.getElementById('menuGuide').addEventListener('click', function(){
   menuEl.classList.remove('open');
-  document.body.classList.add('guided');
-  applyStep(0);
+  startGuide();
 });
 
 /* ---------- arriving on an address ----------
@@ -2739,10 +2796,30 @@ function openHashAddress(){
 }
 window.addEventListener('hashchange', openHashAddress);
 
+/* ---------- the demo and the guide are separate places ----------
+   Landing here gives you the finished stack to explore. The build guide
+   is a thing you choose, from the menu or from #guide, and leaving it
+   does not drag you back to step one next time. */
+function exploreMode(){
+  animToken++;
+  clearStepTimers();
+  hideIntro();
+  document.body.classList.remove('guided');
+  P.auraFade = 1; setAura(true);
+  applyJourney(100);
+  setP('focus', 'focus', 0, 0); sync('focus', 'all');
+  fitCamera();
+  dirty = true;
+}
+function startGuide(){
+  document.body.classList.add('guided');
+  applyStep(0);
+}
+
 /* ---------- go ---------- */
 resize();
 rebuild();
-applyStep(0);
+if(/(^|[#&])guide\b/.test(location.hash)) startGuide(); else exploreMode();
 tick();
 if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
 
