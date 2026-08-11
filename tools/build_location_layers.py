@@ -295,6 +295,13 @@ def parse_world_cities(path: Path) -> list[list[Any]]:
             admin = clean_text(record.get("admin_name"))
             country = clean_text(record.get("country"))
             detail = ", ".join(part for part in (admin, country) if part)
+            population = clean_text(record.get("population"))
+            if population:
+                try:
+                    population_label = f"{int(float(population)):,}"
+                    detail += (" · " if detail else "") + f"Population {population_label}"
+                except (ValueError, OverflowError):
+                    pass
             capital = clean_text(record.get("capital"))
             category = f"{capital.title()} capital" if capital else "City"
             search = " ".join(

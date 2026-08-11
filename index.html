@@ -86,6 +86,40 @@
     border:1px solid var(--line);border-radius:9px;color:var(--ink-soft);font-size:10.5px;text-decoration:none}
   .layerlink:hover{color:var(--accent);border-color:rgba(216,179,106,.5)}
   #layernote{min-height:2.8em}
+  .placefilters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:2px 0 10px}
+  #placecategory{min-width:0;padding:9px 32px 9px 11px;border-radius:9px;border:1px solid var(--line);
+    background:#11141c;color:var(--ink);font:500 12px/1.2 inherit}
+  .placecard{display:none;margin:10px 0 12px;padding:13px;border:1px solid rgba(216,179,106,.34);
+    border-radius:13px;background:rgba(216,179,106,.07);box-shadow:0 10px 28px rgba(0,0,0,.18)}
+  .placecard.show{display:block}
+  .placecardhead{display:grid;grid-template-columns:10px minmax(0,1fr) 34px;gap:9px;align-items:start}
+  #placecarddot{width:10px;height:10px;border-radius:50%;margin-top:5px;box-shadow:0 0 9px currentColor}
+  .placeeyebrow{margin:0 0 3px;font:600 9.5px/1.2 ui-monospace,Menlo,monospace;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  #placecardname{margin:0;font-size:16px;line-height:1.2;font-weight:670}
+  #placecardclose{width:34px;height:34px;padding:0;display:grid;place-items:center;font-size:18px;line-height:1}
+  #placecardsummary{margin:9px 0 10px;color:var(--ink);font-size:12.5px;line-height:1.45}
+  .placefacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0 0 9px}
+  .placefact{padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:rgba(0,0,0,.13);min-width:0}
+  .placefact dt{margin:0 0 3px;font:600 9px/1 ui-monospace,Menlo,monospace;
+    text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft)}
+  .placefact dd{margin:0;font-size:11.5px;line-height:1.35;overflow-wrap:anywhere}
+  #placecardwarning{margin:7px 0 10px;padding-left:9px;border-left:2px solid rgba(216,179,106,.5)}
+  .placeactions{display:flex;flex-wrap:wrap;gap:7px}
+  .placeactions button,.placeactions a{min-height:38px;padding:9px 11px}
+  .placeactions a{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;
+    color:var(--ink);font:500 12px/1 inherit;text-decoration:none;background:rgba(255,255,255,.05)}
+  .placeactions a[hidden]{display:none!important}
+  .savedpanel{margin:10px 0 12px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+  .savedhead{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin:0 0 8px}
+  .savedhead strong{font-size:12px}.savedhead span{font:10.5px/1 ui-monospace,Menlo,monospace;color:var(--ink-soft)}
+  .savedlist{display:grid;gap:6px;margin:0 0 8px}
+  .saveditem{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:6px}
+  .savedfocus{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:8px 10px;min-width:0}
+  .savedfocus strong,.savedfocus small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .savedfocus strong{font-size:11.5px}.savedfocus small{font-size:10px;color:var(--ink-soft)}
+  .savedremove{width:34px;padding:0;font-size:16px}
+  @media(max-width:480px){.placefacts{grid-template-columns:1fr}.placeactions button,.placeactions a{min-height:42px}}
   #raytrail button{padding:6px 10px;font-size:11px;
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   #menuBtn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:30;
@@ -140,6 +174,10 @@
     color:var(--accent);font-weight:600}
   .panel{display:none}
   .panel.act{display:block}
+  .panel[data-panel="find"].act{display:flex;flex-direction:column}
+  .find-places{order:1;border-top:0;padding-top:4px}
+  .find-address{order:2;border-top:1px solid var(--line);padding-top:14px}
+  .find-rays{order:3}
   #rail{position:fixed;left:14px;top:50%;transform:translateY(-50%);z-index:12;
     display:none;flex-direction:column;align-items:center;gap:11px;padding:12px 9px;
     background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
@@ -318,7 +356,7 @@
 
     <div class="panel" data-panel="find">
 
-    <div class="group">
+    <div class="group find-address">
       <h2>Address</h2>
       <div class="row"><label for="addrshell">Shell</label>
         <input id="addrshell" type="range" min="1" max="7" step="1" value="4"><output>4</output></div>
@@ -336,7 +374,7 @@
       <p class="note" id="addrnote">O is the exterior observer face, the public permissioned database. I is the interior personal face, the private encrypted database. Same 1–288 numbers on both. Tap any cell to read its address.</p>
     </div>
 
-    <div class="group">
+    <div class="group find-rays">
       <h2>Rays</h2>
       <div class="btns">
         <div class="seg" id="rayseg">
@@ -362,8 +400,56 @@
       <p class="note">Rays run from the zero point out to the lattice: one register per vertex, one per cell centre. Off by default; Clear returns the bare shell.</p>
     </div>
 
-    <div class="group">
+    <div class="group find-places">
       <h2>Earth</h2>
+      <div class="btns">
+        <input id="placeq" list="places" placeholder="Search visible layers" autocomplete="off">
+        <button id="goplace">Go</button>
+      </div>
+      <datalist id="places"></datalist>
+      <div class="placefilters">
+        <select id="placecategory" aria-label="Filter visible places by type">
+          <option value="">All place types</option>
+        </select>
+        <button id="placefilterclear" type="button" disabled>Clear</button>
+      </div>
+
+      <article id="placecard" class="placecard" aria-labelledby="placecardname" aria-live="polite" tabindex="-1">
+        <div class="placecardhead">
+          <span id="placecarddot" aria-hidden="true"></span>
+          <div>
+            <p id="placecardeyebrow" class="placeeyebrow">Selected place</p>
+            <h3 id="placecardname">No place selected</h3>
+          </div>
+          <button id="placecardclose" type="button" aria-label="Close selected place">×</button>
+        </div>
+        <p id="placecardsummary"></p>
+        <dl class="placefacts">
+          <div class="placefact"><dt>Type</dt><dd id="placecardtype">—</dd></div>
+          <div class="placefact"><dt>Layer</dt><dd id="placecardlayer">—</dd></div>
+          <div class="placefact"><dt>Coordinates</dt><dd id="placecardcoords">—</dd></div>
+          <div class="placefact"><dt>Accuracy</dt><dd id="placecardbasis">—</dd></div>
+        </dl>
+        <p id="placecardwarning" class="note"></p>
+        <div class="placeactions">
+          <button id="placecloser" type="button">Zoom closer</button>
+          <button id="placeregional" type="button">Regional view</button>
+          <button id="placesave" type="button">Save place</button>
+          <button id="placecopy" type="button">Copy details</button>
+          <a id="placesource" href="#" target="_blank" rel="noopener" hidden>Open source</a>
+        </div>
+      </article>
+
+      <section id="savedpanel" class="savedpanel" aria-label="Saved places" hidden>
+        <div class="savedhead"><strong>Saved places</strong><span id="savedcount">0 saved</span></div>
+        <div id="savedlist" class="savedlist"></div>
+        <div class="placeactions">
+          <a id="savedexport" href="#" download="aura-saved-places.csv">Download CSV</a>
+          <button id="savedclear" type="button">Clear saved</button>
+        </div>
+        <p class="note">Saved only in this browser. Download the CSV to use the shortlist elsewhere.</p>
+      </section>
+
       <div id="layerlist" class="layerlist" aria-label="Location layers"></div>
       <div class="btns">
         <label class="filebtn">Import CSV, KML or KMZ
@@ -371,11 +457,6 @@
         </label>
         <button id="layersoff" type="button">Hide all</button>
       </div>
-      <div class="btns">
-        <input id="placeq" list="places" placeholder="Search visible layers" autocomplete="off">
-        <button id="goplace">Go</button>
-      </div>
-      <datalist id="places"></datalist>
       <p class="note" id="placenote" aria-live="polite">Switch on a layer, then search or tap one of its coloured points.</p>
       <p class="note" id="layernote" aria-live="polite">Older lists are labelled as archival or unverified. Files you import stay in this browser tab and are not uploaded.</p>
     </div>
@@ -605,9 +686,21 @@ scene.add(root);
 /* ---------- orbit ---------- */
 var cam = {theta:0.6, phi:1.12, dist:16};
 var drag = null, pinch = null;
+function earthWorldRadius(){
+  if(!locationSphereRadius || !sphereMesh) return locationSphereRadius || 0;
+  root.updateMatrixWorld(true);
+  var scale = new THREE.Vector3();
+  sphereMesh.getWorldScale(scale);
+  return locationSphereRadius * Math.max(scale.x, scale.y, scale.z);
+}
+function cameraFloor(){
+  if(selectedLocation && locationSphereRadius && sphereMesh && sphereMesh.visible &&
+      !(drive && drive.insideCam)) return earthWorldRadius() * 1.045;
+  return 0.25;
+}
 function applyCamera(){
   cam.phi = Math.max(0.05, Math.min(Math.PI - 0.05, cam.phi));
-  cam.dist = Math.max(0.25, Math.min(300, cam.dist));
+  cam.dist = Math.max(cameraFloor(), Math.min(300, cam.dist));
   camera.position.set(
     cam.dist * Math.sin(cam.phi) * Math.sin(cam.theta),
     cam.dist * Math.cos(cam.phi),
@@ -635,7 +728,7 @@ el.addEventListener('pointerup', function(e){
 });
 el.addEventListener('pointercancel', function(){ drag = null; tapStart = null; });
 el.addEventListener('wheel', function(e){
-  e.preventDefault(); cam.dist *= Math.pow(1.0016, e.deltaY); applyCamera();
+  e.preventDefault(); cam.dist *= Math.pow(1.0024, e.deltaY); applyCamera();
 }, {passive:false});
 el.addEventListener('touchstart', function(e){
   if(e.touches.length === 2){
@@ -719,6 +812,9 @@ var locationManifest = (window.AURA_LOCATION_MANIFEST || []).map(function(layer)
 var locationData = window.AURA_LOCATION_DATA || {};
 var locationStates = {};
 var locationLayerObjects = {};
+var locationCategoryFilter = '';
+var savedLocations = [];
+var savedExportUrl = '';
 var importedLocationNumber = 0;
 var importedLocationColours = ['#fbbf24','#fb7185','#2dd4bf','#818cf8','#f97316','#4ade80'];
 locationManifest.forEach(function(layer){
@@ -734,6 +830,8 @@ function locationLat(p){ return Number(p && p[1]); }
 function locationLon(p){ return Number(p && p[2]); }
 function locationDetail(p){ return String((p && p[3]) || ''); }
 function locationCategory(p){ return String((p && p[4]) || ''); }
+function locationSourceUrl(p){ return String((p && p[5]) || ''); }
+function locationPassesFilter(p){ return !locationCategoryFilter || locationCategory(p) === locationCategoryFilter; }
 function locationSearchText(p){
   return [locationName(p), locationDetail(p), locationCategory(p), String((p && p[6]) || '')]
     .join(' ').toLowerCase();
@@ -873,8 +971,9 @@ function clearMeshes(){
       if(o.material && o.material.dispose) o.material.dispose();
     });
     sphereMesh = null; sphereEarthMat = null; sphereWire = null;
-    markerGroup = null; selectedPlacePin = null; selectedLocation = null;
+    markerGroup = null; selectedPlacePin = null;
     locationSphereRadius = 0; locationLayerObjects = {};
+    clearLocationSelection(true);
   }
   if(rayLines){ root.remove(rayLines); rayLines.geometry.dispose(); rayLines.material.dispose(); rayLines = null; }
   if(rayHi){ root.remove(rayHi); rayHi.geometry.dispose(); rayHi.material.dispose(); rayHi = null; }
@@ -1045,13 +1144,15 @@ function buildShells(){
   }
 
   var R = radius();
-  var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, cols, rows);
+  var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, 96, 64);
+  var wireSphere = new THREE.SphereBufferGeometry(2 * R * 1.12, cols, rows);
   sphereMesh = new THREE.Group();
   sphereEarthMat = new THREE.MeshBasicMaterial({visible: !!earthTex});
   if(earthTex) sphereEarthMat.map = earthTex;
   sphereMesh.add(new THREE.Mesh(sg, sphereEarthMat));
-  sphereWire = new THREE.LineSegments(new THREE.WireframeGeometry(sg),
+  sphereWire = new THREE.LineSegments(new THREE.WireframeGeometry(wireSphere),
     new THREE.LineBasicMaterial({color:0x8b939e, transparent:true, opacity:0.3}));
+  wireSphere.dispose();
   sphereWire.visible = !earthTex;
   sphereMesh.add(sphereWire);
   markerGroup = new THREE.Group();
@@ -1144,7 +1245,11 @@ function updateShellTransforms(){
     sphereMesh.visible = P.sphere;
     var colHalf = 3 * (2 * R * BODY_S * 1.15) + 2 * R * BODY_S;
     var grow = Math.max(1, colHalf * 1.08 / (2 * R * 1.12));
-    sphereMesh.scale.setScalar(1 + (grow - 1) * t);
+    var sphereScale = 1 + (grow - 1) * t;
+    if(Math.abs(sphereMesh.scale.x - sphereScale) > 0.000001){
+      sphereMesh.scale.setScalar(sphereScale);
+      if(selectedLocation) applyCamera();
+    }
   }
   if(rayLines){
     var rrk = rayShellIdxNow();
@@ -1499,7 +1604,7 @@ function tick(){
     'r  = ' + rV.toFixed(3) + '\n' +
     'R  = ' + Rmaj.toFixed(3) + '  ' + kind + '\n' +
     'cells ' + (P.rows * P.cols);
-  gripval.textContent = 'master ' + P.master.toFixed(2);
+  if(!selectedLocation) gripval.textContent = 'master ' + P.master.toFixed(2);
   renderer.render(scene, camera);
 }
 
@@ -1607,7 +1712,12 @@ function pick(e){
   if(P.shellsMode === 'seven'){
     // location layers first: point clouds stay one draw call per layer
     if(markerGroup && sphereMesh && sphereMesh.visible){
-      raycaster.params.Points.threshold = Math.max(0.04, locationSphereRadius * 0.012);
+      var earthR = earthWorldRadius();
+      var markerDepth = Math.max(0.02, cam.dist - earthR);
+      var targetPixels = window.matchMedia && window.matchMedia('(pointer:coarse)').matches ? 14 : 9;
+      var worldPerPixel = 2 * markerDepth * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) /
+        Math.max(1, renderer.domElement.clientHeight);
+      raycaster.params.Points.threshold = Math.max(earthR * 0.0015, worldPerPixel * targetPixels);
       var mHits = raycaster.intersectObjects(markerGroup.children, false);
       var globeHits = sphereMesh.children.length ? raycaster.intersectObject(sphereMesh.children[0], false) : [];
       var markerLimit = globeHits.length ? globeHits[0].distance + raycaster.params.Points.threshold * 2 : Infinity;
@@ -1616,7 +1726,9 @@ function pick(e){
       if(mHit){
         var po = mHit.object;
         if(po.userData.locationLayerId && mHit.index !== undefined){
-          focusPlace(po.userData.locationLayerId, mHit.index);
+          var sourceIndexes = po.userData.locationIndexes || [];
+          focusPlace(po.userData.locationLayerId,
+            sourceIndexes[mHit.index] === undefined ? mHit.index : sourceIndexes[mHit.index]);
           return;
         }
       }
@@ -1824,12 +1936,12 @@ function stepRay(dRing, dCol, toggleKind){
 /* ---------- Earth location layers: load, render, search, tap ---------- */
 function createPlacePin(r){
   var pin = new THREE.Group();
-  var pinH = r * 0.045;
+  var pinH = r * 0.025;
   var mat = new THREE.MeshBasicMaterial({color:0xffffff, depthTest:true});
-  var needle = new THREE.Mesh(new THREE.ConeBufferGeometry(r * 0.005, pinH, 8), mat);
+  var needle = new THREE.Mesh(new THREE.ConeBufferGeometry(r * 0.0035, pinH, 8), mat);
   needle.rotation.x = Math.PI;
   needle.position.y = pinH / 2;
-  var head = new THREE.Mesh(new THREE.SphereBufferGeometry(r * 0.012, 12, 10), mat);
+  var head = new THREE.Mesh(new THREE.SphereBufferGeometry(r * 0.007, 12, 10), mat);
   head.position.y = pinH;
   pin.add(needle); pin.add(head);
   return pin;
@@ -1847,17 +1959,21 @@ function disposeLocationPoints(){
 
 function rebuildLocationMarkers(){
   if(!markerGroup || !locationSphereRadius) return;
+  var keepSelection = selectedLocation ? {layerId:selectedLocation.layerId, index:selectedLocation.index} : null;
   disposeLocationPoints();
-  selectedLocation = null;
   if(selectedPlacePin) selectedPlacePin.visible = false;
+  renderCategoryFilter();
   var r = locationSphereRadius * 1.004;
   locationManifest.forEach(function(layer){
     var state = locationStates[layer.id];
     var data = locationData[layer.id];
     if(!state || !state.visible || !Array.isArray(data) || !data.length) return;
-    var positions = new Float32Array(data.length * 3);
-    for(var i=0;i<data.length;i++){
-      var at = latLonToVec(locationLat(data[i]), locationLon(data[i]), r);
+    var indexes = [];
+    for(var di=0;di<data.length;di++) if(locationPassesFilter(data[di])) indexes.push(di);
+    if(!indexes.length) return;
+    var positions = new Float32Array(indexes.length * 3);
+    for(var i=0;i<indexes.length;i++){
+      var at = latLonToVec(locationLat(data[indexes[i]]), locationLon(data[indexes[i]]), r);
       positions[i * 3] = at.x;
       positions[i * 3 + 1] = at.y;
       positions[i * 3 + 2] = at.z;
@@ -1876,11 +1992,20 @@ function rebuildLocationMarkers(){
     });
     var points = new THREE.Points(geometry, material);
     points.userData.locationLayerId = layer.id;
+    points.userData.locationIndexes = indexes;
     points.renderOrder = 4;
     markerGroup.add(points);
     locationLayerObjects[layer.id] = points;
   });
   refreshPlaceSuggestions();
+  if(keepSelection){
+    var keepState = locationStates[keepSelection.layerId];
+    var keepData = locationData[keepSelection.layerId];
+    var keepPoint = keepData && keepData[keepSelection.index];
+    if(keepState && keepState.visible && keepPoint && locationPassesFilter(keepPoint))
+      focusPlace(keepSelection.layerId, keepSelection.index, {moveCamera:false, reveal:false});
+    else clearLocationSelection(true);
+  }
 }
 
 function fmtLatLon(p){
@@ -1889,7 +2014,114 @@ function fmtLatLon(p){
          Math.abs(lon).toFixed(2) + '°' + (lon < 0 ? 'W' : 'E');
 }
 
-function focusPlace(layerId, index){
+function safeLocationUrl(value){
+  var url = String(value || '').trim();
+  return /^https?:\/\//i.test(url) ? url : '';
+}
+
+function selectedPlaceContext(){
+  if(!selectedLocation) return null;
+  var layer = locationLayer(selectedLocation.layerId);
+  var data = layer && locationData[selectedLocation.layerId];
+  var point = data && data[selectedLocation.index];
+  return layer && point ? {layer:layer, point:point, index:selectedLocation.index} : null;
+}
+
+function placeRecord(layer, point, index){
+  var source = safeLocationUrl(locationSourceUrl(point)) || safeLocationUrl(layer.sourceUrl);
+  var lat = locationLat(point), lon = locationLon(point);
+  var sourceIdentity = layer.sourceSha256 || layer.sourceFile || layer.id;
+  return {
+    key:[sourceIdentity, locationName(point), lat.toFixed(6), lon.toFixed(6)].join('|'),
+    layerId:layer.id, index:index, name:locationName(point), latitude:lat, longitude:lon,
+    detail:locationDetail(point), category:locationCategory(point), layerLabel:layer.label,
+    statusLabel:layer.statusLabel || '', coordinateBasis:layer.coordinateBasis || 'not recorded',
+    warning:layer.warning || '', rightsNote:layer.rightsNote || '', sourceUrl:source,
+    sourceFile:String(layer.sourceFile || ''), sourceSha256:String(layer.sourceSha256 || '')
+  };
+}
+
+function savedLocationIndex(key){
+  for(var i=0;i<savedLocations.length;i++) if(savedLocations[i].key === key) return i;
+  return -1;
+}
+
+function renderPlaceDetails(layer, point, index){
+  var record = placeRecord(layer, point, index);
+  var card = document.getElementById('placecard');
+  card.hidden = false;
+  card.classList.add('show');
+  card.dataset.placeKey = record.key;
+  var dot = document.getElementById('placecarddot');
+  dot.style.backgroundColor = layer.colour || '#d8b36a';
+  dot.style.color = layer.colour || '#d8b36a';
+  document.getElementById('placecardeyebrow').textContent = layer.statusLabel || 'Selected place';
+  document.getElementById('placecardname').textContent = record.name;
+  document.getElementById('placecardsummary').textContent = record.detail || 'No additional locality information is recorded in this list.';
+  document.getElementById('placecardtype').textContent = record.category || 'Place';
+  document.getElementById('placecardlayer').textContent = record.layerLabel;
+  document.getElementById('placecardcoords').textContent = fmtLatLon(point);
+  document.getElementById('placecardbasis').textContent = record.coordinateBasis;
+  var warnings = [record.warning, record.rightsNote].filter(function(value, at, all){
+    return value && all.indexOf(value) === at;
+  });
+  var warning = document.getElementById('placecardwarning');
+  warning.textContent = warnings.join(' ');
+  warning.hidden = !warnings.length;
+  var source = document.getElementById('placesource');
+  source.hidden = !record.sourceUrl;
+  if(record.sourceUrl){
+    source.href = record.sourceUrl;
+    source.textContent = /^http:\/\//i.test(record.sourceUrl) ? 'Open source (old HTTP)' : 'Open source';
+  } else source.removeAttribute('href');
+  var save = document.getElementById('placesave');
+  var isSaved = savedLocationIndex(record.key) >= 0;
+  save.textContent = isSaved ? 'Saved' : 'Save place';
+  save.classList.toggle('on', isSaved);
+  save.setAttribute('aria-pressed', isSaved ? 'true' : 'false');
+  document.getElementById('gripval').textContent = record.name;
+}
+
+function clearLocationSelection(keepQuery){
+  selectedLocation = null;
+  if(selectedPlacePin) selectedPlacePin.visible = false;
+  var card = document.getElementById('placecard');
+  if(card){ card.classList.remove('show'); card.hidden = true; card.removeAttribute('data-place-key'); }
+  if(!keepQuery){
+    var query = document.getElementById('placeq');
+    if(query) query.value = '';
+  }
+  var note = document.getElementById('placenote');
+  if(note) note.textContent = 'Switch on a layer, then search or tap one of its coloured points.';
+  var gripReadout = document.getElementById('gripval');
+  if(gripReadout) gripReadout.textContent = 'master ' + P.master.toFixed(2);
+}
+
+function holdLocationCamera(){
+  P.spin = 0;
+  document.getElementById('spin').value = 0;
+  sync('spin', '0.00');
+  if(drive){
+    drive.playing = false;
+    drive.fit = false;
+    drive.camLock = true;
+    drive.insideCam = false;
+    var fit = document.getElementById('jfit'); if(fit) fit.classList.remove('on');
+    var follow = document.getElementById('camfollow'); if(follow) follow.classList.remove('on');
+  }
+}
+
+function openPlaceControls(){
+  switchTab('find');
+  setSheetOpen(true);
+  setTimeout(function(){
+    var card = document.getElementById('placecard');
+    if(card && card.scrollIntoView) card.scrollIntoView({block:'nearest', behavior:'smooth'});
+  }, 40);
+}
+
+function focusPlace(layerId, index, options){
+  options = options || {};
   var layer = locationLayer(layerId), data = locationData[layerId];
   if(!layer || !data || !data[index] || !selectedPlacePin || !sphereMesh) return;
   var p = data[index];
@@ -1898,29 +2130,174 @@ function focusPlace(layerId, index){
   selectedPlacePin.position.copy(at);
   selectedPlacePin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), at.clone().normalize());
   selectedPlacePin.visible = true;
+  renderPlaceDetails(layer, p, index);
 
-  // Hold the globe still so the selected point does not drift away.
-  P.spin = 0;
-  document.getElementById('spin').value = 0;
-  sync('spin', '0.00');
-  root.updateMatrixWorld(true);
-  var v = new THREE.Vector3();
-  selectedPlacePin.getWorldPosition(v);
-  var len = v.length();
-  cam.theta = Math.atan2(v.x, v.z);
-  cam.phi = Math.acos(Math.max(-1, Math.min(1, v.y / len)));
-  cam.dist = len * 1.28;
-  applyCamera();
+  if(options.moveCamera !== false){
+    holdLocationCamera();
+    root.updateMatrixWorld(true);
+    var v = new THREE.Vector3();
+    selectedPlacePin.getWorldPosition(v);
+    var len = v.length();
+    cam.theta = Math.atan2(v.x, v.z);
+    cam.phi = Math.acos(Math.max(-1, Math.min(1, v.y / len)));
+    cam.dist = earthWorldRadius() * 1.12;
+    applyCamera();
+  }
 
-  var detail = [];
-  if(locationDetail(p)) detail.push(locationDetail(p));
-  if(locationCategory(p) && locationCategory(p) !== locationDetail(p)) detail.push(locationCategory(p));
-  detail.push(layer.label);
-  if(layer.statusLabel) detail.push(layer.statusLabel);
-  detail.push(fmtLatLon(p));
-  document.getElementById('placenote').textContent = locationName(p) + ' · ' + detail.join(' · ');
   document.getElementById('placeq').value = locationName(p);
-  switchTab('find');
+  document.getElementById('placenote').textContent =
+    'Selected ' + locationName(p) + '. Use the card above to inspect, save or copy it.';
+  if(options.reveal !== false) openPlaceControls();
+}
+
+function zoomSelectedCloser(){
+  if(!selectedPlaceContext()) return;
+  holdLocationCamera();
+  var r = earthWorldRadius();
+  var gap = Math.max(r * 0.045, cam.dist - r);
+  cam.dist = r + Math.max(r * 0.045, gap * 0.48);
+  applyCamera();
+}
+
+function zoomSelectedRegional(){
+  if(!selectedPlaceContext()) return;
+  holdLocationCamera();
+  cam.dist = earthWorldRadius() * 1.34;
+  applyCamera();
+}
+
+function selectedPlaceText(){
+  var context = selectedPlaceContext();
+  if(!context) return '';
+  var r = placeRecord(context.layer, context.point, context.index);
+  return [r.name, r.detail, r.category, r.layerLabel + (r.statusLabel ? ' · ' + r.statusLabel : ''),
+    fmtLatLon(context.point), 'Accuracy: ' + r.coordinateBasis,
+    r.warning, r.rightsNote, r.sourceUrl].filter(Boolean).join('\n');
+}
+
+function copyPlainText(value, done){
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(value).then(done, function(){ copyPlainTextFallback(value, done); });
+  } else copyPlainTextFallback(value, done);
+}
+function copyPlainTextFallback(value, done){
+  var area = document.createElement('textarea');
+  area.value = value; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0';
+  document.body.appendChild(area); area.select();
+  try { document.execCommand('copy'); } catch(error){}
+  document.body.removeChild(area); done();
+}
+
+function loadSavedLocations(){
+  try {
+    var parsed = JSON.parse(localStorage.getItem('aura-horn-torus.saved-places.v1') || '[]');
+    savedLocations = Array.isArray(parsed) ? parsed.filter(function(item){
+      return item && item.key && isFinite(item.latitude) && isFinite(item.longitude);
+    }).slice(0, 250) : [];
+  } catch(error){ savedLocations = []; }
+  renderSavedLocations();
+}
+function persistSavedLocations(){
+  try { localStorage.setItem('aura-horn-torus.saved-places.v1', JSON.stringify(savedLocations)); }
+  catch(error){ setLayerNote('This browser could not keep the saved-place list. Download it before leaving.'); }
+}
+
+function renderSavedLocations(){
+  var panel = document.getElementById('savedpanel'), list = document.getElementById('savedlist');
+  if(!panel || !list) return;
+  panel.hidden = !savedLocations.length;
+  document.getElementById('savedcount').textContent = savedLocations.length.toLocaleString('en-AU') + ' saved';
+  list.innerHTML = '';
+  savedLocations.forEach(function(record){
+    var row = document.createElement('div'); row.className = 'saveditem';
+    var focus = document.createElement('button'); focus.type = 'button'; focus.className = 'savedfocus';
+    var name = document.createElement('strong'); name.textContent = record.name;
+    var detail = document.createElement('small');
+    detail.textContent = [record.category, record.detail, record.layerLabel].filter(Boolean).join(' · ');
+    focus.appendChild(name); focus.appendChild(detail);
+    focus.addEventListener('click', function(){ focusSavedLocation(record); });
+    var remove = document.createElement('button'); remove.type = 'button'; remove.className = 'savedremove';
+    remove.textContent = '×'; remove.setAttribute('aria-label', 'Remove ' + record.name + ' from saved places');
+    remove.addEventListener('click', function(){ removeSavedLocation(record.key); });
+    row.appendChild(focus); row.appendChild(remove); list.appendChild(row);
+  });
+  updateSavedExportLink();
+  var context = selectedPlaceContext();
+  if(context) renderPlaceDetails(context.layer, context.point, context.index);
+}
+
+function toggleSavedPlace(){
+  var context = selectedPlaceContext(); if(!context) return;
+  var record = placeRecord(context.layer, context.point, context.index);
+  var at = savedLocationIndex(record.key);
+  if(at >= 0) savedLocations.splice(at, 1);
+  else savedLocations.unshift(record);
+  savedLocations = savedLocations.slice(0, 250);
+  persistSavedLocations(); renderSavedLocations();
+}
+
+function removeSavedLocation(key){
+  var at = savedLocationIndex(key); if(at < 0) return;
+  savedLocations.splice(at, 1); persistSavedLocations(); renderSavedLocations();
+}
+
+function focusSavedLocation(record){
+  var layer = locationLayer(record.layerId);
+  if(layer && record.sourceFile && layer.sourceFile !== record.sourceFile) layer = null;
+  if(!layer && (record.sourceSha256 || record.sourceFile)){
+    for(var li=0;li<locationManifest.length;li++){
+      var candidate = locationManifest[li];
+      if((record.sourceSha256 && candidate.sourceSha256 === record.sourceSha256) ||
+          (!record.sourceSha256 && record.sourceFile && candidate.sourceFile === record.sourceFile)){
+        layer = candidate; break;
+      }
+    }
+  }
+  var state = layer && locationStates[layer.id];
+  if(!layer || !state){
+    setLayerNote(record.name + ' came from a local import that is not loaded. Re-import that file to place it on the globe.');
+    return;
+  }
+  state.visible = true;
+  ensureLayerData(layer, function(error){
+    if(error){
+      state.visible = false;
+      renderLocationLayerControls();
+      setLayerNote(error.message);
+      return;
+    }
+    var data = locationData[layer.id], found = -1;
+    for(var i=0;i<data.length;i++){
+      if(locationName(data[i]) === record.name &&
+          Math.abs(locationLat(data[i]) - Number(record.latitude)) < 0.000001 &&
+          Math.abs(locationLon(data[i]) - Number(record.longitude)) < 0.000001){ found = i; break; }
+    }
+    if(found < 0){
+      renderLocationLayerControls();
+      setLayerNote(record.name + ' is saved, but this version of the layer no longer contains the same point.');
+      return;
+    }
+    locationCategoryFilter = '';
+    rebuildLocationMarkers(); renderLocationLayerControls();
+    focusPlace(layer.id, found);
+  });
+}
+
+function csvValue(value){
+  var text = String(value === undefined || value === null ? '' : value);
+  if(typeof value === 'string' && /^\s*[=+\-@]/.test(text)) text = "'" + text;
+  return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+function updateSavedExportLink(){
+  var link = document.getElementById('savedexport'); if(!link) return;
+  if(savedExportUrl){ URL.revokeObjectURL(savedExportUrl); savedExportUrl = ''; }
+  if(!savedLocations.length){ link.hidden = true; link.removeAttribute('href'); return; }
+  var columns = ['name','detail','category','layerLabel','statusLabel','latitude','longitude','coordinateBasis','sourceFile','sourceUrl'];
+  var rows = [columns.join(',')].concat(savedLocations.map(function(record){
+    return columns.map(function(column){ return csvValue(record[column]); }).join(',');
+  }));
+  savedExportUrl = URL.createObjectURL(new Blob(['\uFEFF', rows.join('\r\n')], {type:'text/csv;charset=utf-8'}));
+  link.href = savedExportUrl; link.hidden = false;
 }
 
 function setLayerNote(text){
@@ -1945,26 +2322,35 @@ function ensureLayerData(layer, done){
   var state = locationStates[layer.id];
   if(Array.isArray(locationData[layer.id])){ done(null); return; }
   if(!layer.src){ done(new Error('No local layer file is registered.')); return; }
-  if(state.loading) return;
+  if(state.loading){
+    state.loadCallbacks = state.loadCallbacks || [];
+    state.loadCallbacks.push(done);
+    return;
+  }
   state.loading = true; state.error = '';
+  state.loadCallbacks = [done];
   renderLocationLayerControls();
+  function finish(error){
+    state.loading = false;
+    var callbacks = state.loadCallbacks || [];
+    state.loadCallbacks = [];
+    callbacks.forEach(function(callback){ callback(error || null); });
+  }
   var script = document.createElement('script');
   script.src = layer.src;
   script.async = true;
   script.dataset.locationLayer = layer.id;
   script.onload = function(){
-    state.loading = false;
     if(!Array.isArray(locationData[layer.id])){
       state.error = 'The layer file loaded without usable point data.';
-      done(new Error(state.error));
+      finish(new Error(state.error));
       return;
     }
-    done(null);
+    finish(null);
   };
   script.onerror = function(){
-    state.loading = false;
     state.error = 'Could not load this layer file.';
-    done(new Error(state.error));
+    finish(new Error(state.error));
   };
   document.head.appendChild(script);
 }
@@ -2005,6 +2391,8 @@ function hideAllLocationLayers(){
   locationManifest.forEach(function(layer){
     if(locationStates[layer.id]) locationStates[layer.id].visible = false;
   });
+  locationCategoryFilter = '';
+  clearLocationSelection(true);
   rebuildLocationMarkers();
   renderLocationLayerControls();
   setLayerNote('All location layers are hidden. The Earth and aura geometry remain available.');
@@ -2046,6 +2434,57 @@ function renderLocationLayerControls(){
   });
 }
 
+function visibleCategoryCounts(){
+  var counts = {};
+  locationManifest.forEach(function(layer){
+    var state = locationStates[layer.id], data = locationData[layer.id];
+    if(!state || !state.visible || !Array.isArray(data)) return;
+    for(var i=0;i<data.length;i++){
+      var category = locationCategory(data[i]);
+      if(category) counts[category] = (counts[category] || 0) + 1;
+    }
+  });
+  return counts;
+}
+
+function renderCategoryFilter(){
+  var select = document.getElementById('placecategory');
+  if(!select) return;
+  var counts = visibleCategoryCounts();
+  if(locationCategoryFilter && !counts[locationCategoryFilter]) locationCategoryFilter = '';
+  select.innerHTML = '';
+  var all = document.createElement('option'); all.value = ''; all.textContent = 'All place types';
+  select.appendChild(all);
+  Object.keys(counts).sort(function(a,b){ return a.localeCompare(b); }).forEach(function(category){
+    var option = document.createElement('option'); option.value = category;
+    option.textContent = category + ' (' + counts[category].toLocaleString('en-AU') + ')';
+    select.appendChild(option);
+  });
+  select.value = locationCategoryFilter;
+  select.disabled = !Object.keys(counts).length;
+  var clear = document.getElementById('placefilterclear');
+  if(clear) clear.disabled = !locationCategoryFilter;
+}
+
+function filteredVisiblePlaceCount(){
+  var total = 0;
+  locationManifest.forEach(function(layer){
+    var state = locationStates[layer.id], data = locationData[layer.id];
+    if(!state || !state.visible || !Array.isArray(data)) return;
+    for(var i=0;i<data.length;i++) if(locationPassesFilter(data[i])) total++;
+  });
+  return total;
+}
+
+function applyLocationCategoryFilter(value){
+  locationCategoryFilter = String(value || '');
+  rebuildLocationMarkers();
+  var count = filteredVisiblePlaceCount();
+  setLayerNote(locationCategoryFilter
+    ? 'Showing ' + count.toLocaleString('en-AU') + ' visible places of type “' + locationCategoryFilter + '”.'
+    : 'Showing all ' + count.toLocaleString('en-AU') + ' places in the visible layers.');
+}
+
 function refreshPlaceSuggestions(){
   var datalist = document.getElementById('places');
   if(!datalist) return;
@@ -2054,9 +2493,11 @@ function refreshPlaceSuggestions(){
   locationManifest.forEach(function(layer){
     var state = locationStates[layer.id], data = locationData[layer.id];
     if(!state || !state.visible || !Array.isArray(data) || data.length > 600 || added >= 500) return;
-    for(var i=0;i<data.length && added<500;i++,added++){
+    for(var i=0;i<data.length && added<500;i++){
+      if(!locationPassesFilter(data[i])) continue;
       var option = document.createElement('option'); option.value = locationName(data[i]);
       datalist.appendChild(option);
+      added++;
     }
   });
 }
@@ -2070,6 +2511,7 @@ function goPlace(){
     var state = locationStates[layer.id], data = locationData[layer.id];
     if(!state || !state.visible || !Array.isArray(data)) return;
     for(var i=0;i<data.length;i++){
+      if(!locationPassesFilter(data[i])) continue;
       var name = locationName(data[i]).toLowerCase();
       var haystack = locationSearchText(data[i]);
       var score = name === q ? 0 : (name.indexOf(q) === 0 ? 1 : (name.indexOf(q) >= 0 ? 2 : (haystack.indexOf(q) >= 0 ? 3 : 99)));
@@ -2142,6 +2584,10 @@ function parseCsvLayer(text){
   var countryIndex = headerIndex(headers, ['country','countryname','iso2','countrycode']);
   var adminIndex = headerIndex(headers, ['adminname','state','region','province']);
   var categoryIndex = headerIndex(headers, ['category','type','kind','folder']);
+  var addressIndex = headerIndex(headers, ['address','streetaddress','formattedaddress']);
+  var populationIndex = headerIndex(headers, ['population','pop']);
+  var descriptionIndex = headerIndex(headers, ['description','summary','notes','note']);
+  var urlIndex = headerIndex(headers, ['website','url','sourceurl','link']);
   var points = [], unresolved = 0;
   for(var r=1;r<rows.length;r++){
     var source = rows[r];
@@ -2156,8 +2602,15 @@ function parseCsvLayer(text){
       var value = index >= 0 ? String(source[index] || '').trim() : '';
       if(value && detailParts.indexOf(value) < 0) detailParts.push(value);
     });
+    var address = addressIndex >= 0 ? String(source[addressIndex] || '').trim() : '';
+    if(address && detailParts.indexOf(address) < 0) detailParts.push(address);
+    var population = populationIndex >= 0 ? String(source[populationIndex] || '').trim() : '';
+    if(population) detailParts.push('Population ' + population);
+    var description = descriptionIndex >= 0 ? String(source[descriptionIndex] || '').trim() : '';
     var category = categoryIndex >= 0 ? String(source[categoryIndex] || '').trim() : '';
-    points.push([name, lat, lon, detailParts.join(', '), category, '', detailParts.join(' ') + ' ' + category]);
+    var url = urlIndex >= 0 ? String(source[urlIndex] || '').trim() : '';
+    points.push([name, lat, lon, detailParts.join(' · '), category, url,
+      detailParts.join(' ') + ' ' + category + ' ' + description]);
   }
   return {points:points, total:rows.length - 1, unresolved:unresolved};
 }
@@ -2470,11 +2923,33 @@ document.getElementById('multiBtn').addEventListener('click', function(){
 });
 
 renderLocationLayerControls();
+renderCategoryFilter();
 refreshPlaceSuggestions();
+loadSavedLocations();
 document.getElementById('layersoff').addEventListener('click', hideAllLocationLayers);
 document.getElementById('locationfile').addEventListener('change', function(){
   var input = this, files = Array.prototype.slice.call(input.files || []);
   importLocationFiles(files).then(function(){ input.value = ''; });
+});
+document.getElementById('placecategory').addEventListener('change', function(){
+  applyLocationCategoryFilter(this.value);
+});
+document.getElementById('placefilterclear').addEventListener('click', function(){
+  applyLocationCategoryFilter('');
+});
+document.getElementById('placecardclose').addEventListener('click', function(){ clearLocationSelection(false); });
+document.getElementById('placecloser').addEventListener('click', zoomSelectedCloser);
+document.getElementById('placeregional').addEventListener('click', zoomSelectedRegional);
+document.getElementById('placesave').addEventListener('click', toggleSavedPlace);
+document.getElementById('placecopy').addEventListener('click', function(){
+  var button = this, text = selectedPlaceText(); if(!text) return;
+  copyPlainText(text, function(){
+    button.textContent = 'Copied';
+    setTimeout(function(){ button.textContent = 'Copy details'; }, 1200);
+  });
+});
+document.getElementById('savedclear').addEventListener('click', function(){
+  savedLocations = []; persistSavedLocations(); renderSavedLocations();
 });
 document.querySelectorAll('#rayseg button').forEach(function(b){
   b.addEventListener('click', function(){
@@ -2602,11 +3077,12 @@ document.querySelectorAll('#tabs .tab').forEach(function(b){
 });
 
 var sheet = document.getElementById('sheet'), grip = document.getElementById('grip');
-function toggleSheet(){
-  var open = sheet.classList.toggle('open');
+function setSheetOpen(open){
+  sheet.classList.toggle('open', !!open);
   grip.setAttribute('aria-expanded', open ? 'true' : 'false');
   document.body.classList.toggle('sheet-open', open);   // dock yields to the sheet
 }
+function toggleSheet(){ setSheetOpen(!sheet.classList.contains('open')); }
 grip.addEventListener('click', toggleSheet);
 grip.addEventListener('keydown', function(e){
   if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSheet(); }
@@ -2965,7 +3441,9 @@ function stageReset(){
   // would show the flat map edge on, which reads as a comb of spikes
   drive.camLock = false;
   drive.insideCam = false;
+  drive.fit = true;
   document.querySelectorAll('#campresets button').forEach(function(x){ x.classList.remove('on'); });
+  if(document.getElementById('jfit')) document.getElementById('jfit').classList.add('on');
   if(document.getElementById('camfollow')) document.getElementById('camfollow').classList.add('on');
   setSphere(false); setWire(false); resetRays(); clearSel();
   setP('focus', 'focus', 1, 0); sync('focus', '1');
