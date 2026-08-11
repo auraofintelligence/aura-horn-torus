@@ -1,0 +1,710 @@
+#!/usr/bin/env python3
+"""Build compact, source-labelled globe layers for the static demo.
+
+The browser uses JavaScript registration files instead of fetched JSON so the
+site still works when index.html is opened directly from disk.  Generated point
+rows use this compact schema:
+
+    [name, latitude, longitude, detail, category, source_url, search_text, icon_url]
+
+Only name and coordinates are required.  Empty values at the end are removed.
+The source files are read only; generated files are written inside data/layers.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import re
+import xml.etree.ElementTree as ET
+import zipfile
+from collections import Counter, defaultdict
+from pathlib import Path
+from typing import Any, Iterable
+
+
+REPO = Path(__file__).resolve().parents[1]
+WORKSPACE = REPO.parent
+DEFAULT_DOWNLOADS = Path.home() / "Downloads"
+LAYERS_DIR = REPO / "data" / "layers"
+MANIFEST_PATH = REPO / "data" / "location-layers.js"
+POINT_SCHEMA = [
+    "name",
+    "latitude",
+    "longitude",
+    "detail",
+    "category",
+    "sourceUrl",
+    "searchText",
+    "iconUrl",
+]
+
+
+STARTER_POINTS = [
+    ["Minjerribah (Straddie)", -27.49, 153.45, "Queensland, Australia"],
+    ["Brisbane", -27.47, 153.03, "Queensland, Australia"],
+    ["Sydney", -33.87, 151.21, "New South Wales, Australia"],
+    ["Melbourne", -37.81, 144.96, "Victoria, Australia"],
+    ["Perth", -31.95, 115.86, "Western Australia"],
+    ["Darwin", -12.46, 130.84, "Northern Territory, Australia"],
+    ["Hobart", -42.88, 147.33, "Tasmania, Australia"],
+    ["Auckland", -36.85, 174.76, "Aotearoa New Zealand"],
+    ["Suva", -18.14, 178.44, "Fiji"],
+    ["Port Moresby", -9.44, 147.18, "Papua New Guinea"],
+    ["Tokyo", 35.68, 139.69, "Japan"],
+    ["Singapore", 1.35, 103.82, "Singapore"],
+    ["Jakarta", -6.20, 106.85, "Indonesia"],
+    ["Delhi", 28.61, 77.21, "India"],
+    ["Beijing", 39.90, 116.41, "China"],
+    ["Moscow", 55.76, 37.62, "Russia"],
+    ["Cairo", 30.04, 31.24, "Egypt"],
+    ["Nairobi", -1.29, 36.82, "Kenya"],
+    ["Lagos", 6.52, 3.38, "Nigeria"],
+    ["Cape Town", -33.92, 18.42, "South Africa"],
+    ["London", 51.51, -0.13, "United Kingdom"],
+    ["Paris", 48.86, 2.35, "France"],
+    ["Berlin", 52.52, 13.40, "Germany"],
+    ["Rome", 41.90, 12.50, "Italy"],
+    ["Reykjavik", 64.15, -21.94, "Iceland"],
+    ["New York", 40.71, -74.01, "United States"],
+    ["Los Angeles", 34.05, -118.24, "United States"],
+    ["Mexico City", 19.43, -99.13, "Mexico"],
+    ["Sao Paulo", -23.55, -46.63, "Brazil", "", "", "São Paulo"],
+    ["Buenos Aires", -34.60, -58.38, "Argentina"],
+    ["Santiago", -33.45, -70.67, "Chile"],
+    ["Honolulu", 21.31, -157.86, "United States"],
+    ["Vancouver", 49.28, -123.12, "Canada"],
+    ["McMurdo Station", -77.85, 166.67, "Antarctica"],
+]
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest().upper()
+
+
+def local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1]
+
+
+def clean_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def valid_coord(lat: Any, lon: Any) -> bool:
+    try:
+        latitude = float(lat)
+        longitude = float(lon)
+    except (TypeError, ValueError):
+        return False
+    return -90 <= latitude <= 90 and -180 <= longitude <= 180
+
+
+def point(
+    name: Any,
+    lat: Any,
+    lon: Any,
+    detail: Any = "",
+    category: Any = "",
+    source_url: Any = "",
+    search_text: Any = "",
+    icon_url: Any = "",
+) -> list[Any]:
+    if not valid_coord(lat, lon):
+        raise ValueError(f"Invalid coordinates for {name!r}: {lat!r}, {lon!r}")
+    row: list[Any] = [
+        clean_text(name) or "Unnamed place",
+        round(float(lat), 7),
+        round(float(lon), 7),
+        clean_text(detail),
+        clean_text(category),
+        clean_text(source_url),
+        clean_text(search_text),
+        clean_text(icon_url),
+    ]
+    while len(row) > 3 and row[-1] == "":
+        row.pop()
+    return row
+
+
+def parse_kml_points(path: Path) -> tuple[list[list[Any]], dict[str, Any]]:
+    root = ET.parse(path).getroot()
+    styles: dict[str, str] = {}
+    style_maps: dict[str, str] = {}
+    for style in root.iter():
+        if local_name(style.tag) != "Style":
+            continue
+        style_id = style.attrib.get("id", "")
+        href = next(
+            (
+                clean_text(node.text)
+                for node in style.iter()
+                if local_name(node.tag) == "href" and clean_text(node.text)
+            ),
+            "",
+        )
+        if style_id and href:
+            styles[style_id] = href
+    for style_map in root.iter():
+        if local_name(style_map.tag) != "StyleMap":
+            continue
+        map_id = style_map.attrib.get("id", "")
+        for pair in style_map:
+            if local_name(pair.tag) != "Pair":
+                continue
+            key = next(
+                (clean_text(node.text) for node in pair if local_name(node.tag) == "key"),
+                "",
+            )
+            target = next(
+                (
+                    clean_text(node.text).lstrip("#")
+                    for node in pair
+                    if local_name(node.tag) == "styleUrl"
+                ),
+                "",
+            )
+            if key == "normal" and map_id and target:
+                style_maps[map_id] = target
+                break
+
+    rows: list[list[Any]] = []
+    folders: Counter[str] = Counter()
+    skipped = 0
+
+    def walk(container: ET.Element, folder: str = "") -> None:
+        nonlocal skipped
+        for child in container:
+            kind = local_name(child.tag)
+            if kind in {"Document", "Folder"}:
+                next_folder = folder
+                if kind == "Folder":
+                    name_node = next(
+                        (n for n in child if local_name(n.tag) == "name"), None
+                    )
+                    next_folder = clean_text(name_node.text if name_node is not None else "")
+                walk(child, next_folder)
+                continue
+            if kind != "Placemark":
+                continue
+            name = next(
+                (
+                    clean_text(node.text)
+                    for node in child
+                    if local_name(node.tag) == "name"
+                ),
+                "Unnamed place",
+            )
+            coords = next(
+                (
+                    clean_text(node.text)
+                    for node in child.iter()
+                    if local_name(node.tag) == "Point"
+                    for node in node.iter()
+                    if local_name(node.tag) == "coordinates"
+                ),
+                "",
+            )
+            if not coords:
+                skipped += 1
+                continue
+            first = coords.split()[0].split(",")
+            if len(first) < 2 or not valid_coord(first[1], first[0]):
+                skipped += 1
+                continue
+            style_ref = next(
+                (
+                    clean_text(node.text).lstrip("#")
+                    for node in child
+                    if local_name(node.tag) == "styleUrl"
+                ),
+                "",
+            )
+            style_ref = style_maps.get(style_ref, style_ref)
+            icon_url = styles.get(style_ref, "")
+            folders[folder or "Uncategorised"] += 1
+            rows.append(
+                point(
+                    name,
+                    first[1],
+                    first[0],
+                    folder,
+                    folder,
+                    "",
+                    folder,
+                    icon_url,
+                )
+            )
+
+    walk(root)
+    return rows, {"skipped": skipped, "folders": dict(folders)}
+
+
+def extract_json_assignment(path: Path, variable: str) -> Any:
+    text = path.read_text(encoding="utf-8-sig")
+    marker = f"window.{variable} ="
+    start = text.find(marker)
+    if start < 0:
+        raise ValueError(f"Could not find {marker!r} in {path}")
+    start = text.find("[", start)
+    end = text.find("\n];", start)
+    if start < 0 or end < 0:
+        raise ValueError(f"Could not isolate {variable} array in {path}")
+    return json.loads(text[start : end + 2])
+
+
+def parse_stradbroke_reference(path: Path) -> list[list[Any]]:
+    records = extract_json_assignment(path, "QCEE_MYMAPS_PLACES")
+    rows = []
+    for record in records:
+        if not valid_coord(record.get("lat"), record.get("lng")):
+            continue
+        area = clean_text(record.get("area"))
+        folder = clean_text(record.get("folder"))
+        category = clean_text(record.get("category"))
+        rows.append(
+            point(
+                record.get("name"),
+                record.get("lat"),
+                record.get("lng"),
+                area or folder,
+                category or folder,
+                "",
+                f"{area} {folder} {record.get('geometryType', '')}",
+                record.get("iconUrl"),
+            )
+        )
+    return rows
+
+
+def parse_world_cities(path: Path) -> list[list[Any]]:
+    rows: list[list[Any]] = []
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        required = {"city", "lat", "lng", "country"}
+        if not required.issubset(set(reader.fieldnames or [])):
+            raise ValueError("worldcities.csv does not have the expected headers")
+        for record in reader:
+            if not valid_coord(record.get("lat"), record.get("lng")):
+                continue
+            admin = clean_text(record.get("admin_name"))
+            country = clean_text(record.get("country"))
+            detail = ", ".join(part for part in (admin, country) if part)
+            capital = clean_text(record.get("capital"))
+            category = f"{capital.title()} capital" if capital else "City"
+            search = " ".join(
+                clean_text(record.get(key))
+                for key in ("city_ascii", "country", "iso2", "iso3", "admin_name", "capital")
+                if clean_text(record.get(key))
+            )
+            rows.append(
+                point(
+                    record.get("city"),
+                    record.get("lat"),
+                    record.get("lng"),
+                    detail,
+                    category,
+                    "",
+                    search,
+                )
+            )
+    return rows
+
+
+def count_university_rows(path: Path) -> int:
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return sum(1 for row in csv.reader(handle) if row)
+
+
+def parse_affinity(path: Path) -> list[list[Any]]:
+    """Keep only low-risk map fields; never copy phones, reviews or contact data."""
+    rows: list[list[Any]] = []
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        for record in reader:
+            if not valid_coord(record.get("latitude"), record.get("longitude")):
+                continue
+            city = clean_text(record.get("city"))
+            country = clean_text(record.get("country"))
+            detail = ", ".join(part for part in (city, country) if part)
+            category = clean_text(record.get("category")) or "Uncategorised"
+            rows.append(
+                point(
+                    record.get("name"),
+                    record.get("latitude"),
+                    record.get("longitude"),
+                    detail,
+                    category,
+                    "",
+                    f"{city} {country} {category} unverified archival",
+                )
+            )
+    return rows
+
+
+ABROAD_PATTERN = re.compile(
+    r"\{\s*city:\s*\"(?P<city>[^\"]+)\",\s*"
+    r"country:\s*\"(?P<country>[^\"]+)\",\s*"
+    r"type:\s*\"(?P<type>[^\"]+)\",\s*"
+    r"lat:\s*(?P<lat>-?\d+(?:\.\d+)?),\s*"
+    r"lng:\s*(?P<lng>-?\d+(?:\.\d+)?)\s*\}"
+)
+
+
+def parse_missions_abroad(path: Path) -> tuple[list[list[Any]], int]:
+    text = path.read_text(encoding="utf-8-sig")
+    rows: list[list[Any]] = []
+    reference_only = 0
+    page_url = "https://auraofintelligence.github.io/Australian-world-travel/abroad.html"
+    for match in ABROAD_PATTERN.finditer(text):
+        record = match.groupdict()
+        detail = record["country"]
+        category = record["type"]
+        if record["city"] == "Phoenix":
+            reference_only += 1
+            detail += " · DFAT refers enquiries to Los Angeles"
+            category += " · reference only"
+        rows.append(
+            point(
+                f"{record['city']} · {record['type']}",
+                record["lat"],
+                record["lng"],
+                detail,
+                category,
+                page_url,
+                f"{record['city']} {record['country']} Australian mission {record['type']}",
+            )
+        )
+    return rows, reference_only
+
+
+MISSION_CITY_PATTERN = re.compile(
+    r"\{\s*country:\s*'(?P<country>(?:\\.|[^'])*)',\s*"
+    r"city:\s*'(?P<city>(?:\\.|[^'])*)',\s*"
+    r"type:\s*'(?P<type>(?:\\.|[^'])*)',"
+)
+
+
+def js_single_string(value: str) -> str:
+    return value.replace("\\'", "'").replace("\\\\", "\\")
+
+
+def count_missions_in_australia(path: Path) -> tuple[int, Counter[str]]:
+    text = path.read_text(encoding="utf-8-sig")
+    records = [
+        {key: js_single_string(value) for key, value in match.groupdict().items()}
+        for match in MISSION_CITY_PATTERN.finditer(text)
+    ]
+    return len(records), Counter(record["city"] for record in records)
+
+
+def write_layer(layer_id: str, rows: Iterable[list[Any]]) -> int:
+    data = list(rows)
+    LAYERS_DIR.mkdir(parents=True, exist_ok=True)
+    target = LAYERS_DIR / f"{layer_id}.js"
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    target.write_text(
+        "window.AURA_LOCATION_DATA=window.AURA_LOCATION_DATA||{};\n"
+        f"window.AURA_LOCATION_DATA[{json.dumps(layer_id)}]={payload};\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return len(data)
+
+
+def layer_metadata(**values: Any) -> dict[str, Any]:
+    return values
+
+
+def write_manifest(manifest: list[dict[str, Any]]) -> None:
+    manifest_json = json.dumps(manifest, ensure_ascii=False, indent=2)
+    starter_json = json.dumps(STARTER_POINTS, ensure_ascii=False, separators=(",", ":"))
+    MANIFEST_PATH.write_text(
+        "/* Generated by tools/build_location_layers.py. */\n"
+        f"window.AURA_LOCATION_POINT_SCHEMA={json.dumps(POINT_SCHEMA, separators=(',', ':'))};\n"
+        f"window.AURA_LOCATION_MANIFEST={manifest_json};\n"
+        "window.AURA_LOCATION_DATA=window.AURA_LOCATION_DATA||{};\n"
+        f"window.AURA_LOCATION_DATA[\"starter-world\"]={starter_json};\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def build(args: argparse.Namespace) -> dict[str, Any]:
+    paths = {
+        "world_cities": Path(args.world_cities),
+        "world_universities": Path(args.world_universities),
+        "aura_alliance": Path(args.aura_alliance),
+        "north_stradbroke_kmz": Path(args.north_stradbroke_kmz),
+        "north_stradbroke_recovered": Path(args.north_stradbroke_recovered),
+        "affinity": Path(args.affinity),
+        "missions_in_australia": Path(args.missions_in_australia),
+        "missions_abroad": Path(args.missions_abroad),
+    }
+    missing = [str(path) for path in paths.values() if not path.is_file()]
+    if missing:
+        raise FileNotFoundError("Missing source file(s):\n" + "\n".join(missing))
+
+    aura_alliance, alliance_diag = parse_kml_points(paths["aura_alliance"])
+    north_stradbroke = parse_stradbroke_reference(paths["north_stradbroke_recovered"])
+    world_cities = parse_world_cities(paths["world_cities"])
+    universities_count = count_university_rows(paths["world_universities"])
+    affinity = parse_affinity(paths["affinity"])
+    missions_abroad, missions_abroad_reference = parse_missions_abroad(paths["missions_abroad"])
+    missions_in_australia_count, mission_cities = count_missions_in_australia(
+        paths["missions_in_australia"]
+    )
+
+    counts = {
+        "starter-world": len(STARTER_POINTS),
+        "aura-alliance": write_layer("aura-alliance", aura_alliance),
+        "north-stradbroke-reference": write_layer(
+            "north-stradbroke-reference", north_stradbroke
+        ),
+        "aura-affinity": write_layer("aura-affinity", affinity),
+        "australian-missions-abroad": write_layer(
+            "australian-missions-abroad", missions_abroad
+        ),
+        "world-cities": write_layer("world-cities", world_cities),
+    }
+
+    manifest = [
+        layer_metadata(
+            id="starter-world",
+            label="Starter world places",
+            colour="#d8b36a",
+            mappedCount=counts["starter-world"],
+            unresolvedCount=0,
+            defaultOn=True,
+            status="orientation",
+            statusLabel="orientation only",
+            sourceLabel="Original demo gazetteer",
+            sourceFile="index.html",
+            sourceUpdatedAt=None,
+            importedAt=args.imported_at,
+            coordinateBasis="approximate city or locality",
+            warning="A small orientation set carried over from the original demo.",
+            pointSize=0.072,
+            opacity=1.0,
+        ),
+        layer_metadata(
+            id="aura-alliance",
+            label="First Aura Alliance",
+            colour="#a78bfa",
+            mappedCount=counts["aura-alliance"],
+            unresolvedCount=alliance_diag["skipped"],
+            defaultOn=False,
+            status="archival",
+            statusLabel="archival snapshot",
+            sourceLabel="1st Step to Aura Alliance.kml",
+            sourceFile=paths["aura_alliance"].name,
+            sourceSha256=sha256(paths["aura_alliance"]),
+            sourceUpdatedAt=None,
+            importedAt=args.imported_at,
+            coordinateBasis="source point",
+            warning="Incomplete legacy planning list; businesses and places are not confirmed current.",
+            pointSize=0.050,
+            opacity=0.92,
+            src="data/layers/aura-alliance.js",
+        ),
+        layer_metadata(
+            id="north-stradbroke-reference",
+            label="North Stradbroke reference",
+            colour="#38bdf8",
+            mappedCount=counts["north-stradbroke-reference"],
+            unresolvedCount=0,
+            defaultOn=False,
+            status="reference",
+            statusLabel="legacy reference",
+            sourceLabel="North Stradbroke Island My Maps",
+            sourceFile=paths["north_stradbroke_kmz"].name,
+            sourceSha256=sha256(paths["north_stradbroke_kmz"]),
+            sourceUpdatedAt=None,
+            snapshotImportedAt="2026-08-10",
+            importedAt=args.imported_at,
+            coordinateBasis="human-placed source point or polygon centroid",
+            warning="Recovered from the KMZ NetworkLink. Accuracy, currency and cultural authority are unverified.",
+            pointSize=0.058,
+            opacity=0.95,
+            src="data/layers/north-stradbroke-reference.js",
+        ),
+        layer_metadata(
+            id="australian-missions-abroad",
+            label="Australian missions abroad",
+            colour="#22c55e",
+            mappedCount=counts["australian-missions-abroad"],
+            unresolvedCount=0,
+            referenceCount=missions_abroad_reference,
+            defaultOn=False,
+            status="checked",
+            statusLabel="checked 19 May 2026",
+            sourceLabel="Australian World Travel · Abroad",
+            sourceUrl="https://auraofintelligence.github.io/Australian-world-travel/abroad.html",
+            sourceFile=paths["missions_abroad"].name,
+            sourceSha256=sha256(paths["missions_abroad"]),
+            sourceUpdatedAt="2026-05-19",
+            importedAt=args.imported_at,
+            coordinateBasis="approximate city location",
+            warning="City-level positions only. Missions can open, close or relocate; Phoenix is reference-only. Use current DFAT advice.",
+            pointSize=0.060,
+            opacity=0.96,
+            src="data/layers/australian-missions-abroad.js",
+        ),
+        layer_metadata(
+            id="world-cities",
+            label="World cities",
+            colour="#cbd5e1",
+            mappedCount=counts["world-cities"],
+            unresolvedCount=0,
+            defaultOn=False,
+            status="archival",
+            statusLabel="version unknown",
+            sourceLabel="SimpleMaps World Cities",
+            sourceUrl="https://simplemaps.com/data/world-cities",
+            sourceFile=paths["world_cities"].name,
+            sourceSha256=sha256(paths["world_cities"]),
+            sourceUpdatedAt=None,
+            importedAt=args.imported_at,
+            coordinateBasis="source city point",
+            warning="Old local copy with no embedded version date. Basic dataset attribution: SimpleMaps, CC BY 4.0.",
+            rightsNote="SimpleMaps Basic World Cities Database, Creative Commons Attribution 4.0.",
+            pointSize=0.024,
+            opacity=0.68,
+            src="data/layers/world-cities.js",
+        ),
+        layer_metadata(
+            id="world-universities",
+            label="World universities",
+            colour="#f59e0b",
+            mappedCount=0,
+            unresolvedCount=universities_count,
+            defaultOn=False,
+            status="unresolved",
+            statusLabel="needs coordinates",
+            sourceLabel="world-universities.csv",
+            sourceFile=paths["world_universities"].name,
+            sourceSha256=sha256(paths["world_universities"]),
+            sourceUpdatedAt=None,
+            importedAt=args.imported_at,
+            coordinateBasis="none",
+            warning="The file contains country code, university name and URL only. No coordinates were invented.",
+            unavailableReason=f"All {universities_count:,} rows need trusted coordinates before they can be mapped.",
+        ),
+        layer_metadata(
+            id="foreign-missions-australia",
+            label="Foreign missions in Australia",
+            colour="#60a5fa",
+            mappedCount=0,
+            unresolvedCount=missions_in_australia_count,
+            defaultOn=False,
+            status="unresolved",
+            statusLabel="needs verified coordinates",
+            sourceLabel="Australian World Travel · Missions",
+            sourceUrl="https://auraofintelligence.github.io/Australian-world-travel/missions.html",
+            sourceFile=paths["missions_in_australia"].name,
+            sourceSha256=sha256(paths["missions_in_australia"]),
+            sourceUpdatedAt="2026-05-19",
+            importedAt=args.imported_at,
+            coordinateBasis="none",
+            warning="Addresses and websites still need per-mission checks; city-centre dots would imply false precision.",
+            unavailableReason=(
+                f"{missions_in_australia_count} records across "
+                f"{len(mission_cities)} cities need verified coordinates before mapping."
+            ),
+        ),
+        layer_metadata(
+            id="aura-affinity",
+            label="Aura Affinity",
+            colour="#f472b6",
+            mappedCount=counts["aura-affinity"],
+            unresolvedCount=0,
+            defaultOn=False,
+            status="unverified",
+            statusLabel="unverified 2025 snapshot",
+            sourceLabel="Aura Affinity",
+            sourceUrl="https://auraofintelligence.github.io/aura-affinity/",
+            sourceFile=paths["affinity"].name,
+            sourceSha256=sha256(paths["affinity"]),
+            sourceUpdatedAt="2025-09-01",
+            importedAt=args.imported_at,
+            coordinateBasis="Google Places point from source snapshot",
+            warning="All records are unverified. Contact details and copied reviews were deliberately excluded.",
+            rightsNote="Third-party reuse and Google Places display terms are TO BE CONFIRMED before publication.",
+            pointSize=0.026,
+            opacity=0.66,
+            src="data/layers/aura-affinity.js",
+        ),
+    ]
+    write_manifest(manifest)
+    return {
+        "counts": counts,
+        "unresolved": {
+            "world-universities": universities_count,
+            "foreign-missions-australia": missions_in_australia_count,
+            "australian-missions-abroad": 0,
+        },
+        "referenceOnly": {"australian-missions-abroad": missions_abroad_reference},
+        "allianceFolders": alliance_diag["folders"],
+        "missionCities": dict(mission_cities),
+        "outputs": [str(MANIFEST_PATH)]
+        + [str(path) for path in sorted(LAYERS_DIR.glob("*.js"))],
+    }
+
+
+def parser() -> argparse.ArgumentParser:
+    command = argparse.ArgumentParser(description=__doc__)
+    command.add_argument(
+        "--world-cities",
+        default=DEFAULT_DOWNLOADS / "worldcities.csv",
+        type=Path,
+    )
+    command.add_argument(
+        "--world-universities",
+        default=DEFAULT_DOWNLOADS / "world-universities.csv",
+        type=Path,
+    )
+    command.add_argument(
+        "--aura-alliance",
+        default=DEFAULT_DOWNLOADS / "1st Step to Aura Alliance.kml",
+        type=Path,
+    )
+    command.add_argument(
+        "--north-stradbroke-kmz",
+        default=DEFAULT_DOWNLOADS / "North Stradbroke Island.kmz",
+        type=Path,
+    )
+    command.add_argument(
+        "--north-stradbroke-recovered",
+        default=WORKSPACE
+        / "quandamooka-country-events-engine"
+        / "assets"
+        / "place-data-mymaps.js",
+        type=Path,
+    )
+    command.add_argument(
+        "--affinity",
+        default=WORKSPACE / "aura-affinity" / "aura-affinity.csv",
+        type=Path,
+    )
+    command.add_argument(
+        "--missions-in-australia",
+        default=WORKSPACE / "Australian-world-travel" / "missions.html",
+        type=Path,
+    )
+    command.add_argument(
+        "--missions-abroad",
+        default=WORKSPACE / "Australian-world-travel" / "abroad.html",
+        type=Path,
+    )
+    command.add_argument("--imported-at", default="2026-08-11")
+    return command
+
+
+if __name__ == "__main__":
+    result = build(parser().parse_args())
+    print(json.dumps(result, ensure_ascii=False, indent=2))
