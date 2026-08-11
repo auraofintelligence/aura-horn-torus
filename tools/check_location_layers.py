@@ -101,6 +101,13 @@ def check() -> dict:
     if any(len(point) > 7 or (len(point) > 5 and point[5]) for point in affinity):
         errors.append("Aura Affinity output contains fields beyond the approved minimal map subset")
 
+    cities = data.get("world-cities", [])
+    city_population_labels = sum(
+        1 for point in cities if len(point) > 3 and "Population " in str(point[3])
+    )
+    if cities and city_population_labels < 40_000:
+        errors.append("World Cities selected-place details are missing population labels")
+
     alliance = data.get("aura-alliance", [])
     if alliance and sum(1 for point in alliance if len(point) > 7 and point[7]) != len(alliance):
         errors.append("Aura Alliance KML icon metadata was not preserved for every point")
