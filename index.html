@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>Horn Torus Lattice</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css">
 <style>
   :root{
     --ink:#e8ebf2; --ink-soft:#939cab; --line:rgba(255,255,255,.09);
@@ -15,6 +16,34 @@
     font-family:ui-sans-serif,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif}
   canvas{display:block;touch-action:none}
   #stage{position:fixed;inset:0}
+  #earthmap{position:fixed;inset:0;z-index:1;display:none;background:#05070a}
+  body.earth-map #earthmap{display:block}
+  body.earth-map #stage,body.earth-map #hud,body.earth-map #dock,body.earth-map #steps{
+    visibility:hidden;pointer-events:none}
+  body.earth-map #rail{display:none!important}
+  #mapback{position:fixed;top:calc(12px + env(safe-area-inset-top));left:14px;z-index:14;
+    display:none;min-height:44px;padding:10px 14px;background:rgba(12,14,20,.82);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  body.earth-map #mapback{display:inline-flex;align-items:center;gap:7px}
+  #mapcredits{position:fixed;left:14px;right:70px;top:calc(62px + env(safe-area-inset-top));z-index:8;
+    display:none;width:max-content;max-width:calc(100vw - 92px);padding:6px 8px;border-radius:8px;
+    background:rgba(5,7,10,.68);color:#c7cdd7;font:9.5px/1.35 ui-monospace,Menlo,monospace}
+  body.earth-map #mapcredits{display:block}
+  #mapcredits a{color:#e5e8ee;text-decoration:none}
+  #mapcredits a:hover{text-decoration:underline}
+  #mapoverlaycredit[hidden]{display:none}
+  #mapmessage{position:fixed;left:14px;top:calc(98px + env(safe-area-inset-top));z-index:9;
+    display:none;align-items:center;gap:8px;max-width:min(430px,calc(100vw - 92px));padding:8px 10px;
+    border:1px solid rgba(216,179,106,.35);border-radius:10px;background:rgba(12,14,20,.88);
+    color:#d8dde6;font-size:11px;line-height:1.4}
+  body.earth-map #mapmessage.show{display:flex}
+  #mapretry{min-height:34px;padding:7px 9px;white-space:nowrap}
+  #earthmap .maplibregl-ctrl-top-left{top:112px;left:4px}
+  #earthmap .maplibregl-ctrl-group{background:rgba(12,14,20,.82);border:1px solid var(--line);box-shadow:none}
+  #earthmap .maplibregl-ctrl-group button{width:40px;height:40px;background-color:transparent}
+  #earthmap .maplibregl-ctrl-icon{filter:invert(1) opacity(.82)}
+  #earthmap .maplibregl-canvas{outline:none}
+  #earthmap .maplibregl-canvas:focus-visible{outline:3px solid var(--accent);outline-offset:-4px}
   #hud{position:fixed;top:0;left:0;right:0;padding:16px 18px calc(16px + env(safe-area-inset-top));
     display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:5}
   #hud h1{margin:0;font-size:12.5px;font-weight:650;letter-spacing:.14em;
@@ -87,6 +116,10 @@
   .layerlink:hover{color:var(--accent);border-color:rgba(216,179,106,.5)}
   #layernote{min-height:2.8em}
   .placefilters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:2px 0 10px}
+  .maptoolbar{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 10px}
+  .maptoolbar button{min-height:40px}
+  .maptoolbar .primary{border-color:rgba(216,179,106,.5);color:var(--accent)}
+  .mapmodehint{margin-top:-2px!important;margin-bottom:10px!important}
   #placecategory{min-width:0;padding:9px 32px 9px 11px;border-radius:9px;border:1px solid var(--line);
     background:#11141c;color:var(--ink);font:500 12px/1.2 inherit}
   .placechoices{margin:8px 0 10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035)}
@@ -129,6 +162,14 @@
   .savedfocus strong{font-size:11.5px}.savedfocus small{font-size:10px;color:var(--ink-soft)}
   .savedremove{width:34px;padding:0;font-size:16px}
   @media(max-width:480px){.placefacts{grid-template-columns:1fr}.placeactions button,.placeactions a{min-height:42px}}
+  @media(max-width:480px){
+    #mapback{left:10px;min-height:44px}
+    #mapcredits{left:10px;right:58px;max-width:calc(100vw - 78px);font-size:8.5px}
+    #mapmessage{left:10px;max-width:calc(100vw - 78px)}
+    #earthmap .maplibregl-ctrl-top-left{top:116px;left:0}
+    #earthmap .maplibregl-ctrl-group button{width:44px;height:44px}
+    .maptoolbar button{flex:1 1 auto;min-height:44px}
+  }
   #raytrail button{padding:6px 10px;font-size:11px;
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   #menuBtn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:16px;z-index:30;
@@ -242,6 +283,14 @@
 <body class="seven">
 
 <div id="stage"></div>
+<div id="earthmap" role="application" aria-label="Interactive satellite Earth map"></div>
+<button id="mapback" type="button" aria-label="Back to Horn Torus">← Back to Horn Torus</button>
+<div id="mapcredits">
+  EOxCloudless <a href="https://cloudless.eox.at/" target="_blank" rel="noopener">https://cloudless.eox.at</a> by <a href="https://eox.at/" target="_blank" rel="noopener">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)
+  · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
+  <span id="mapoverlaycredit" hidden> · <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> · data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a></span>
+</div>
+<div id="mapmessage" role="status" aria-live="polite"><span id="mapmessagetext"></span><button id="mapretry" type="button">Retry</button></div>
 <div id="err" role="alert"></div>
 
 <div id="hud">
@@ -266,8 +315,8 @@
 </nav>
 
 <nav id="rail" aria-label="Shell focus">
-  <button class="dot sphere on" id="railSphere" title="Geosphere and Earth" type="button"></button>
-  <button class="dot aura on" id="railAura" title="Aura layers" type="button"></button>
+  <button class="dot sphere" id="railSphere" title="Satellite Earth map" type="button"></button>
+  <button class="dot aura on" id="railAura" title="Horn Torus" type="button"></button>
   <span class="sep" aria-hidden="true"></span>
   <button class="dot" data-k="7" title="Violet · crown" type="button" style="background:#9a4fd6;--dc:#9a4fd6"></button>
   <button class="dot" data-k="6" title="Indigo" type="button" style="background:#5546c8;--dc:#5546c8"></button>
@@ -342,8 +391,8 @@
     <div class="group">
       <h2>Shells</h2>
       <div class="btns">
-        <button id="sphere" class="on">Geosphere</button>
-        <button id="auraBtn" class="on">Aura layers</button>
+        <button id="sphere">Satellite Earth</button>
+        <button id="auraBtn" class="on">Horn Torus</button>
         <button id="wireShellsBtn">Wireframe</button>
       </div>
       <div class="row"><label for="focus">Focus shell</label>
@@ -411,6 +460,13 @@
 
     <div class="group find-places">
       <h2>Earth</h2>
+      <div class="maptoolbar" aria-label="Earth map display">
+        <button id="mapopen" class="primary" type="button">Explore satellite Earth</button>
+        <button id="mapstreets" type="button" aria-pressed="false">Streets off</button>
+        <button id="mapfeatures" type="button" aria-pressed="false">Features &amp; names off</button>
+        <button id="mapwhole" type="button">Whole Earth</button>
+      </div>
+      <p class="note mapmodehint">Satellite is the clean 10 metre base. Political borders and flags stay off; streets and useful local features stay sharp closer and can be added independently. Larger coloured circles group nearby places; tap one to expand it.</p>
       <div class="btns">
         <input id="placeq" list="places" placeholder="Search visible layers" autocomplete="off">
         <button id="goplace">Go</button>
@@ -614,6 +670,7 @@
   </div>
 </section>
 
+<script src="data/map-style.js"></script>
 <script src="data/location-layers.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -663,7 +720,7 @@ var P = {
   rows:12, cols:24, lock:true, wire:false,
   mode:'field', bright:1, tint:0xffffff, spin:0.12,
   bg:'none', bgcolor:0x0e1014,
-  shellsMode:'seven', sphere:true, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
+  shellsMode:'seven', sphere:false, aura:true, wireShells:false, arrange:0, focus:0, peel:0, rays:'off',
   foldSeq:-1,   // ≥0: fold columns one at a time, in column units (taper leads fold by one)
   colSpread:24,   // how many columns have arrived; the rest are collapsed into column 1
   unfoldWave:-1,  // 0..1: the horn opens out column by column, like keys
@@ -719,7 +776,6 @@ function applyCamera(){
     cam.dist * Math.cos(cam.phi),
     cam.dist * Math.sin(cam.phi) * Math.cos(cam.theta));
   camera.lookAt(0,0,0);
-  maybeLoadEarthDetail();
 }
 var el = renderer.domElement;
 var tapStart = null;
@@ -861,6 +917,599 @@ function latLonToVec(lat, lon, r){
      r * Math.cos(phi),
      r * Math.sin(phi) * Math.sin(theta));
 }
+
+/* ---------- streamed satellite Earth map ----------
+   The map is a separate renderer so close zoom can request only the tiles
+   needed on screen. Satellite imagery is the permanent base. Streets and
+   local features are explicit, independent overlays; political boundaries,
+   country/state labels and flag icons never enter the approved style. */
+var EARTH_MAP_LIBRARY_URL = 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
+var earthMap = null;
+var earthMapActive = false;
+var earthMapReady = false;
+var earthMapInitStarted = false;
+var earthMapInitCallbacks = [];
+var earthMapReferenceAvailable = false;
+var earthMapReferenceStyle = null;
+var earthMapReferenceLoading = false;
+var earthMapReferenceCallbacks = [];
+var earthMapReferenceInstalling = false;
+var earthMapReferenceInstallCallbacks = [];
+var earthMapStreetsVisible = false;
+var earthMapFeaturesVisible = false;
+var earthMapLocationRegistry = {};
+var earthMapClickLookup = {};
+var earthMapSelectionHandlersBound = false;
+var earthMapLastError = '';
+
+function earthMapConfig(){ return window.AURA_EARTH_MAP_CONFIG || null; }
+
+function setEarthMapMessage(message, retry){
+  earthMapLastError = String(message || '');
+  var box = document.getElementById('mapmessage');
+  var copy = document.getElementById('mapmessagetext');
+  var button = document.getElementById('mapretry');
+  if(copy) copy.textContent = earthMapLastError;
+  if(button) button.hidden = !retry;
+  if(box) box.classList.toggle('show', !!earthMapLastError);
+}
+
+function flushEarthMapCallbacks(error){
+  var callbacks = earthMapInitCallbacks.slice();
+  earthMapInitCallbacks = [];
+  callbacks.forEach(function(callback){ callback(error || null, earthMap); });
+}
+
+function loadEarthMapLibrary(done){
+  if(window.maplibregl){ done(null); return; }
+  if(!window.__auraMapLibrePromise){
+    window.__auraMapLibrePromise = import(EARTH_MAP_LIBRARY_URL).then(function(module){
+      window.maplibregl = module;
+      return module;
+    });
+  }
+  window.__auraMapLibrePromise.then(function(){
+    done(window.maplibregl ? null : new Error('Map library did not start.'));
+  }, function(){ done(new Error('Map library could not be downloaded.')); });
+}
+
+function loadEarthReferenceStyle(done){
+  if(earthMapReferenceStyle){ done(null, earthMapReferenceStyle); return; }
+  earthMapReferenceCallbacks.push(done);
+  if(earthMapReferenceLoading) return;
+  earthMapReferenceLoading = true;
+  var config = earthMapConfig();
+  var url = config && config.providers && config.providers.reference && config.providers.reference.styleUrl;
+  function finish(error, style){
+    var callbacks = earthMapReferenceCallbacks.slice();
+    earthMapReferenceCallbacks = [];
+    earthMapReferenceLoading = false;
+    if(style) earthMapReferenceStyle = style;
+    callbacks.forEach(function(callback){ callback(error || null, style || null); });
+  }
+  if(!url || !window.fetch){ finish(new Error('Map detail service is unavailable.'), null); return; }
+  fetch(url, {mode:'cors', cache:'no-cache'}).then(function(response){
+    if(!response.ok) throw new Error('Map detail service returned ' + response.status + '.');
+    return response.json();
+  }).then(function(style){ finish(null, style); }, function(error){ finish(error, null); });
+}
+
+function createEarthMap(){
+  var config = earthMapConfig();
+  if(!config || !window.maplibregl) throw new Error('The Earth map configuration is unavailable.');
+  var style = config.createSatelliteStyle();
+  earthMapReferenceAvailable = false;
+  earthMap = new maplibregl.Map({
+    container:'earthmap',
+    style:style,
+    center:[138, -24],
+    zoom:1.15,
+    bearing:0,
+    pitch:0,
+    minZoom:0,
+    maxZoom:22,
+    maxPitch:0,
+    renderWorldCopies:false,
+    attributionControl:false,
+    dragRotate:false,
+    pitchWithRotate:false,
+    touchPitch:false,
+    fadeDuration:180
+  });
+  earthMap.addControl(new maplibregl.NavigationControl({showCompass:true, showZoom:true, visualizePitch:false}), 'top-left');
+  earthMap.on('load', function(){
+    earthMap.setProjection({type:'globe'});
+    earthMapReady = true;
+    earthMapInitStarted = false;
+    refreshEarthMapButtons();
+    syncEarthMapLocations();
+    syncEarthMapSelection();
+    earthMap.resize();
+    setEarthMapMessage('', false);
+    flushEarthMapCallbacks(null);
+    if(earthMapStreetsVisible || earthMapFeaturesVisible) ensureEarthMapReference();
+  });
+  earthMap.on('sourcedata', function(event){
+    if(!earthMapReady || !event || event.sourceId !== config.sourceIds.imagery) return;
+    if(earthMap.isSourceLoaded(config.sourceIds.imagery) && earthMapLastError.indexOf('Satellite imagery') === 0)
+      setEarthMapMessage('', false);
+  });
+  earthMap.on('error', function(event){
+    var message = event && event.error && event.error.message ? event.error.message : '';
+    if(event && event.sourceId === config.sourceIds.imagery || /eox|cloudless|satellite/i.test(message))
+      setEarthMapMessage('Satellite imagery is unavailable — locations and search still work.', true);
+  });
+  // A padded map-wide fallback keeps points tappable when the selected halo or
+  // another visual layer sits above their small circle. Layer-specific handlers
+  // still provide the exact feature for ordinary point and cluster clicks.
+  earthMap.on('click', pickEarthMapPlace);
+}
+
+function ensureEarthMapReference(done){
+  if(done) earthMapReferenceInstallCallbacks.push(done);
+  if(earthMapReferenceAvailable){
+    var readyCallbacks = earthMapReferenceInstallCallbacks.slice();
+    earthMapReferenceInstallCallbacks = [];
+    readyCallbacks.forEach(function(callback){ callback(null); });
+    return;
+  }
+  if(earthMapReferenceInstalling) return;
+  earthMapReferenceInstalling = true;
+  setEarthMapMessage('Loading optional streets and features…', false);
+  loadEarthReferenceStyle(function(referenceError, libertyStyle){
+    function finish(error){
+      var callbacks = earthMapReferenceInstallCallbacks.slice();
+      earthMapReferenceInstallCallbacks = [];
+      earthMapReferenceInstalling = false;
+      callbacks.forEach(function(callback){ callback(error || null); });
+    }
+    if(referenceError || !libertyStyle || !earthMap){
+      earthMapStreetsVisible = false;
+      earthMapFeaturesVisible = false;
+      earthMapReferenceAvailable = false;
+      refreshEarthMapButtons();
+      setEarthMapMessage('Satellite is ready. Streets and feature names are temporarily unavailable.', true);
+      finish(referenceError || new Error('Map detail style is unavailable.'));
+      return;
+    }
+    var config = earthMapConfig();
+    try {
+      clearEarthMapLocations();
+      earthMap.once('style.load', function(){
+        earthMapReferenceAvailable = true;
+        earthMap.setProjection({type:'globe'});
+        config.setGroupVisibility(earthMap, 'streets', earthMapStreetsVisible);
+        config.setGroupVisibility(earthMap, 'features', earthMapFeaturesVisible);
+        syncEarthMapLocations();
+        syncEarthMapSelection();
+        refreshEarthMapButtons();
+        setEarthMapMessage('', false);
+        finish(null);
+      });
+      earthMap.setStyle(config.buildStyle(libertyStyle));
+    } catch(error){
+      earthMapReferenceAvailable = false;
+      earthMapStreetsVisible = false;
+      earthMapFeaturesVisible = false;
+      refreshEarthMapButtons();
+      setEarthMapMessage('Satellite is ready. Streets and feature names are temporarily unavailable.', true);
+      finish(error);
+    }
+  });
+}
+
+function ensureEarthMap(done){
+  if(done) earthMapInitCallbacks.push(done);
+  if(earthMapReady){ flushEarthMapCallbacks(null); return; }
+  if(earthMapInitStarted) return;
+  earthMapInitStarted = true;
+  setEarthMapMessage('Loading the streamed satellite Earth…', false);
+  loadEarthMapLibrary(function(libraryError){
+    if(libraryError){
+      earthMapInitStarted = false;
+      setEarthMapMessage('Satellite map could not start — the Horn Torus is still available.', true);
+      flushEarthMapCallbacks(libraryError);
+      return;
+    }
+    try { createEarthMap(); }
+    catch(error){
+      earthMapInitStarted = false;
+      setEarthMapMessage('Satellite map could not start — the Horn Torus is still available.', true);
+      flushEarthMapCallbacks(error);
+    }
+  });
+}
+
+function setEarthMapActive(on){
+  earthMapActive = !!on;
+  document.body.classList.toggle('earth-map', earthMapActive);
+  refreshEarthMapButtons();
+  if(earthMapActive){
+    ensureEarthMap(function(){
+      if(earthMap && earthMapActive){
+        setTimeout(function(){ earthMap.resize(); }, 40);
+        syncEarthMapLocations();
+        syncEarthMapSelection();
+      }
+    });
+  } else {
+    setEarthMapMessage('', false);
+    if(earthMap) earthMap.stop();
+    resize();
+  }
+}
+
+function refreshEarthMapButtons(){
+  var open = document.getElementById('mapopen');
+  var streets = document.getElementById('mapstreets');
+  var features = document.getElementById('mapfeatures');
+  if(open){
+    open.textContent = earthMapActive ? 'Satellite Earth open' : 'Explore satellite Earth';
+    open.classList.toggle('on', earthMapActive);
+    open.setAttribute('aria-pressed', earthMapActive ? 'true' : 'false');
+  }
+  if(streets){
+    streets.textContent = 'Streets ' + (earthMapStreetsVisible ? 'on' : 'off');
+    streets.classList.toggle('on', earthMapStreetsVisible);
+    streets.setAttribute('aria-pressed', earthMapStreetsVisible ? 'true' : 'false');
+  }
+  if(features){
+    features.textContent = 'Features & names ' + (earthMapFeaturesVisible ? 'on' : 'off');
+    features.classList.toggle('on', earthMapFeaturesVisible);
+    features.setAttribute('aria-pressed', earthMapFeaturesVisible ? 'true' : 'false');
+  }
+  var menuReframe = document.getElementById('menuReframe');
+  var menuSave = document.getElementById('menuSave');
+  if(menuReframe) menuReframe.textContent = earthMapActive ? 'Whole Earth' : 'Reframe view';
+  if(menuSave) menuSave.hidden = earthMapActive;
+  var credit = document.getElementById('mapoverlaycredit');
+  if(credit) credit.hidden = !(earthMapStreetsVisible || earthMapFeaturesVisible);
+}
+
+function setEarthMapGroup(groupName, visible){
+  if(groupName === 'streets') earthMapStreetsVisible = !!visible;
+  if(groupName === 'features') earthMapFeaturesVisible = !!visible;
+  if(!earthMapActive) setSphere(true);
+  ensureEarthMap(function(error){
+    if(error) return;
+    var config = earthMapConfig();
+    if(!visible && earthMapReferenceAvailable){
+      config.setGroupVisibility(earthMap, groupName, false);
+      refreshEarthMapButtons();
+      return;
+    }
+    if(!visible){ refreshEarthMapButtons(); return; }
+    ensureEarthMapReference(function(referenceError){
+      if(referenceError || !earthMapReferenceAvailable) return;
+      config.setGroupVisibility(earthMap, groupName,
+        groupName === 'streets' ? earthMapStreetsVisible : earthMapFeaturesVisible);
+      refreshEarthMapButtons();
+    });
+  });
+  refreshEarthMapButtons();
+}
+
+function showWholeEarth(){
+  if(!earthMapActive) setSphere(true);
+  ensureEarthMap(function(error){
+    if(error) return;
+    earthMap.easeTo({center:[0,0], zoom:0.35, bearing:0, pitch:0,
+      padding:earthMapPadding(), retainPadding:false,
+      duration:prefersReducedMotion() ? 0 : 850, essential:true});
+  });
+}
+
+function retryEarthMap(){
+  var cameraState = null;
+  if(earthMap){
+    cameraState = {center:earthMap.getCenter(), zoom:earthMap.getZoom(), bearing:earthMap.getBearing()};
+    try { earthMap.remove(); } catch(error){}
+  }
+  earthMap = null;
+  earthMapReady = false;
+  earthMapInitStarted = false;
+  earthMapReferenceAvailable = false;
+  earthMapReferenceInstalling = false;
+  earthMapReferenceInstallCallbacks = [];
+  earthMapLocationRegistry = {};
+  earthMapClickLookup = {};
+  earthMapSelectionHandlersBound = false;
+  setEarthMapMessage('Retrying the streamed satellite Earth…', false);
+  ensureEarthMap(function(error){
+    if(error || !cameraState || !earthMap) return;
+    earthMap.jumpTo({center:cameraState.center, zoom:cameraState.zoom, bearing:cameraState.bearing, pitch:0});
+  });
+}
+
+function prefersReducedMotion(){
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+
+function earthMapPadding(){
+  var panel = document.getElementById('sheet');
+  if(!panel || !panel.classList.contains('open'))
+    return {top:0, right:0, bottom:0, left:0};
+  return window.innerWidth >= 820
+    ? {top:54, right:400, bottom:54, left:54}
+    : {top:74, right:28, bottom:Math.round(window.innerHeight * 0.48), left:28};
+}
+
+function reframeEarthMapForSheet(instant){
+  if(!earthMapActive || !earthMapReady || !earthMap) return;
+  var context = selectedPlaceContext();
+  var current = earthMap.getCenter();
+  earthMap.easeTo({
+    center:context ? [locationLon(context.point), locationLat(context.point)] : [current.lng, current.lat],
+    padding:earthMapPadding(),
+    retainPadding:false,
+    duration:instant || prefersReducedMotion() ? 0 : 320,
+    essential:true
+  });
+}
+
+function earthMapFocusZoom(layer){
+  var basis = String(layer && layer.coordinateBasis || '').toLowerCase();
+  return /locality|approximate|city|region|centroid|not a campus/.test(basis) ? 11 : 15.5;
+}
+
+function focusEarthMapPlace(layer, point, options){
+  if(!earthMapActive || !earthMapReady || !earthMap) return;
+  syncEarthMapSelection();
+  if(options && options.moveCamera === false) return;
+  var targetZoom = earthMapFocusZoom(layer);
+  earthMap.flyTo({
+    center:[locationLon(point), locationLat(point)],
+    zoom:Math.max(earthMap.getZoom(), targetZoom),
+    bearing:0,
+    pitch:0,
+    padding:earthMapPadding(),
+    retainPadding:false,
+    duration:prefersReducedMotion() ? 0 : 950,
+    essential:true
+  });
+}
+
+function earthMapLayerStem(layerId){
+  return 'aura-location-' + String(layerId || '').replace(/[^a-z0-9_-]+/gi, '-').toLowerCase();
+}
+
+function removeEarthMapLocation(layerId){
+  if(!earthMapReady || !earthMap) return;
+  var record = earthMapLocationRegistry[layerId];
+  if(!record) return;
+  (record.interactiveLayers || []).forEach(function(id){
+    earthMap.off('click', id, pickEarthMapPlace);
+    earthMap.off('mouseenter', id, earthMapLocationPointerEnter);
+    earthMap.off('mouseleave', id, earthMapLocationPointerLeave);
+  });
+  record.layers.slice().reverse().forEach(function(id){
+    delete earthMapClickLookup[id];
+    if(earthMap.getLayer(id)) earthMap.removeLayer(id);
+  });
+  if(earthMap.getSource(record.sourceId)) earthMap.removeSource(record.sourceId);
+  delete earthMapLocationRegistry[layerId];
+}
+
+function clearEarthMapLocations(){
+  if(earthMap) Object.keys(earthMapLocationRegistry).forEach(removeEarthMapLocation);
+  if(earthMap && earthMapSelectionHandlersBound){
+    earthMap.off('click', 'aura-selected-place-halo', pickSelectedEarthMapPlace);
+    earthMap.off('click', 'aura-selected-place-core', pickSelectedEarthMapPlace);
+    earthMap.off('mouseenter', 'aura-selected-place-halo', earthMapLocationPointerEnter);
+    earthMap.off('mouseenter', 'aura-selected-place-core', earthMapLocationPointerEnter);
+    earthMap.off('mouseleave', 'aura-selected-place-halo', earthMapLocationPointerLeave);
+    earthMap.off('mouseleave', 'aura-selected-place-core', earthMapLocationPointerLeave);
+  }
+  earthMapSelectionHandlersBound = false;
+  earthMapLocationRegistry = {};
+  earthMapClickLookup = {};
+}
+
+function earthMapLocationPointerEnter(){
+  if(earthMap) earthMap.getCanvas().style.cursor = 'pointer';
+}
+
+function earthMapLocationPointerLeave(){
+  if(earthMap) earthMap.getCanvas().style.cursor = '';
+}
+
+function locationGeoJson(data){
+  var features = [];
+  for(var i=0;i<data.length;i++){
+    if(!locationPassesFilter(data[i])) continue;
+    var lat = locationLat(data[i]), lon = locationLon(data[i]);
+    if(!isFinite(lat) || !isFinite(lon)) continue;
+    features.push({type:'Feature', geometry:{type:'Point', coordinates:[lon,lat]}, properties:{sourceIndex:i}});
+  }
+  return {type:'FeatureCollection', features:features};
+}
+
+function addEarthMapLocation(layer, data){
+  var stem = earthMapLayerStem(layer.id);
+  var sourceId = stem + '-source';
+  var pointLayerId = stem + '-points';
+  var pointHitLayerId = stem + '-point-hits';
+  var clusterLayerId = stem + '-clusters';
+  var geojson = locationGeoJson(data);
+  var clustered = geojson.features.length > 240;
+  var existing = earthMapLocationRegistry[layer.id];
+  if(existing && existing.clustered !== clustered){ removeEarthMapLocation(layer.id); existing = null; }
+  if(existing){
+    var source = earthMap.getSource(existing.sourceId);
+    if(source && source.setData){ source.setData(geojson); return; }
+    removeEarthMapLocation(layer.id);
+    existing = null;
+  }
+  earthMap.addSource(sourceId, {
+    type:'geojson',
+    data:geojson,
+    cluster:clustered,
+    clusterMaxZoom:13,
+    clusterRadius:42
+  });
+  var layers = [];
+  if(clustered){
+    earthMap.addLayer({
+      id:clusterLayerId, type:'circle', source:sourceId, filter:['has','point_count'],
+      metadata:{auraLayerId:layer.id, auraKind:'cluster'},
+      paint:{
+        'circle-color':layer.colour || '#d8b36a', 'circle-opacity':0.82,
+        'circle-radius':['step',['get','point_count'],13,100,17,1000,21],
+        'circle-stroke-width':1.5, 'circle-stroke-color':'#ffffff', 'circle-stroke-opacity':0.76
+      }
+    });
+    earthMapClickLookup[clusterLayerId] = {kind:'cluster', layerId:layer.id, sourceId:sourceId};
+    layers.push(clusterLayerId);
+  }
+  var pointLayer = {
+    id:pointLayerId, type:'circle', source:sourceId,
+    metadata:{auraLayerId:layer.id, auraKind:'point'},
+    paint:{
+      'circle-color':layer.colour || '#d8b36a',
+      'circle-opacity':Number(layer.opacity === undefined ? 0.9 : layer.opacity),
+      'circle-radius':['interpolate',['linear'],['zoom'],0,3,9,4.5,15,7],
+      'circle-stroke-width':['interpolate',['linear'],['zoom'],0,0.5,12,1.2],
+      'circle-stroke-color':'rgba(255,255,255,.88)'
+    }
+  };
+  if(clustered) pointLayer.filter = ['!', ['has','point_count']];
+  earthMap.addLayer(pointLayer);
+  earthMapClickLookup[pointLayerId] = {kind:'point', layerId:layer.id, sourceId:sourceId};
+  layers.push(pointLayerId);
+  var pointHitLayer = {
+    id:pointHitLayerId, type:'circle', source:sourceId,
+    metadata:{auraLayerId:layer.id, auraKind:'point-hit-area'},
+    paint:{
+      'circle-radius':['interpolate',['linear'],['zoom'],0,12,9,15,15,18],
+      'circle-color':'#ffffff','circle-opacity':0.01
+    }
+  };
+  if(clustered) pointHitLayer.filter = ['!', ['has','point_count']];
+  earthMap.addLayer(pointHitLayer);
+  earthMapClickLookup[pointHitLayerId] = {kind:'point', layerId:layer.id, sourceId:sourceId};
+  layers.push(pointHitLayerId);
+  var interactiveLayers = clustered ? [clusterLayerId, pointHitLayerId] : [pointHitLayerId];
+  interactiveLayers.forEach(function(id){
+    earthMap.on('click', id, pickEarthMapPlace);
+    earthMap.on('mouseenter', id, earthMapLocationPointerEnter);
+    earthMap.on('mouseleave', id, earthMapLocationPointerLeave);
+  });
+  earthMapLocationRegistry[layer.id] = {
+    sourceId:sourceId, layers:layers, clustered:clustered, interactiveLayers:interactiveLayers
+  };
+}
+
+function syncEarthMapLocations(){
+  if(!earthMapReady || !earthMap) return;
+  var keep = {};
+  locationManifest.forEach(function(layer){
+    var state = locationStates[layer.id], data = locationData[layer.id];
+    if(!state || !state.visible || !Array.isArray(data) || !data.length) return;
+    keep[layer.id] = true;
+    addEarthMapLocation(layer, data);
+  });
+  Object.keys(earthMapLocationRegistry).forEach(function(layerId){
+    if(!keep[layerId]) removeEarthMapLocation(layerId);
+  });
+  ensureEarthMapSelectionLayers();
+  syncEarthMapSelection();
+}
+
+function ensureEarthMapSelectionLayers(){
+  if(!earthMapReady || !earthMap) return;
+  var empty = {type:'FeatureCollection',features:[]};
+  if(!earthMap.getSource('aura-selected-place'))
+    earthMap.addSource('aura-selected-place', {type:'geojson', data:empty});
+  if(!earthMap.getLayer('aura-selected-place-halo'))
+    earthMap.addLayer({id:'aura-selected-place-halo',type:'circle',source:'aura-selected-place',
+      paint:{'circle-radius':14,'circle-color':['get','colour'],'circle-opacity':0.18,
+        'circle-stroke-width':2,'circle-stroke-color':'#ffffff','circle-stroke-opacity':0.9}});
+  if(!earthMap.getLayer('aura-selected-place-core'))
+    earthMap.addLayer({id:'aura-selected-place-core',type:'circle',source:'aura-selected-place',
+      paint:{'circle-radius':6,'circle-color':'#ffffff','circle-stroke-width':3,
+        'circle-stroke-color':['get','colour']}});
+  earthMap.moveLayer('aura-selected-place-halo');
+  earthMap.moveLayer('aura-selected-place-core');
+  if(!earthMapSelectionHandlersBound){
+    ['aura-selected-place-halo','aura-selected-place-core'].forEach(function(id){
+      earthMap.on('click', id, pickSelectedEarthMapPlace);
+      earthMap.on('mouseenter', id, earthMapLocationPointerEnter);
+      earthMap.on('mouseleave', id, earthMapLocationPointerLeave);
+    });
+    earthMapSelectionHandlersBound = true;
+  }
+}
+
+function pickSelectedEarthMapPlace(event){
+  if(event && event.originalEvent && event.originalEvent.__auraLocationHandled) return;
+  if(event && event.originalEvent) event.originalEvent.__auraLocationHandled = true;
+  var context = selectedPlaceContext();
+  if(context) focusPlace(context.layer.id, context.index);
+}
+
+function syncEarthMapSelection(){
+  if(!earthMapReady || !earthMap) return;
+  ensureEarthMapSelectionLayers();
+  var source = earthMap.getSource('aura-selected-place');
+  var context = selectedPlaceContext();
+  var data = {type:'FeatureCollection',features:[]};
+  if(context){
+    data.features.push({type:'Feature', geometry:{type:'Point',coordinates:[locationLon(context.point),locationLat(context.point)]},
+      properties:{colour:context.layer.colour || '#d8b36a'}});
+  }
+  if(source && source.setData) source.setData(data);
+}
+
+function pickEarthMapPlace(event){
+  if(!earthMapReady || !earthMap) return;
+  if(event && event.originalEvent && event.originalEvent.__auraLocationHandled) return;
+  var clickable = Object.keys(earthMapClickLookup);
+  if(!clickable.length) return;
+  var hits = event && event.features ? Array.prototype.slice.call(event.features) : [];
+  if(event && event.point){
+    var pad = 9;
+    var nearby = earthMap.queryRenderedFeatures([
+      [event.point.x - pad, event.point.y - pad],
+      [event.point.x + pad, event.point.y + pad]
+    ], {layers:clickable});
+    hits = hits.concat(nearby || []);
+  }
+  if(!hits.length) return;
+  var candidates = [], seen = {}, clusterHit = null;
+  hits.forEach(function(hit){
+    var lookup = earthMapClickLookup[hit.layer && hit.layer.id];
+    if(!lookup) return;
+    if(lookup.kind === 'cluster' && !clusterHit){ clusterHit = {feature:hit, lookup:lookup}; return; }
+    if(lookup.kind !== 'point') return;
+    var index = Number(hit.properties && hit.properties.sourceIndex);
+    var key = lookup.layerId + ':' + index;
+    if(!isFinite(index) || seen[key]) return;
+    seen[key] = true; candidates.push({layerId:lookup.layerId,index:index,score:0});
+  });
+  if(candidates.length > 1){
+    if(event && event.originalEvent) event.originalEvent.__auraLocationHandled = true;
+    showPlaceChoices(candidates, candidates.length.toLocaleString('en-AU') + ' places share this map point. Choose one to inspect.', 0);
+    return;
+  }
+  if(candidates.length === 1){
+    if(event && event.originalEvent) event.originalEvent.__auraLocationHandled = true;
+    focusPlace(candidates[0].layerId, candidates[0].index); return;
+  }
+  if(clusterHit){
+    if(event && event.originalEvent) event.originalEvent.__auraLocationHandled = true;
+    var clusterSource = earthMap.getSource(clusterHit.lookup.sourceId);
+    var clusterId = Number(clusterHit.feature.properties.cluster_id);
+    var expansion = clusterSource && clusterSource.getClusterExpansionZoom
+      ? clusterSource.getClusterExpansionZoom(clusterId) : null;
+    Promise.resolve(expansion).then(function(zoom){
+      earthMap.easeTo({center:clusterHit.feature.geometry.coordinates,
+        zoom:Math.min(Number(zoom || earthMap.getZoom() + 2), 17),
+        padding:earthMapPadding(), retainPadding:false,
+        duration:prefersReducedMotion() ? 0 : 650, essential:true});
+    });
+  }
+}
+
 var BODY_S = 0.30;                              // per-shell scale in the body arrangement
 
 function atlasCellPx(cols){ return cols > 32 ? 48 : 96; }
@@ -910,63 +1559,10 @@ function makeAtlas(k, inside, rows, cols){
   return {tex:t, canvas:cv, px:px};
 }
 
-/* Earth skin for the geosphere. A quick 4K NASA texture starts the globe;
-   capable desktop GPUs receive the 8K version only when the camera comes
-   close. Phones and data-saver connections stay on 4K. */
-var earthTex = null, sphereEarthMat = null, sphereWire = null;
-var earthTextureLevel = 0, earthTextureSource = '', earthDetailRequested = false, earthDetailFailedAt = 0;
-var EARTH_TEXTURES = {
-  base:'assets/earth/nasa-blue-marble-topography-bathymetry-4k.webp',
-  detail:'assets/earth/nasa-blue-marble-topography-bathymetry-8k.webp',
-  fallback:'assets/earth/nasa-blue-marble-topography-bathymetry-4k.jpg'
-};
-function earthCanUseDetail(){
-  var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  var savingData = !!(connection && connection.saveData);
-  var coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
-  var memory = Number(navigator.deviceMemory || 0);
-  return renderer.capabilities.maxTextureSize >= 8192 && !savingData && !coarse && memory >= 6;
-}
-function applyEarth(t, level, source){
-  level = level || 1;
-  if(level < earthTextureLevel){ t.dispose(); return; }
-  t.encoding = THREE.sRGBEncoding;
-  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  t.minFilter = THREE.LinearMipmapLinearFilter;
-  t.magFilter = THREE.LinearFilter;
-  var previous = earthTex;
-  earthTex = t;
-  earthTextureLevel = level;
-  earthTextureSource = source || '';
-  if(sphereEarthMat){
-    sphereEarthMat.map = t;
-    sphereEarthMat.visible = true;
-    sphereEarthMat.needsUpdate = true;
-  }
-  if(sphereWire) sphereWire.visible = false;   // grid is only the fallback
-  if(previous && previous !== t) previous.dispose();
-}
-function loadEarthBase(){
-  var loader = new THREE.TextureLoader();
-  loader.load(EARTH_TEXTURES.base, function(t){ applyEarth(t, 1, EARTH_TEXTURES.base); }, undefined, function(){
-    loader.load(EARTH_TEXTURES.fallback, function(t){ applyEarth(t, 1, EARTH_TEXTURES.fallback); });
-  });
-}
-function maybeLoadEarthDetail(){
-  if(earthDetailRequested || earthTextureLevel >= 2 || !sphereMesh || !sphereMesh.visible || !earthCanUseDetail()) return;
-  if(earthDetailFailedAt && Date.now() - earthDetailFailedAt < 60000) return;
-  var r = earthWorldRadius();
-  if(!r || cam.dist > r * 1.55) return;
-  earthDetailRequested = true;
-  new THREE.TextureLoader().load(EARTH_TEXTURES.detail, function(t){
-    earthDetailFailedAt = 0;
-    applyEarth(t, 2, EARTH_TEXTURES.detail);
-  }, undefined, function(){
-    earthDetailRequested = false;
-    earthDetailFailedAt = Date.now();
-  });
-}
-loadEarthBase();
+/* The detailed Earth is a separate streamed MapLibre view. The Three.js
+   geosphere remains only as a neutral wire fallback for place navigation if
+   the map library or imagery service is unavailable. */
+var sphereEarthMat = null, sphereWire = null;
 
 var fieldPool = [];
 for(var fp=0; fp<64; fp++) fieldPool.push(fieldTexture(fp+1));
@@ -1196,13 +1792,12 @@ function buildShells(){
   var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, 256, 128);
   var wireSphere = new THREE.SphereBufferGeometry(2 * R * 1.12, cols, rows);
   sphereMesh = new THREE.Group();
-  sphereEarthMat = new THREE.MeshBasicMaterial({visible: !!earthTex});
-  if(earthTex) sphereEarthMat.map = earthTex;
+  sphereEarthMat = new THREE.MeshBasicMaterial({color:0x07111a, transparent:true, opacity:0.82});
   sphereMesh.add(new THREE.Mesh(sg, sphereEarthMat));
   sphereWire = new THREE.LineSegments(new THREE.WireframeGeometry(wireSphere),
     new THREE.LineBasicMaterial({color:0x8b939e, transparent:true, opacity:0.3}));
   wireSphere.dispose();
-  sphereWire.visible = !earthTex;
+  sphereWire.visible = true;
   sphereMesh.add(sphereWire);
   markerGroup = new THREE.Group();
   var Rs = 2 * R * 1.12;
@@ -1226,8 +1821,19 @@ function buildShells(){
     setMulti:function(v){ multi=v; },
     shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
     P:P, renderer:renderer, drive:drive, cam:cam,
-    earthTexture:function(){ return {level:earthTextureLevel, maxTextureSize:renderer.capabilities.maxTextureSize,
-      detailCapable:earthCanUseDetail(), source:earthTextureSource, detailFailedAt:earthDetailFailedAt || null}; },
+    earthTexture:function(){ return {mode:'streamed satellite map', fallback:'neutral Three.js wire globe'}; },
+    earthMapState:function(){
+      if(!earthMap) return {active:earthMapActive, ready:false};
+      var centre = earthMap.getCenter();
+      return {active:earthMapActive, ready:earthMapReady, centre:[centre.lng,centre.lat],
+        zoom:earthMap.getZoom(), streets:earthMapStreetsVisible, features:earthMapFeaturesVisible,
+        locationLayers:Object.keys(earthMapLocationRegistry)};
+    },
+    earthMapProject:function(latitude, longitude){
+      if(!earthMapReady || !earthMap) return null;
+      var point = earthMap.project([Number(longitude), Number(latitude)]);
+      return {x:point.x,y:point.y};
+    },
     diag:function(){ return {r:stageRadius(), focus:P.focus, dist:cam.dist,
       fit:drive.fit, lock:drive.camLock, scale:shellS(P.focus > 0 ? P.focus - 1 : 6)}; },
     journey:function(j){ applyJourney(j); updateGeometry(); },
@@ -1624,12 +2230,14 @@ function resize(){
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   applyCamera();
+  if(earthMap && earthMapActive){ earthMap.resize(); reframeEarthMapForSheet(true); }
 }
 window.addEventListener('resize', resize);
 
 function tick(){
   requestAnimationFrame(tick);
   var dt = clock.getDelta();
+  if(earthMapActive) return;
   root.rotation.y += P.spin * dt * 0.5;
   if(intro && intro.group.visible && introSpin) intro.group.rotation.y += dt * 0.7;
   if(drive.playing){
@@ -2029,6 +2637,20 @@ function rebuildLocationMarkers(){
   if(!markerGroup || !locationSphereRadius) return;
   hidePlaceChoices();
   var keepSelection = selectedLocation ? {layerId:selectedLocation.layerId, index:selectedLocation.index} : null;
+  if(earthMapActive){
+    renderCategoryFilter();
+    refreshPlaceSuggestions();
+    syncEarthMapLocations();
+    if(keepSelection){
+      var mapKeepState = locationStates[keepSelection.layerId];
+      var mapKeepData = locationData[keepSelection.layerId];
+      var mapKeepPoint = mapKeepData && mapKeepData[keepSelection.index];
+      if(mapKeepState && mapKeepState.visible && mapKeepPoint && locationPassesFilter(mapKeepPoint))
+        focusPlace(keepSelection.layerId, keepSelection.index, {moveCamera:false, reveal:false});
+      else clearLocationSelection(true);
+    }
+    return;
+  }
   disposeLocationPoints();
   if(selectedPlacePin) selectedPlacePin.visible = false;
   renderCategoryFilter();
@@ -2070,6 +2692,7 @@ function rebuildLocationMarkers(){
     locationLayerObjects[layer.id] = points;
   });
   refreshPlaceSuggestions();
+  syncEarthMapLocations();
   if(keepSelection){
     var keepState = locationStates[keepSelection.layerId];
     var keepData = locationData[keepSelection.layerId];
@@ -2256,6 +2879,7 @@ function clearLocationSelection(keepQuery){
   hidePlaceChoices();
   selectedLocation = null;
   if(selectedPlacePin) selectedPlacePin.visible = false;
+  syncEarthMapSelection();
   var card = document.getElementById('placecard');
   if(card){ card.classList.remove('show'); card.hidden = true; card.removeAttribute('data-place-key'); }
   if(!keepQuery){
@@ -2294,17 +2918,24 @@ function openPlaceControls(target){
 function focusPlace(layerId, index, options){
   options = options || {};
   var layer = locationLayer(layerId), data = locationData[layerId];
-  if(!layer || !data || !data[index] || !selectedPlacePin || !sphereMesh) return;
+  if(!layer || !data || !data[index]) return;
+  if(!earthMapActive && (!selectedPlacePin || !sphereMesh)) return;
   if(!options.keepChoices) hidePlaceChoices();
   var p = data[index];
   selectedLocation = {layerId:layerId, index:index};
-  var at = latLonToVec(locationLat(p), locationLon(p), locationSphereRadius * 1.006);
-  selectedPlacePin.position.copy(at);
-  selectedPlacePin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), at.clone().normalize());
-  selectedPlacePin.visible = true;
+  if(selectedPlacePin && locationSphereRadius){
+    var at = latLonToVec(locationLat(p), locationLon(p), locationSphereRadius * 1.006);
+    selectedPlacePin.position.copy(at);
+    selectedPlacePin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), at.clone().normalize());
+    selectedPlacePin.visible = !earthMapActive;
+  }
   renderPlaceDetails(layer, p, index);
+  syncEarthMapSelection();
 
-  if(options.moveCamera !== false){
+  if(earthMapActive){
+    if(options.reveal !== false) openPlaceControls();
+    ensureEarthMap(function(error){ if(!error) focusEarthMapPlace(layer, p, options); });
+  } else if(options.moveCamera !== false){
     holdLocationCamera();
     root.updateMatrixWorld(true);
     var v = new THREE.Vector3();
@@ -2319,11 +2950,19 @@ function focusPlace(layerId, index, options){
   document.getElementById('placeq').value = locationName(p);
   document.getElementById('placenote').textContent =
     'Selected ' + locationName(p) + '. Use the card above to inspect, save or copy it.';
-  if(options.reveal !== false) openPlaceControls();
+  if(!earthMapActive && options.reveal !== false) openPlaceControls();
 }
 
 function zoomSelectedCloser(){
-  if(!selectedPlaceContext()) return;
+  var context = selectedPlaceContext();
+  if(!context) return;
+  if(earthMapActive && earthMapReady){
+    earthMap.easeTo({center:[locationLon(context.point),locationLat(context.point)],
+      zoom:Math.min(19, earthMap.getZoom() + 2), padding:earthMapPadding(),
+      retainPadding:false,
+      duration:prefersReducedMotion() ? 0 : 600, essential:true});
+    return;
+  }
   holdLocationCamera();
   var r = earthWorldRadius();
   var gap = Math.max(r * 0.07, cam.dist - r);
@@ -2332,7 +2971,15 @@ function zoomSelectedCloser(){
 }
 
 function zoomSelectedRegional(){
-  if(!selectedPlaceContext()) return;
+  var context = selectedPlaceContext();
+  if(!context) return;
+  if(earthMapActive && earthMapReady){
+    earthMap.easeTo({center:[locationLon(context.point),locationLat(context.point)],
+      zoom:6.2, bearing:0, pitch:0, padding:earthMapPadding(),
+      retainPadding:false,
+      duration:prefersReducedMotion() ? 0 : 700, essential:true});
+    return;
+  }
   holdLocationCamera();
   cam.dist = earthWorldRadius() * 1.34;
   applyCamera();
@@ -3066,10 +3713,10 @@ function setSphere(on){
   P.sphere = on;
   document.getElementById('sphere').classList.toggle('on', on);
   syncRail();
-  if(sphereMesh) sphereMesh.visible = on;
-  if(on) applyCamera();
+  if(sphereMesh) sphereMesh.visible = false;
+  setEarthMapActive(on);
 }
-document.getElementById('sphere').addEventListener('click', function(){ setSphere(!P.sphere); });
+document.getElementById('sphere').addEventListener('click', function(){ setSphere(!earthMapActive); });
 
 /* chakra rail: tap a dot to focus that shell, tap again for all */
 var railDots = document.querySelectorAll('#rail .dot[data-k]');
@@ -3089,7 +3736,7 @@ railDots.forEach(function(d){
     syncRail();
   });
 });
-document.getElementById('railSphere').addEventListener('click', function(){ setSphere(!P.sphere); });
+document.getElementById('railSphere').addEventListener('click', function(){ setSphere(!earthMapActive); });
 function setAura(on){
   P.aura = on;
   document.getElementById('auraBtn').classList.toggle('on', on);
@@ -3104,8 +3751,22 @@ function setWire(on){
   });
 }
 document.getElementById('wireShellsBtn').addEventListener('click', function(){ setWire(!P.wireShells); });
-document.getElementById('auraBtn').addEventListener('click', function(){ setAura(!P.aura); });
-document.getElementById('railAura').addEventListener('click', function(){ setAura(!P.aura); });
+function toggleHornTorus(){
+  if(earthMapActive){ setSphere(false); setAura(true); }
+  else setAura(!P.aura);
+}
+document.getElementById('auraBtn').addEventListener('click', toggleHornTorus);
+document.getElementById('railAura').addEventListener('click', toggleHornTorus);
+document.getElementById('mapback').addEventListener('click', function(){ setSphere(false); setAura(true); });
+document.getElementById('mapopen').addEventListener('click', function(){ setSphere(true); });
+document.getElementById('mapstreets').addEventListener('click', function(){
+  setEarthMapGroup('streets', !earthMapStreetsVisible);
+});
+document.getElementById('mapfeatures').addEventListener('click', function(){
+  setEarthMapGroup('features', !earthMapFeaturesVisible);
+});
+document.getElementById('mapwhole').addEventListener('click', showWholeEarth);
+document.getElementById('mapretry').addEventListener('click', retryEarthMap);
 document.querySelectorAll('#sideseg button').forEach(function(b){
   b.addEventListener('click', function(){
     document.querySelectorAll('#sideseg button').forEach(function(x){ x.classList.remove('on'); });
@@ -3213,11 +3874,11 @@ document.addEventListener('click', function(e){
 });
 document.getElementById('menuReframe').addEventListener('click', function(){
   menuEl.classList.remove('open');
-  reframe();
+  if(earthMapActive) showWholeEarth(); else reframe();
 });
 document.getElementById('menuSave').addEventListener('click', function(){
   menuEl.classList.remove('open');
-  document.getElementById('save').click();
+  if(!earthMapActive) document.getElementById('save').click();
 });
 
 document.getElementById('goplace').addEventListener('click', goPlace);
@@ -3295,6 +3956,7 @@ function setSheetOpen(open){
   sheet.classList.toggle('open', !!open);
   grip.setAttribute('aria-expanded', open ? 'true' : 'false');
   document.body.classList.toggle('sheet-open', open);   // dock yields to the sheet
+  reframeEarthMapForSheet(false);
 }
 function toggleSheet(){ setSheetOpen(!sheet.classList.contains('open')); }
 grip.addEventListener('click', toggleSheet);
@@ -3680,7 +4342,7 @@ var S_BODY = {t:'On the body', b:'Spread up the body: red root at the base, viol
     setP('focus', 'focus', 0, 0); sync('focus', 'all');
     animateRange('arrange', 1, 1600);
   }};
-var S_WORLD = {t:'In the world', b:'The geosphere carries the Earth around the whole aura, so maps of self, place and mind stay close together. Next, explore freely: every control stays live.',
+var S_WORLD = {t:'In the world', b:'Satellite Earth sits beside the whole aura, so maps of self, place and mind stay close together without replacing the Horn Torus. Next, explore freely: every control stays live.',
   go:function(){
     hideIntro(); P.auraFade = 1; setAura(true); setSphere(true);
     applyJourney(100);
