@@ -89,6 +89,15 @@
   .placefilters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:2px 0 10px}
   #placecategory{min-width:0;padding:9px 32px 9px 11px;border-radius:9px;border:1px solid var(--line);
     background:#11141c;color:var(--ink);font:500 12px/1.2 inherit}
+  .placechoices{margin:8px 0 10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035)}
+  .placechoices[hidden]{display:none}
+  .placechoiceshead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 7px}
+  .placechoiceshead strong{font-size:12px}.placechoiceshead button{min-height:34px;padding:6px 9px}
+  .placechoicelist{display:grid;gap:5px;max-height:310px;overflow:auto;overscroll-behavior:contain}
+  .placechoice{display:grid;grid-template-columns:8px minmax(0,1fr);gap:8px;align-items:start;text-align:left;padding:8px 9px}
+  .placechoice i{width:8px;height:8px;margin-top:4px;border-radius:50%;box-shadow:0 0 7px currentColor}
+  .placechoice span{min-width:0}.placechoice strong,.placechoice small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .placechoice strong{font-size:11.5px}.placechoice small{margin-top:2px;color:var(--ink-soft);font-size:10px}
   .placecard{display:none;margin:10px 0 12px;padding:13px;border:1px solid rgba(216,179,106,.34);
     border-radius:13px;background:rgba(216,179,106,.07);box-shadow:0 10px 28px rgba(0,0,0,.18)}
   .placecard.show{display:block}
@@ -181,7 +190,7 @@
   #rail{position:fixed;left:14px;top:50%;transform:translateY(-50%);z-index:12;
     display:none;flex-direction:column;align-items:center;gap:11px;padding:12px 9px;
     background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    border:1px solid var(--line);border-radius:999px}
+    border:1px solid var(--line);border-radius:999px;transition:opacity .25s ease}
   body.seven #rail{display:flex}
   #rail .dot{width:21px;height:21px;border-radius:50%;padding:0;cursor:pointer;
     border:2px solid rgba(255,255,255,.22);box-shadow:none;
@@ -212,7 +221,7 @@
   .dockrow input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;
     background:#0d0f15;border:1.5px solid var(--accent);box-shadow:0 0 8px var(--glow)}
   #dock{transition:opacity .25s ease}
-  @media (max-width:819px){body.sheet-open #dock{opacity:0;pointer-events:none}}
+  @media (max-width:819px){body.sheet-open #dock,body.sheet-open #rail{opacity:0;visibility:hidden;pointer-events:none}}
   @media (min-width:820px){#dock{bottom:22px;left:calc(50% - 190px)}}
   @media (prefers-reduced-motion: reduce){#sheet{transition:none}}
   /* the grip is a real collapse control at every width, not just on a phone */
@@ -407,9 +416,13 @@
         <button id="goplace">Go</button>
       </div>
       <datalist id="places"></datalist>
+      <section id="placechoices" class="placechoices" aria-label="Place matches" hidden>
+        <div class="placechoiceshead"><strong id="placechoicescount">Matches</strong><button id="placechoicesclose" type="button">Close</button></div>
+        <div id="placechoicelist" class="placechoicelist"></div>
+      </section>
       <div class="placefilters">
-        <select id="placecategory" aria-label="Filter visible places by type">
-          <option value="">All place types</option>
+        <select id="placecategory" aria-label="Filter visible places by type or country">
+          <option value="">All types and countries</option>
         </select>
         <button id="placefilterclear" type="button" disabled>Clear</button>
       </div>
@@ -817,6 +830,7 @@ var locationDotTexture = null;
 var locationCategoryFilter = '';
 var savedLocations = [];
 var savedExportUrl = '';
+var placeChoiceResults = [];
 var importedLocationNumber = 0;
 var importedLocationColours = ['#fbbf24','#fb7185','#2dd4bf','#818cf8','#f97316','#4ade80'];
 locationManifest.forEach(function(layer){
@@ -1764,8 +1778,12 @@ function pick(e){
         var po = mHit.object;
         if(po.userData.locationLayerId && mHit.index !== undefined){
           var sourceIndexes = po.userData.locationIndexes || [];
-          focusPlace(po.userData.locationLayerId,
-            sourceIndexes[mHit.index] === undefined ? mHit.index : sourceIndexes[mHit.index]);
+          var sourceIndex = sourceIndexes[mHit.index] === undefined ? mHit.index : sourceIndexes[mHit.index];
+          var stackedPlaces = coLocatedPlaceCandidates(po.userData.locationLayerId, sourceIndex);
+          if(stackedPlaces.length > 1){
+            showPlaceChoices(stackedPlaces,
+              stackedPlaces.length.toLocaleString('en-AU') + ' places share this map point. Choose one to inspect.', 0);
+          } else focusPlace(po.userData.locationLayerId, sourceIndex);
           return;
         }
       }
@@ -2009,6 +2027,7 @@ function disposeLocationPoints(){
 
 function rebuildLocationMarkers(){
   if(!markerGroup || !locationSphereRadius) return;
+  hidePlaceChoices();
   var keepSelection = selectedLocation ? {layerId:selectedLocation.layerId, index:selectedLocation.index} : null;
   disposeLocationPoints();
   if(selectedPlacePin) selectedPlacePin.visible = false;
@@ -2135,7 +2154,106 @@ function renderPlaceDetails(layer, point, index){
   document.getElementById('gripval').textContent = record.name;
 }
 
+function hidePlaceChoices(){
+  placeChoiceResults = [];
+  var panel = document.getElementById('placechoices');
+  if(panel) panel.hidden = true;
+}
+
+function placeCandidateRecord(candidate){
+  var layer = locationLayer(candidate.layerId);
+  var data = layer && locationData[candidate.layerId];
+  var point = data && data[candidate.index];
+  return layer && point ? {layer:layer, point:point, candidate:candidate} : null;
+}
+
+function showPlaceChoices(candidates, message, limit, totalCount){
+  clearLocationSelection(true);
+  var seen = {}, clean = [];
+  candidates.forEach(function(candidate){
+    var key = candidate.layerId + ':' + candidate.index;
+    var record = placeCandidateRecord(candidate);
+    if(!record || seen[key] || !locationPassesFilter(record.point)) return;
+    seen[key] = true; clean.push(candidate);
+  });
+  if(!clean.length) return false;
+  if(clean.length === 1){ focusPlace(clean[0].layerId, clean[0].index); return true; }
+  placeChoiceResults = clean;
+  var shown = limit && clean.length > limit ? clean.slice(0, limit) : clean;
+  var total = Math.max(clean.length, Number(totalCount || 0));
+  var panel = document.getElementById('placechoices');
+  var list = document.getElementById('placechoicelist');
+  var count = document.getElementById('placechoicescount');
+  list.innerHTML = '';
+  shown.forEach(function(candidate){
+    var record = placeCandidateRecord(candidate);
+    if(!record) return;
+    var button = document.createElement('button'); button.type = 'button'; button.className = 'placechoice';
+    var dot = document.createElement('i');
+    dot.style.backgroundColor = record.layer.colour || '#d8b36a';
+    dot.style.color = record.layer.colour || '#d8b36a';
+    var copy = document.createElement('span');
+    var name = document.createElement('strong'); name.textContent = locationName(record.point);
+    var detail = document.createElement('small');
+    detail.textContent = [locationDetail(record.point), record.layer.label].filter(Boolean).join(' · ');
+    copy.appendChild(name); copy.appendChild(detail); button.appendChild(dot); button.appendChild(copy);
+    button.addEventListener('click', function(event){
+      var keyboardChoice = event.detail === 0;
+      if(!keyboardChoice) hidePlaceChoices();
+      focusPlace(candidate.layerId, candidate.index, {
+        keepChoices:keyboardChoice,
+        reveal:!keyboardChoice
+      });
+      setTimeout(function(){
+        var card = document.getElementById('placecard');
+        card.focus();
+        if(keyboardChoice && card.scrollIntoView) card.scrollIntoView({block:'nearest'});
+      }, 220);
+    });
+    button.addEventListener('keydown', function(event){
+      if(event.key === 'Enter' || event.key === ' ') event.preventDefault();
+    });
+    button.addEventListener('keyup', function(event){
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault(); setTimeout(function(){ button.click(); }, 0);
+      }
+    });
+    list.appendChild(button);
+  });
+  count.textContent = shown.length === total
+    ? total.toLocaleString('en-AU') + ' matches'
+    : shown.length.toLocaleString('en-AU') + ' of ' + total.toLocaleString('en-AU') + ' matches';
+  panel.hidden = false;
+  document.getElementById('placenote').textContent = message +
+    (shown.length < total ? ' Refine the search to see the rest.' : '');
+  document.getElementById('gripval').textContent = total.toLocaleString('en-AU') + ' place matches';
+  openPlaceControls(panel);
+  return true;
+}
+
+function coLocatedPlaceCandidates(layerId, index){
+  var layer = locationLayer(layerId), data = locationData[layerId], point = data && data[index];
+  if(!layer || !point) return [];
+  var lat = locationLat(point), lon = locationLon(point), matches = [];
+  locationManifest.forEach(function(candidateLayer){
+    var state = locationStates[candidateLayer.id], candidateData = locationData[candidateLayer.id];
+    if(!state || !state.visible || !Array.isArray(candidateData)) return;
+    for(var i=0;i<candidateData.length;i++){
+      if(!locationPassesFilter(candidateData[i])) continue;
+      if(Math.abs(locationLat(candidateData[i]) - lat) <= 0.0000001 &&
+          Math.abs(locationLon(candidateData[i]) - lon) <= 0.0000001)
+        matches.push({layerId:candidateLayer.id, index:i, score:0});
+    }
+  });
+  matches.sort(function(a,b){
+    var ar = placeCandidateRecord(a), br = placeCandidateRecord(b);
+    return locationName(ar.point).localeCompare(locationName(br.point));
+  });
+  return matches;
+}
+
 function clearLocationSelection(keepQuery){
+  hidePlaceChoices();
   selectedLocation = null;
   if(selectedPlacePin) selectedPlacePin.visible = false;
   var card = document.getElementById('placecard');
@@ -2164,12 +2282,12 @@ function holdLocationCamera(){
   }
 }
 
-function openPlaceControls(){
+function openPlaceControls(target){
   switchTab('find');
   setSheetOpen(true);
   setTimeout(function(){
-    var card = document.getElementById('placecard');
-    if(card && card.scrollIntoView) card.scrollIntoView({block:'nearest', behavior:'smooth'});
+    var reveal = target || document.getElementById('placecard');
+    if(reveal && reveal.scrollIntoView) reveal.scrollIntoView({block:'nearest', behavior:'smooth'});
   }, 40);
 }
 
@@ -2177,6 +2295,7 @@ function focusPlace(layerId, index, options){
   options = options || {};
   var layer = locationLayer(layerId), data = locationData[layerId];
   if(!layer || !data || !data[index] || !selectedPlacePin || !sphereMesh) return;
+  if(!options.keepChoices) hidePlaceChoices();
   var p = data[index];
   selectedLocation = {layerId:layerId, index:index};
   var at = latLonToVec(locationLat(p), locationLon(p), locationSphereRadius * 1.006);
@@ -2359,7 +2478,11 @@ function setLayerNote(text){
 
 function layerCountText(layer){
   var mapped = Number(layer.mappedCount || 0), unresolved = Number(layer.unresolvedCount || 0);
-  if(mapped) return mapped.toLocaleString('en-AU');
+  var merged = Number(layer.deduplicatedCount || 0), text = '';
+  if(mapped && unresolved) text = mapped.toLocaleString('en-AU') + ' · ' + unresolved.toLocaleString('en-AU') + ' held';
+  else if(mapped) text = mapped.toLocaleString('en-AU');
+  if(text && merged) text += ' · ' + merged.toLocaleString('en-AU') + ' merged';
+  if(text) return text;
   if(unresolved) return unresolved.toLocaleString('en-AU') + ' pending';
   return 'empty';
 }
@@ -2506,7 +2629,7 @@ function renderCategoryFilter(){
   var counts = visibleCategoryCounts();
   if(locationCategoryFilter && !counts[locationCategoryFilter]) locationCategoryFilter = '';
   select.innerHTML = '';
-  var all = document.createElement('option'); all.value = ''; all.textContent = 'All place types';
+  var all = document.createElement('option'); all.value = ''; all.textContent = 'All types and countries';
   select.appendChild(all);
   Object.keys(counts).sort(function(a,b){ return a.localeCompare(b); }).forEach(function(category){
     var option = document.createElement('option'); option.value = category;
@@ -2534,7 +2657,7 @@ function applyLocationCategoryFilter(value){
   rebuildLocationMarkers();
   var count = filteredVisiblePlaceCount();
   setLayerNote(locationCategoryFilter
-    ? 'Showing ' + count.toLocaleString('en-AU') + ' visible places of type “' + locationCategoryFilter + '”.'
+    ? 'Showing ' + count.toLocaleString('en-AU') + ' visible places in “' + locationCategoryFilter + '”.'
     : 'Showing all ' + count.toLocaleString('en-AU') + ' places in the visible layers.');
 }
 
@@ -2559,7 +2682,7 @@ function goPlace(){
   var raw = document.getElementById('placeq').value.trim();
   var q = raw.toLowerCase();
   if(!q) return;
-  var best = null;
+  var exact = [], partialByScore = {1:[], 2:[], 3:[]}, totalMatches = 0;
   locationManifest.forEach(function(layer){
     var state = locationStates[layer.id], data = locationData[layer.id];
     if(!state || !state.visible || !Array.isArray(data)) return;
@@ -2568,11 +2691,34 @@ function goPlace(){
       var name = locationName(data[i]).toLowerCase();
       var haystack = locationSearchText(data[i]);
       var score = name === q ? 0 : (name.indexOf(q) === 0 ? 1 : (name.indexOf(q) >= 0 ? 2 : (haystack.indexOf(q) >= 0 ? 3 : 99)));
-      if(score < 99 && (!best || score < best.score)) best = {score:score, layerId:layer.id, index:i};
-      if(best && best.score === 0) break;
+      if(score < 99){
+        totalMatches++;
+        var candidate = {score:score, layerId:layer.id, index:i};
+        if(score === 0) exact.push(candidate);
+        else if(partialByScore[score].length < 80) partialByScore[score].push(candidate);
+      }
     }
   });
-  if(best){ focusPlace(best.layerId, best.index); return; }
+  var matches = partialByScore[1].concat(partialByScore[2], partialByScore[3]);
+  matches.sort(function(a,b){
+    if(a.score !== b.score) return a.score - b.score;
+    var ar = placeCandidateRecord(a), br = placeCandidateRecord(b);
+    var byName = locationName(ar.point).localeCompare(locationName(br.point));
+    if(byName) return byName;
+    var byDetail = locationDetail(ar.point).localeCompare(locationDetail(br.point));
+    return byDetail || ar.layer.label.localeCompare(br.layer.label);
+  });
+  if(exact.length === 1){ focusPlace(exact[0].layerId, exact[0].index); return; }
+  if(exact.length > 1){
+    showPlaceChoices(exact, exact.length.toLocaleString('en-AU') + ' exact matches for “' + raw + '”. Choose one to inspect.', 0);
+    return;
+  }
+  if(totalMatches === 1 && matches.length){ focusPlace(matches[0].layerId, matches[0].index); return; }
+  if(totalMatches > 1 && matches.length){
+    showPlaceChoices(matches, totalMatches.toLocaleString('en-AU') + ' matches for “' + raw + '”. Choose one to inspect.', 80, totalMatches);
+    return;
+  }
+  hidePlaceChoices();
   document.getElementById('placenote').textContent =
     'No match for "' + raw + '" in the visible layers. Switch on another layer or import a list.';
 }
@@ -3077,6 +3223,19 @@ document.getElementById('menuSave').addEventListener('click', function(){
 document.getElementById('goplace').addEventListener('click', goPlace);
 document.getElementById('placeq').addEventListener('keydown', function(e){
   if(e.key === 'Enter'){ e.preventDefault(); goPlace(); }
+});
+document.getElementById('placeq').addEventListener('input', hidePlaceChoices);
+document.getElementById('placechoicesclose').addEventListener('click', function(){
+  clearLocationSelection(true);
+  setTimeout(function(){ document.getElementById('placeq').focus(); }, 80);
+});
+document.getElementById('placechoicesclose').addEventListener('keydown', function(event){
+  if(event.key === 'Enter' || event.key === ' ') event.preventDefault();
+});
+document.getElementById('placechoicesclose').addEventListener('keyup', function(event){
+  if(event.key === 'Enter' || event.key === ' '){
+    event.preventDefault(); var button = this; setTimeout(function(){ button.click(); }, 0);
+  }
 });
 
 document.getElementById('lock').addEventListener('click', function(){

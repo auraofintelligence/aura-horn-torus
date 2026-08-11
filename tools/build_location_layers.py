@@ -30,6 +30,7 @@ WORKSPACE = REPO.parent
 DEFAULT_DOWNLOADS = Path.home() / "Downloads"
 LAYERS_DIR = REPO / "data" / "layers"
 MANIFEST_PATH = REPO / "data" / "location-layers.js"
+DEFAULT_UNIVERSITY_MATCHES = REPO / "data" / "university-ror-matches-v2.11.csv"
 POINT_SCHEMA = [
     "name",
     "latitude",
@@ -328,6 +329,130 @@ def count_university_rows(path: Path) -> int:
         return sum(1 for row in csv.reader(handle) if row)
 
 
+UNIVERSITY_SCOPE_LABELS = {
+    "oceania": "Oceania",
+    "fta_partner": "Australia in-force FTA partner outside Oceania",
+    "eu_framework": "Australia-EU Framework Agreement",
+    "named_treaty": "Named bilateral treaty",
+}
+UNIVERSITY_SCOPE_COUNTRIES = {
+    "oceania": [
+        "AS", "AU", "CC", "CK", "CX", "FJ", "FM", "GU", "HM", "KI", "MH", "MP",
+        "NC", "NF", "NR", "NU", "NZ", "PF", "PG", "PN", "PW", "SB", "TK", "TO",
+        "TV", "UM", "VU", "WF", "WS",
+    ],
+    "fta_partner": [
+        "AE", "BN", "CA", "CL", "CN", "GB", "HK", "ID", "IN", "JP", "KH", "KR",
+        "LA", "MM", "MX", "MY", "PE", "PH", "SG", "TH", "US", "VN",
+    ],
+    "eu_framework": [
+        "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR",
+        "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
+        "SI", "ES", "SE",
+    ],
+    "named_treaty": ["TL"],
+}
+
+
+def parse_university_matches(
+    path: Path,
+) -> tuple[dict[str, list[list[Any]]], dict[str, Counter[str]], set[int]]:
+    """Read the reviewed ROR match catalogue and publish safe active rows only.
+
+    The tracked catalogue deliberately carries current ROR/GeoNames display
+    fields rather than republishing the old index's website list.  Every row
+    still keeps its original source row number so totals remain auditable.
+    """
+    grouped: dict[str, list[list[Any]]] = defaultdict(list)
+    diagnostics: dict[str, Counter[str]] = defaultdict(Counter)
+    source_rows: set[int] = set()
+    seen_ror: dict[str, set[str]] = defaultdict(set)
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        required = {
+            "source_row_number",
+            "scope_group",
+            "classification",
+            "source_country",
+            "source_country_name",
+            "ror_id",
+            "ror_name",
+            "ror_status",
+            "geonames_id",
+            "locality",
+            "subdivision_name",
+            "latitude",
+            "longitude",
+            "match_method",
+        }
+        if not required.issubset(set(reader.fieldnames or [])):
+            missing = sorted(required - set(reader.fieldnames or []))
+            raise ValueError(f"University match catalogue is missing: {', '.join(missing)}")
+        for record in reader:
+            try:
+                source_row = int(clean_text(record.get("source_row_number")))
+            except ValueError as exc:
+                raise ValueError("University match row has an invalid source row number") from exc
+            if source_row in source_rows:
+                raise ValueError(f"Duplicate university source row: {source_row}")
+            source_rows.add(source_row)
+            group = clean_text(record.get("scope_group"))
+            if group not in UNIVERSITY_SCOPE_LABELS:
+                raise ValueError(f"Unknown university scope group: {group!r}")
+            country_code = clean_text(record.get("source_country")).upper()
+            if country_code not in UNIVERSITY_SCOPE_COUNTRIES[group]:
+                raise ValueError(
+                    f"University source row {source_row} is outside the declared {group} countries"
+                )
+            classification = clean_text(record.get("classification"))
+            diagnostics[group][classification] += 1
+            if classification != "safe_active":
+                continue
+            if clean_text(record.get("ror_status")) != "active":
+                raise ValueError(f"Safe university row {source_row} is not active in ROR")
+            ror_id = clean_text(record.get("ror_id"))
+            if not re.fullmatch(r"https://ror\.org/[0-9a-z]{9}", ror_id):
+                raise ValueError(f"Safe university row {source_row} has an invalid ROR ID")
+            if not valid_coord(record.get("latitude"), record.get("longitude")):
+                raise ValueError(f"Safe university row {source_row} lacks valid coordinates")
+            if ror_id in seen_ror[group]:
+                continue
+            seen_ror[group].add(ror_id)
+            country = clean_text(record.get("source_country_name"))
+            locality = clean_text(record.get("locality"))
+            subdivision = clean_text(record.get("subdivision_name"))
+            detail = ", ".join(part for part in (locality, subdivision, country) if part)
+            category = "University"
+            if country or country_code:
+                category += f" · {country or country_code}"
+            search = " ".join(
+                part
+                for part in (
+                    country_code,
+                    country,
+                    locality,
+                    subdivision,
+                    clean_text(record.get("ror_name")),
+                    clean_text(record.get("geonames_id")),
+                    UNIVERSITY_SCOPE_LABELS[group],
+                    clean_text(record.get("match_method")),
+                )
+                if part
+            )
+            grouped[group].append(
+                point(
+                    record.get("ror_name"),
+                    record.get("latitude"),
+                    record.get("longitude"),
+                    detail,
+                    category,
+                    ror_id,
+                    search,
+                )
+            )
+    return dict(grouped), diagnostics, source_rows
+
+
 def parse_affinity(path: Path) -> list[list[Any]]:
     """Keep only low-risk map fields; never copy phones, reviews or contact data."""
     rows: list[list[Any]] = []
@@ -446,6 +571,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     paths = {
         "world_cities": Path(args.world_cities),
         "world_universities": Path(args.world_universities),
+        "university_matches": Path(args.university_matches),
         "aura_alliance": Path(args.aura_alliance),
         "north_stradbroke_kmz": Path(args.north_stradbroke_kmz),
         "north_stradbroke_recovered": Path(args.north_stradbroke_recovered),
@@ -461,6 +587,11 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     north_stradbroke = parse_stradbroke_reference(paths["north_stradbroke_recovered"])
     world_cities = parse_world_cities(paths["world_cities"])
     universities_count = count_university_rows(paths["world_universities"])
+    university_groups, university_diag, university_scope_rows = parse_university_matches(
+        paths["university_matches"]
+    )
+    if len(university_scope_rows) > universities_count:
+        raise ValueError("University match catalogue exceeds the historical source row count")
     affinity = parse_affinity(paths["affinity"])
     missions_abroad, missions_abroad_reference = parse_missions_abroad(paths["missions_abroad"])
     missions_in_australia_count, mission_cities = count_missions_in_australia(
@@ -478,7 +609,28 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "australian-missions-abroad", missions_abroad
         ),
         "world-cities": write_layer("world-cities", world_cities),
+        "oceania-universities": write_layer(
+            "oceania-universities", university_groups.get("oceania", [])
+        ),
+        "australia-fta-universities": write_layer(
+            "australia-fta-universities", university_groups.get("fta_partner", [])
+        ),
+        "eu-framework-universities": write_layer(
+            "eu-framework-universities", university_groups.get("eu_framework", [])
+        ),
     }
+
+    university_scope_totals = {
+        group: sum(university_diag.get(group, Counter()).values())
+        for group in UNIVERSITY_SCOPE_LABELS
+    }
+    university_safe_totals = {
+        group: int(university_diag.get(group, Counter()).get("safe_active", 0))
+        for group in UNIVERSITY_SCOPE_LABELS
+    }
+    university_remaining = universities_count - sum(university_scope_totals.values())
+    if university_remaining < 0:
+        raise ValueError("University scope counts do not reconcile to the historical source")
 
     manifest = [
         layer_metadata(
@@ -585,22 +737,168 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             src="data/layers/world-cities.js",
         ),
         layer_metadata(
-            id="world-universities",
-            label="World universities",
-            colour="#f59e0b",
+            id="oceania-universities",
+            label="Oceania universities",
+            colour="#fb923c",
+            mappedCount=counts["oceania-universities"],
+            unresolvedCount=university_scope_totals["oceania"] - university_safe_totals["oceania"],
+            deduplicatedCount=university_safe_totals["oceania"] - counts["oceania-universities"],
+            matchedSourceCount=university_safe_totals["oceania"],
+            defaultOn=False,
+            status="matched",
+            statusLabel="strict active ROR matches",
+            sourceLabel="UN M49 Oceania · ROR v2.11",
+            sourceUrl="https://unstats.un.org/unsd/methodology/m49/",
+            sourceFile=paths["world_universities"].name,
+            sourceSha256=sha256(paths["world_universities"]),
+            matchFile=paths["university_matches"].name,
+            matchSha256=sha256(paths["university_matches"]),
+            registrySourceUrl="https://zenodo.org/records/21773148",
+            registryUpdatedAt="2026-08-03",
+            sourceUpdatedAt="2015-11-02",
+            importedAt=args.imported_at,
+            coordinateBasis="ROR v2.11 / GeoNames locality centroid; not a campus pin",
+            warning=(
+                "Historical 2015 index matched only where an active ROR education identity was strict and unique. "
+                f"{university_scope_totals['oceania'] - university_safe_totals['oceania']:,} Oceania rows remain held for review, inactive history or no match. "
+                "Inclusion only means the historical listing matched a current ROR organisation."
+            ),
+            rightsNote=(
+                "Published display fields come from ROR (CC0); embedded GeoNames locality data is CC BY 4.0. "
+                "The historical index repository declares no licence."
+            ),
+            scopeSourceCount=university_scope_totals["oceania"],
+            scopeAsAt="2026-08-11",
+            scopeCountryCodes=UNIVERSITY_SCOPE_COUNTRIES["oceania"],
+            pointSize=0.044,
+            opacity=0.92,
+            src="data/layers/oceania-universities.js",
+        ),
+        layer_metadata(
+            id="australia-fta-universities",
+            label="Universities in non-Oceania FTA partner economies",
+            colour="#facc15",
+            mappedCount=counts["australia-fta-universities"],
+            unresolvedCount=university_scope_totals["fta_partner"] - university_safe_totals["fta_partner"],
+            deduplicatedCount=(
+                university_safe_totals["fta_partner"] - counts["australia-fta-universities"]
+            ),
+            matchedSourceCount=university_safe_totals["fta_partner"],
+            defaultOn=False,
+            status="matched",
+            statusLabel="strict active ROR matches",
+            sourceLabel="DFAT in-force FTA partners outside Oceania · ROR v2.11",
+            sourceUrl="https://www.dfat.gov.au/trade/agreements/in-force",
+            sourceFile=paths["world_universities"].name,
+            sourceSha256=sha256(paths["world_universities"]),
+            matchFile=paths["university_matches"].name,
+            matchSha256=sha256(paths["university_matches"]),
+            registrySourceUrl="https://zenodo.org/records/21773148",
+            registryUpdatedAt="2026-08-03",
+            sourceUpdatedAt="2015-11-02",
+            importedAt=args.imported_at,
+            coordinateBasis="ROR v2.11 / GeoNames locality centroid; not a campus pin",
+            warning=(
+                "Current ROR organisations selected through Australia's in-force FTA partner economies and a historical 2015 index. "
+                f"{university_scope_totals['fta_partner'] - university_safe_totals['fta_partner']:,} scoped rows remain held and "
+                f"{university_safe_totals['fta_partner'] - counts['australia-fta-universities']:,} duplicate historical listings were merged. "
+                "Oceania is kept in its own layer to avoid duplicate points. Inclusion does not mean the institution participates in, endorses or is partnered through an FTA."
+            ),
+            rightsNote=(
+                "Published display fields come from ROR (CC0); embedded GeoNames locality data is CC BY 4.0. "
+                "This is not Australia's complete treaty network."
+            ),
+            scopeSourceCount=university_scope_totals["fta_partner"],
+            scopeAsAt="2026-08-11",
+            scopeCountryCodes=UNIVERSITY_SCOPE_COUNTRIES["fta_partner"],
+            pointSize=0.036,
+            opacity=0.84,
+            src="data/layers/australia-fta-universities.js",
+        ),
+        layer_metadata(
+            id="eu-framework-universities",
+            label="Universities in EU member states",
+            colour="#60a5fa",
+            mappedCount=counts["eu-framework-universities"],
+            unresolvedCount=university_scope_totals["eu_framework"] - university_safe_totals["eu_framework"],
+            deduplicatedCount=(
+                university_safe_totals["eu_framework"] - counts["eu-framework-universities"]
+            ),
+            matchedSourceCount=university_safe_totals["eu_framework"],
+            defaultOn=False,
+            status="matched",
+            statusLabel="strict active ROR matches",
+            sourceLabel="Australia-EU Framework Agreement · ROR v2.11",
+            sourceUrl="https://www.dfat.gov.au/geo/europe/european-union/australia-european-union-eu-framework-agreement",
+            sourceFile=paths["world_universities"].name,
+            sourceSha256=sha256(paths["world_universities"]),
+            matchFile=paths["university_matches"].name,
+            matchSha256=sha256(paths["university_matches"]),
+            registrySourceUrl="https://zenodo.org/records/21773148",
+            registryUpdatedAt="2026-08-03",
+            sourceUpdatedAt="2015-11-02",
+            importedAt=args.imported_at,
+            coordinateBasis="ROR v2.11 / GeoNames locality centroid; not a campus pin",
+            warning=(
+                "EU member states are included through the in-force Australia-EU Framework Agreement, not the not-yet-in-force Australia-EU FTA. "
+                f"{university_scope_totals['eu_framework'] - university_safe_totals['eu_framework']:,} scoped rows remain held. "
+                "Inclusion does not mean the institution participates in, endorses or is partnered through the agreement."
+            ),
+            rightsNote=(
+                "Published display fields come from ROR (CC0); embedded GeoNames locality data is CC BY 4.0."
+            ),
+            scopeSourceCount=university_scope_totals["eu_framework"],
+            scopeAsAt="2026-08-11",
+            scopeCountryCodes=UNIVERSITY_SCOPE_COUNTRIES["eu_framework"],
+            pointSize=0.034,
+            opacity=0.80,
+            src="data/layers/eu-framework-universities.js",
+        ),
+        layer_metadata(
+            id="timor-leste-universities",
+            label="Universities in Timor-Leste",
+            colour="#2dd4bf",
             mappedCount=0,
-            unresolvedCount=universities_count,
+            unresolvedCount=0,
+            deduplicatedCount=0,
+            matchedSourceCount=0,
+            defaultOn=False,
+            status="no-source-rows",
+            statusLabel="no historical rows",
+            sourceLabel="Australia-Timor-Leste Maritime Boundary Treaty",
+            sourceUrl="https://www.dfat.gov.au/geo/timor-leste/australias-maritime-arrangements-with-timor-leste",
+            sourceFile=paths["world_universities"].name,
+            sourceSha256=sha256(paths["world_universities"]),
+            matchFile=paths["university_matches"].name,
+            matchSha256=sha256(paths["university_matches"]),
+            sourceUpdatedAt="2015-11-02",
+            importedAt=args.imported_at,
+            coordinateBasis="none",
+            warning=(
+                "Timor-Leste is in the named bilateral treaty scope, but the historical university index contains no Timor-Leste rows."
+            ),
+            scopeSourceCount=0,
+            scopeAsAt="2026-08-11",
+            scopeCountryCodes=UNIVERSITY_SCOPE_COUNTRIES["named_treaty"],
+            unavailableReason="No location was fabricated; a current source-led Timor-Leste university catalogue would be a separate future addition.",
+        ),
+        layer_metadata(
+            id="world-universities",
+            label="University index outside current scope",
+            colour="#94a3b8",
+            mappedCount=0,
+            unresolvedCount=university_remaining,
             defaultOn=False,
             status="unresolved",
-            statusLabel="needs coordinates",
+            statusLabel="not yet matched",
             sourceLabel="world-universities.csv",
             sourceFile=paths["world_universities"].name,
             sourceSha256=sha256(paths["world_universities"]),
-            sourceUpdatedAt=None,
+            sourceUpdatedAt="2015-11-02",
             importedAt=args.imported_at,
             coordinateBasis="none",
-            warning="The file contains country code, university name and URL only. No coordinates were invented.",
-            unavailableReason=f"All {universities_count:,} rows need trusted coordinates before they can be mapped.",
+            warning="Rows outside the current Oceania, in-force FTA partner and EU Framework Agreement scopes remain deliberately unmapped.",
+            unavailableReason=f"{university_remaining:,} rows remain outside the current source-backed matching scope.",
         ),
         layer_metadata(
             id="foreign-missions-australia",
@@ -651,7 +949,18 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     return {
         "counts": counts,
         "unresolved": {
-            "world-universities": universities_count,
+            "oceania-universities": (
+                university_scope_totals["oceania"] - university_safe_totals["oceania"]
+            ),
+            "australia-fta-universities": (
+                university_scope_totals["fta_partner"]
+                - university_safe_totals["fta_partner"]
+            ),
+            "eu-framework-universities": (
+                university_scope_totals["eu_framework"]
+                - university_safe_totals["eu_framework"]
+            ),
+            "world-universities": university_remaining,
             "foreign-missions-australia": missions_in_australia_count,
             "australian-missions-abroad": 0,
         },
@@ -673,6 +982,11 @@ def parser() -> argparse.ArgumentParser:
     command.add_argument(
         "--world-universities",
         default=DEFAULT_DOWNLOADS / "world-universities.csv",
+        type=Path,
+    )
+    command.add_argument(
+        "--university-matches",
+        default=DEFAULT_UNIVERSITY_MATCHES,
         type=Path,
     )
     command.add_argument(
