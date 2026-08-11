@@ -1,6 +1,6 @@
 # Aura Horn Torus
 
-An interactive demo of a horn torus lattice: a 12 × 24 grid of addressable cells that morphs between a flat unrolled sheet and a closed torus, stacked seven shells deep inside a geosphere.
+An interactive demo of a horn torus lattice: a 12 × 24 grid of addressable cells that morphs between a flat unrolled sheet and a closed torus, stacked seven shells deep, with a separate streamed Satellite Earth for organising places.
 
 Live page: https://auraofintelligence.github.io/aura-horn-torus/
 
@@ -17,17 +17,20 @@ Live page: https://auraofintelligence.github.io/aura-horn-torus/
 - Seven nested horn tori, one per chakra colour, red innermost through violet, all sharing one zero point at the centre.
 - Every cell has an address: a shell, a number from 1 to 288, and a face letter. O is the exterior observer face, treated as a public permissioned register. I is the interior personal face, treated as a private encrypted register. Tap any cell to read its address, or type one in and the camera swings to it.
 - An Arrange slider that moves the seven shells between two layouts: nested on a single centre, or spread up a body column, red at the base and violet at the crown.
-- A geosphere around the outside carrying a self-hosted NASA Blue Marble map, so maps of self and place sit in the one navigable space. It starts with a standard 4K texture and changes to an 8K texture on capable desktops when the view moves close. The aura layers toggle on and off in front of it.
-- Independent Earth location layers with colour, record count, source, age/status and coordinate-quality labels. Large layers use one WebGL point cloud each rather than thousands of separate marker objects.
+- A dedicated streamed satellite Earth beside the Horn Torus. It requests only the map tiles needed for the current view, so close zoom is no longer limited by one stretched 4K or 8K globe image.
+- A borderless, flagless satellite base with independent **Streets** and **Features & names** switches. Both optional overlays begin off.
+- Independent Earth location layers with colour, record count, source, age/status and coordinate-quality labels. Large layers use clustered WebGL map layers rather than thousands of separate marker objects.
 - A selected-place card with locality, type, dataset status, coordinate accuracy, source and closer/regional camera controls. Places can be filtered by type, saved privately in the browser and downloaded as a CSV shortlist.
 - The full fold: flat sheets curl into tubes, close into rings, and pinch into horn tori, live on sliders.
 - An optional build guide: one matrix, fold it closed, two faces, the zero point, seven layers, on the body, in the world, then free exploration.
 
 ## Running it
 
-Open `index.html` in a browser, or use the live page above. The page loads three.js from jsDelivr. The Earth textures and permanent location data stay in this repo, and large place layers are loaded only on demand.
+Open `index.html` in a browser, or use the live page above. The page loads Three.js for the Horn Torus and loads MapLibre only when somebody opens Satellite Earth. Permanent location data stays in this repo, and large place layers are loaded only when switched on.
 
-The Earth imagery is a derived 4K/8K web texture from NASA Earth Observatory's December 2004 **Blue Marble: Next Generation with Topography and Bathymetry**. NASA is acknowledged as the source; see [`assets/earth/README.md`](assets/earth/README.md) for the exact source, processing record and usage guidance.
+The satellite base is the 2025 [EOxCloudless](https://cloudless.eox.at/) global Sentinel-2 mosaic by EOX IT Services GmbH, containing modified Copernicus Sentinel data. Its hosted WMTS is available for non-commercial use under [CC BY-NC-SA 4.0](https://cloudless.eox.at/license-non-commercial) with visible attribution. It has a native 10 metre resolution: substantially more useful than a single world texture, but not building- or campus-level evidence. Streets and useful local labels come from [OpenFreeMap](https://openfreemap.org/) only after their switches are turned on, with OpenMapTiles and OpenStreetMap attribution. Political boundaries, country/state labels and flag icons are removed from the approved overlay style.
+
+Opening Satellite Earth sends ordinary tile requests, including the visitor's IP address, referrer and the requested map area, to the active map providers. The site sends no browser geolocation, account details or saved-place information to them. There is no map analytics code; saved places remain in that browser unless the visitor downloads a CSV.
 
 ## Location layers
 

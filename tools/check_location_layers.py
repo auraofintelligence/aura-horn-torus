@@ -15,6 +15,13 @@ REPO = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = REPO / "data" / "location-layers.js"
 
 
+def sha256_repository_text(path: Path) -> str:
+    """Hash text as Git stores it after the repository's LF normalisation."""
+    content = path.read_bytes()
+    canonical_content = content.replace(b"\r\n", b"\n")
+    return hashlib.sha256(canonical_content).hexdigest().upper()
+
+
 def read_manifest() -> tuple[list[dict], dict[str, list]]:
     text = MANIFEST_PATH.read_text(encoding="utf-8")
     marker = "window.AURA_LOCATION_MANIFEST="
@@ -162,7 +169,7 @@ def check() -> dict:
     if not match_catalogue.is_file():
         errors.append("Missing tracked university ROR match catalogue")
     else:
-        match_catalogue_hash = hashlib.sha256(match_catalogue.read_bytes()).hexdigest().upper()
+        match_catalogue_hash = sha256_repository_text(match_catalogue)
         match_text = match_catalogue.read_text(encoding="utf-8-sig")
         for leak in ("C:\\Users\\", "C:/Users/", "lukec"):
             if leak.lower() in match_text.lower():
