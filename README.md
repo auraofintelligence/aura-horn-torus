@@ -42,9 +42,14 @@ The catalogue currently covers:
 - 139 points recovered from the **North Stradbroke Island** My Maps NetworkLink, clearly marked as a legacy reference rather than current or culturally authoritative truth;
 - 125 **Australian missions abroad**, checked on 19 May 2026 and shown at approximate city level;
 - 44,691 **world cities** from an old, version-undated local SimpleMaps copy, with [SimpleMaps attribution](https://simplemaps.com/data/world-cities) under CC BY 4.0; and
+- 3,509 current, active university organisations matched cautiously from the old university index: 56 across [UN M49 Oceania](https://unstats.un.org/unsd/methodology/m49/), 2,951 in non-Oceania countries covered by Australia's [in-force free trade agreements](https://www.dfat.gov.au/trade/agreements/in-force), and 502 in EU member states covered by the [Australia-EU Framework Agreement](https://www.dfat.gov.au/geo/europe/european-union/australia-european-union-eu-framework-agreement); and
 - 19,636 minimal **Aura Affinity** discovery points. Every record is unverified; copied reviews, phone numbers and other contact material are deliberately excluded. Third-party reuse terms remain **TO BE CONFIRMED**, so this stays an off-by-default reference layer rather than verified business information.
 
-Two supplied lists are recorded but not faked onto the globe: `world-universities.csv` has 9,363 rows and no coordinates, while the 141 foreign missions in Australia still need verified point coordinates. Their layer rows explain what is missing.
+The university points use current [ROR v2.11](https://zenodo.org/records/21773148) names and ROR links with GeoNames locality centroids. They are useful for finding a university's city or region, but they are **not campus or building pins**. Inclusion only means an institution appeared in the historical 2015 list and passed the strict ROR identity match. It does not mean that the institution participates in, endorses or is partnered through a treaty or agreement.
+
+The release gate holds uncertain identities rather than guessing. Of the audited source rows, 3,516 passed and became 3,509 points because seven duplicate historical listings matched the same ROR organisations. Another 2,863 rows are held back for review, inactive history or no match, and 2,984 rows outside those scopes are not yet audited. Timor-Leste is included through the [Australia-Timor-Leste Maritime Boundary Treaty](https://www.dfat.gov.au/geo/timor-leste/australias-maritime-arrangements-with-timor-leste), but the old list contains no Timor-Leste row, so no point was fabricated. ROR metadata is CC0 and its GeoNames locality data is CC BY 4.0; the historical list declares no licence and is used only as a discovery index, without republishing its old website list.
+
+The other supplied list that remains deliberately unmapped is the 141 foreign missions in Australia, because their addresses still need verified point coordinates. Its layer row explains what is missing.
 
 ### Import another list in the browser
 
