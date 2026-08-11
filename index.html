@@ -694,8 +694,8 @@ function earthWorldRadius(){
   return locationSphereRadius * Math.max(scale.x, scale.y, scale.z);
 }
 function cameraFloor(){
-  if(selectedLocation && locationSphereRadius && sphereMesh && sphereMesh.visible &&
-      !(drive && drive.insideCam)) return earthWorldRadius() * 1.045;
+  if(locationSphereRadius && sphereMesh && sphereMesh.visible &&
+      !(drive && drive.insideCam)) return earthWorldRadius() * 1.07;
   return 0.25;
 }
 function applyCamera(){
@@ -706,6 +706,7 @@ function applyCamera(){
     cam.dist * Math.cos(cam.phi),
     cam.dist * Math.sin(cam.phi) * Math.cos(cam.theta));
   camera.lookAt(0,0,0);
+  maybeLoadEarthDetail();
 }
 var el = renderer.domElement;
 var tapStart = null;
@@ -812,6 +813,7 @@ var locationManifest = (window.AURA_LOCATION_MANIFEST || []).map(function(layer)
 var locationData = window.AURA_LOCATION_DATA || {};
 var locationStates = {};
 var locationLayerObjects = {};
+var locationDotTexture = null;
 var locationCategoryFilter = '';
 var savedLocations = [];
 var savedExportUrl = '';
@@ -894,30 +896,63 @@ function makeAtlas(k, inside, rows, cols){
   return {tex:t, canvas:cv, px:px};
 }
 
-/* Earth skin for the geosphere — same third-party trust level as the
-   three.js CDN itself. If it never arrives, the wireframe stands alone. */
+/* Earth skin for the geosphere. A quick 4K NASA texture starts the globe;
+   capable desktop GPUs receive the 8K version only when the camera comes
+   close. Phones and data-saver connections stay on 4K. */
 var earthTex = null, sphereEarthMat = null, sphereWire = null;
-function applyEarth(t){
+var earthTextureLevel = 0, earthTextureSource = '', earthDetailRequested = false, earthDetailFailedAt = 0;
+var EARTH_TEXTURES = {
+  base:'assets/earth/nasa-blue-marble-topography-bathymetry-4k.webp',
+  detail:'assets/earth/nasa-blue-marble-topography-bathymetry-8k.webp',
+  fallback:'assets/earth/nasa-blue-marble-topography-bathymetry-4k.jpg'
+};
+function earthCanUseDetail(){
+  var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  var savingData = !!(connection && connection.saveData);
+  var coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+  var memory = Number(navigator.deviceMemory || 0);
+  return renderer.capabilities.maxTextureSize >= 8192 && !savingData && !coarse && memory >= 6;
+}
+function applyEarth(t, level, source){
+  level = level || 1;
+  if(level < earthTextureLevel){ t.dispose(); return; }
   t.encoding = THREE.sRGBEncoding;
   t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  t.minFilter = THREE.LinearMipmapLinearFilter;
+  t.magFilter = THREE.LinearFilter;
+  var previous = earthTex;
   earthTex = t;
+  earthTextureLevel = level;
+  earthTextureSource = source || '';
   if(sphereEarthMat){
     sphereEarthMat.map = t;
     sphereEarthMat.visible = true;
     sphereEarthMat.needsUpdate = true;
   }
   if(sphereWire) sphereWire.visible = false;   // grid is only the fallback
+  if(previous && previous !== t) previous.dispose();
 }
-// 4K Blue Marble first; the 2K three.js texture as fallback; wireframe if both fail
-new THREE.TextureLoader().load(
-  'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
-  applyEarth,
-  undefined,
-  function(){
-    new THREE.TextureLoader().load(
-      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg',
-      applyEarth);
+function loadEarthBase(){
+  var loader = new THREE.TextureLoader();
+  loader.load(EARTH_TEXTURES.base, function(t){ applyEarth(t, 1, EARTH_TEXTURES.base); }, undefined, function(){
+    loader.load(EARTH_TEXTURES.fallback, function(t){ applyEarth(t, 1, EARTH_TEXTURES.fallback); });
   });
+}
+function maybeLoadEarthDetail(){
+  if(earthDetailRequested || earthTextureLevel >= 2 || !sphereMesh || !sphereMesh.visible || !earthCanUseDetail()) return;
+  if(earthDetailFailedAt && Date.now() - earthDetailFailedAt < 60000) return;
+  var r = earthWorldRadius();
+  if(!r || cam.dist > r * 1.55) return;
+  earthDetailRequested = true;
+  new THREE.TextureLoader().load(EARTH_TEXTURES.detail, function(t){
+    earthDetailFailedAt = 0;
+    applyEarth(t, 2, EARTH_TEXTURES.detail);
+  }, undefined, function(){
+    earthDetailRequested = false;
+    earthDetailFailedAt = Date.now();
+  });
+}
+loadEarthBase();
 
 var fieldPool = [];
 for(var fp=0; fp<64; fp++) fieldPool.push(fieldTexture(fp+1));
@@ -1144,7 +1179,7 @@ function buildShells(){
   }
 
   var R = radius();
-  var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, 96, 64);
+  var sg = new THREE.SphereBufferGeometry(2 * R * 1.12, 256, 128);
   var wireSphere = new THREE.SphereBufferGeometry(2 * R * 1.12, cols, rows);
   sphereMesh = new THREE.Group();
   sphereEarthMat = new THREE.MeshBasicMaterial({visible: !!earthTex});
@@ -1177,6 +1212,8 @@ function buildShells(){
     setMulti:function(v){ multi=v; },
     shells:shells, camera:camera, root:root, scene:scene, rays:rayDefs,
     P:P, renderer:renderer, drive:drive, cam:cam,
+    earthTexture:function(){ return {level:earthTextureLevel, maxTextureSize:renderer.capabilities.maxTextureSize,
+      detailCapable:earthCanUseDetail(), source:earthTextureSource, detailFailedAt:earthDetailFailedAt || null}; },
     diag:function(){ return {r:stageRadius(), focus:P.focus, dist:cam.dist,
       fit:drive.fit, lock:drive.camLock, scale:shellS(P.focus > 0 ? P.focus - 1 : 6)}; },
     journey:function(j){ applyJourney(j); updateGeometry(); },
@@ -1936,15 +1973,28 @@ function stepRay(dRing, dCol, toggleKind){
 /* ---------- Earth location layers: load, render, search, tap ---------- */
 function createPlacePin(r){
   var pin = new THREE.Group();
-  var pinH = r * 0.025;
+  var pinH = r * 0.018;
   var mat = new THREE.MeshBasicMaterial({color:0xffffff, depthTest:true});
-  var needle = new THREE.Mesh(new THREE.ConeBufferGeometry(r * 0.0035, pinH, 8), mat);
+  var needle = new THREE.Mesh(new THREE.ConeBufferGeometry(r * 0.0024, pinH, 8), mat);
   needle.rotation.x = Math.PI;
   needle.position.y = pinH / 2;
-  var head = new THREE.Mesh(new THREE.SphereBufferGeometry(r * 0.007, 12, 10), mat);
+  var head = new THREE.Mesh(new THREE.SphereBufferGeometry(r * 0.0038, 12, 10), mat);
   head.position.y = pinH;
   pin.add(needle); pin.add(head);
   return pin;
+}
+
+function getLocationDotTexture(){
+  if(locationDotTexture) return locationDotTexture;
+  var canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 32;
+  var context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.beginPath();
+  context.arc(16, 16, 13, 0, TAU);
+  context.fill();
+  locationDotTexture = new THREE.CanvasTexture(canvas);
+  return locationDotTexture;
 }
 
 function disposeLocationPoints(){
@@ -1981,10 +2031,13 @@ function rebuildLocationMarkers(){
     var geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.computeBoundingSphere();
+    var markerPixels = Number(layer.pointPixelSize || Math.max(2.5, Math.min(7.5, Number(layer.pointSize || 0.04) * 100)));
     var material = new THREE.PointsMaterial({
       color:new THREE.Color(layer.colour || '#d8b36a'),
-      size:Number(layer.pointSize || 0.04),
-      sizeAttenuation:true,
+      size:markerPixels,
+      sizeAttenuation:false,
+      map:getLocationDotTexture(),
+      alphaTest:0.2,
       transparent:true,
       opacity:Number(layer.opacity === undefined ? 0.9 : layer.opacity),
       depthTest:true,
@@ -2154,8 +2207,8 @@ function zoomSelectedCloser(){
   if(!selectedPlaceContext()) return;
   holdLocationCamera();
   var r = earthWorldRadius();
-  var gap = Math.max(r * 0.045, cam.dist - r);
-  cam.dist = r + Math.max(r * 0.045, gap * 0.48);
+  var gap = Math.max(r * 0.07, cam.dist - r);
+  cam.dist = r + Math.max(r * 0.07, gap * 0.48);
   applyCamera();
 }
 
@@ -2867,6 +2920,8 @@ function setSphere(on){
   P.sphere = on;
   document.getElementById('sphere').classList.toggle('on', on);
   syncRail();
+  if(sphereMesh) sphereMesh.visible = on;
+  if(on) applyCamera();
 }
 document.getElementById('sphere').addEventListener('click', function(){ setSphere(!P.sphere); });
 
