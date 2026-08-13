@@ -186,6 +186,12 @@
     border:0;border-radius:9px;background:none;color:var(--ink);font:500 13px/1 inherit;
     text-decoration:none;cursor:pointer}
   #menu a:hover,#menu button:hover{background:rgba(255,255,255,.06)}
+  body.earth-map #sheet,
+  body.earth-map #mapback,
+  body.earth-map #menuBtn,
+  body.earth-map #menu{
+    backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(12,14,20,.96)
+  }
   #menu .mh{font:600 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.13em;
     text-transform:uppercase;color:var(--ink-soft);padding:8px 12px 4px}
   #hud{padding-right:64px}
@@ -884,6 +890,7 @@ var locationStates = {};
 var locationLayerObjects = {};
 var locationDotTexture = null;
 var locationCategoryFilter = '';
+var locationCategoryCountsCache = typeof WeakMap === 'function' ? new WeakMap() : null;
 var savedLocations = [];
 var savedExportUrl = '';
 var placeChoiceResults = [];
@@ -941,6 +948,7 @@ var earthMapLocationRegistry = {};
 var earthMapClickLookup = {};
 var earthMapSelectionHandlersBound = false;
 var earthMapLastError = '';
+var earthMapWorkStats = {geoJsonBuilds:0, sourceUpdates:0};
 
 function earthMapConfig(){ return window.AURA_EARTH_MAP_CONFIG || null; }
 
@@ -988,7 +996,7 @@ function loadEarthReferenceStyle(done){
     callbacks.forEach(function(callback){ callback(error || null, style || null); });
   }
   if(!url || !window.fetch){ finish(new Error('Map detail service is unavailable.'), null); return; }
-  fetch(url, {mode:'cors', cache:'no-cache'}).then(function(response){
+  fetch(url, {mode:'cors'}).then(function(response){
     if(!response.ok) throw new Error('Map detail service returned ' + response.status + '.');
     return response.json();
   }).then(function(style){ finish(null, style); }, function(error){ finish(error, null); });
@@ -1074,19 +1082,32 @@ function ensureEarthMapReference(done){
     }
     var config = earthMapConfig();
     try {
-      clearEarthMapLocations();
-      earthMap.once('style.load', function(){
-        earthMapReferenceAvailable = true;
-        earthMap.setProjection({type:'globe'});
-        config.setGroupVisibility(earthMap, 'streets', earthMapStreetsVisible);
-        config.setGroupVisibility(earthMap, 'features', earthMapFeaturesVisible);
-        syncEarthMapLocations();
-        syncEarthMapSelection();
-        refreshEarthMapButtons();
-        setEarthMapMessage('', false);
-        finish(null);
+      var groups = config.adaptLibertyStyle(libertyStyle);
+      var referenceId = config.sourceIds.reference;
+      // Attach optional text and icon assets without replacing the live style
+      // or any clustered location sources.
+      if(!earthMap.getStyle().glyphs) earthMap.setGlyphs(config.providers.reference.glyphsUrl);
+      if(!earthMap.getStyle().sprite) earthMap.setSprite(config.providers.reference.spriteUrl);
+      if(!earthMap.getSource(referenceId))
+        earthMap.addSource(referenceId, config.providers.reference.source);
+      var beforeId = null;
+      var registeredIds = Object.keys(earthMapLocationRegistry);
+      for(var ri=0;ri<registeredIds.length && !beforeId;ri++){
+        var registered = earthMapLocationRegistry[registeredIds[ri]];
+        for(var rj=0;registered && rj<registered.layers.length;rj++){
+          if(earthMap.getLayer(registered.layers[rj])){ beforeId = registered.layers[rj]; break; }
+        }
+      }
+      if(!beforeId && earthMap.getLayer('aura-selected-place-halo')) beforeId = 'aura-selected-place-halo';
+      groups.streets.concat(groups.features).forEach(function(layer){
+        if(!earthMap.getLayer(layer.id)) earthMap.addLayer(layer, beforeId || undefined);
       });
-      earthMap.setStyle(config.buildStyle(libertyStyle));
+      earthMapReferenceAvailable = true;
+      config.setGroupVisibility(earthMap, 'streets', earthMapStreetsVisible);
+      config.setGroupVisibility(earthMap, 'features', earthMapFeaturesVisible);
+      refreshEarthMapButtons();
+      setEarthMapMessage('', false);
+      finish(null);
     } catch(error){
       earthMapReferenceAvailable = false;
       earthMapStreetsVisible = false;
@@ -1314,6 +1335,7 @@ function earthMapLocationPointerLeave(){
 }
 
 function locationGeoJson(data){
+  earthMapWorkStats.geoJsonBuilds++;
   var features = [];
   for(var i=0;i<data.length;i++){
     if(!locationPassesFilter(data[i])) continue;
@@ -1330,13 +1352,24 @@ function addEarthMapLocation(layer, data){
   var pointLayerId = stem + '-points';
   var pointHitLayerId = stem + '-point-hits';
   var clusterLayerId = stem + '-clusters';
+  var existing = earthMapLocationRegistry[layer.id];
+  var filterKey = String(locationCategoryFilter || '');
+  if(existing && existing.dataRef === data && existing.dataLength === data.length &&
+      existing.filterKey === filterKey && earthMap.getSource(existing.sourceId)) return;
   var geojson = locationGeoJson(data);
   var clustered = geojson.features.length > 240;
-  var existing = earthMapLocationRegistry[layer.id];
   if(existing && existing.clustered !== clustered){ removeEarthMapLocation(layer.id); existing = null; }
   if(existing){
     var source = earthMap.getSource(existing.sourceId);
-    if(source && source.setData){ source.setData(geojson); return; }
+    if(source && source.setData){
+      source.setData(geojson);
+      earthMapWorkStats.sourceUpdates++;
+      existing.dataRef = data;
+      existing.dataLength = data.length;
+      existing.filterKey = filterKey;
+      existing.featureCount = geojson.features.length;
+      return;
+    }
     removeEarthMapLocation(layer.id);
     existing = null;
   }
@@ -1345,7 +1378,8 @@ function addEarthMapLocation(layer, data){
     data:geojson,
     cluster:clustered,
     clusterMaxZoom:13,
-    clusterRadius:42
+    clusterRadius:42,
+    maxzoom:14
   });
   var layers = [];
   if(clustered){
@@ -1395,7 +1429,8 @@ function addEarthMapLocation(layer, data){
     earthMap.on('mouseleave', id, earthMapLocationPointerLeave);
   });
   earthMapLocationRegistry[layer.id] = {
-    sourceId:sourceId, layers:layers, clustered:clustered, interactiveLayers:interactiveLayers
+    sourceId:sourceId, layers:layers, clustered:clustered, interactiveLayers:interactiveLayers,
+    dataRef:data, dataLength:data.length, filterKey:filterKey, featureCount:geojson.features.length
   };
 }
 
@@ -1827,7 +1862,8 @@ function buildShells(){
       var centre = earthMap.getCenter();
       return {active:earthMapActive, ready:earthMapReady, centre:[centre.lng,centre.lat],
         zoom:earthMap.getZoom(), streets:earthMapStreetsVisible, features:earthMapFeaturesVisible,
-        locationLayers:Object.keys(earthMapLocationRegistry)};
+        locationLayers:Object.keys(earthMapLocationRegistry),
+        work:{geoJsonBuilds:earthMapWorkStats.geoJsonBuilds,sourceUpdates:earthMapWorkStats.sourceUpdates}};
     },
     earthMapProject:function(latitude, longitude){
       if(!earthMapReady || !earthMap) return null;
@@ -2634,7 +2670,6 @@ function disposeLocationPoints(){
 }
 
 function rebuildLocationMarkers(){
-  if(!markerGroup || !locationSphereRadius) return;
   hidePlaceChoices();
   var keepSelection = selectedLocation ? {layerId:selectedLocation.layerId, index:selectedLocation.index} : null;
   if(earthMapActive){
@@ -2651,6 +2686,7 @@ function rebuildLocationMarkers(){
     }
     return;
   }
+  if(!markerGroup || !locationSphereRadius) return;
   disposeLocationPoints();
   if(selectedPlacePin) selectedPlacePin.visible = false;
   renderCategoryFilter();
@@ -3262,10 +3298,18 @@ function visibleCategoryCounts(){
   locationManifest.forEach(function(layer){
     var state = locationStates[layer.id], data = locationData[layer.id];
     if(!state || !state.visible || !Array.isArray(data)) return;
-    for(var i=0;i<data.length;i++){
-      var category = locationCategory(data[i]);
-      if(category) counts[category] = (counts[category] || 0) + 1;
+    var layerCounts = locationCategoryCountsCache && locationCategoryCountsCache.get(data);
+    if(!layerCounts){
+      layerCounts = {};
+      for(var i=0;i<data.length;i++){
+        var category = locationCategory(data[i]);
+        if(category) layerCounts[category] = (layerCounts[category] || 0) + 1;
+      }
+      if(locationCategoryCountsCache) locationCategoryCountsCache.set(data, layerCounts);
     }
+    Object.keys(layerCounts).forEach(function(category){
+      counts[category] = (counts[category] || 0) + layerCounts[category];
+    });
   });
   return counts;
 }
