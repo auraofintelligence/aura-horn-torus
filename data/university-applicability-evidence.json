@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "aura-university-applicability-evidence/1.0",
+  "checkedAt": "2026-09-05",
+  "scope": "Thirteen Oceania ROR institutions with fifteen directly observed membership listings across Universities Australia, PIURN and APRU; initial sample only.",
+  "counts": { "institutionCount": 13, "membershipCount": 15 },
+  "claimBoundary": "Peak-body membership evidence is independent of any GAJRA relationship. No outreach or GAJRA membership is asserted. An absent institution or empty capability list means unassessed, not negative evidence.",
+  "peakBodies": [
+    {
+      "id": "universities-australia",
+      "name": "Universities Australia",
+      "url": "https://universitiesaustralia.edu.au/our-universities/"
+    },
+    {
+      "id": "piurn",
+      "name": "Pacific Islands Universities Regional Network (PIURN)",
+      "url": "https://piurn.org/member-universities/"
+    },
+    {
+      "id": "apru",
+      "name": "Association of Pacific Rim Universities (APRU)",
+      "url": "https://www.apru.org/members/"
+    }
+  ],
+  "institutions": [
+    {
+      "rorId": "https://ror.org/04cxm4j25",
+      "name": "Australian Catholic University",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "Australian Catholic University is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/019wvm592",
+      "name": "Australian National University",
+      "countryCode": "AU",
+      "memberships": [
+        { "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "Listed as The Australian National University on the official Our Universities page." },
+        { "bodyId": "apru", "sourceUrl": "https://www.apru.org/members/", "checkedAt": "2026-09-05", "evidence": "Listed as The Australian National University under Australia on APRU's official member list; the linked member profile identifies anu.edu.au." }
+      ],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/006jxzx88",
+      "name": "Bond University",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "Bond University is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/02sc3r913",
+      "name": "Griffith University",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "Griffith University is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/03pnv4752",
+      "name": "Queensland University of Technology",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "Queensland University of Technology is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/00rqy9422",
+      "name": "The University of Queensland",
+      "countryCode": "AU",
+      "memberships": [
+        { "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "The University of Queensland is directly listed on the official Our Universities page." },
+        { "bodyId": "apru", "sourceUrl": "https://www.apru.org/members/", "checkedAt": "2026-09-05", "evidence": "The University of Queensland is directly listed under Australia on APRU's official member list; the linked member profile identifies uq.edu.au." }
+      ],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/04sjbnx57",
+      "name": "University of Southern Queensland",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "University of Southern Queensland is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/016gb9e15",
+      "name": "University of the Sunshine Coast",
+      "countryCode": "AU",
+      "memberships": [{ "bodyId": "universities-australia", "sourceUrl": "https://universitiesaustralia.edu.au/our-universities/", "checkedAt": "2026-09-05", "evidence": "University of the Sunshine Coast is directly listed on the official Our Universities page." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/008stv805",
+      "name": "University of the South Pacific",
+      "countryCode": "FJ",
+      "memberships": [{ "bodyId": "piurn", "sourceUrl": "https://piurn.org/member-universities/", "checkedAt": "2026-09-05", "evidence": "Listed as The University of the South Pacific under Fiji on PIURN's official Member Universities page. Identity matched to the parent institution with usp.ac.fj, not a separately registered campus." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/00qk2nf71",
+      "name": "Fiji National University",
+      "countryCode": "FJ",
+      "memberships": [{ "bodyId": "piurn", "sourceUrl": "https://piurn.org/member-universities/", "checkedAt": "2026-09-05", "evidence": "Fiji National University is directly listed under Fiji on PIURN's official Member Universities page. Exact institution name and country match the ROR record." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/05jxf0p38",
+      "name": "University of Papua New Guinea",
+      "countryCode": "PG",
+      "memberships": [{ "bodyId": "piurn", "sourceUrl": "https://piurn.org/member-universities/", "checkedAt": "2026-09-05", "evidence": "Listed as The University of Papua New Guinea under Papua New Guinea on PIURN's official Member Universities page; name and Port Moresby locality identify the ROR institution." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/006pnw132",
+      "name": "National University of Samoa",
+      "countryCode": "WS",
+      "memberships": [{ "bodyId": "piurn", "sourceUrl": "https://piurn.org/member-universities/", "checkedAt": "2026-09-05", "evidence": "National University of Samoa is directly listed under Samoa on PIURN's official Member Universities page. Exact institution name and country match the ROR record." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    },
+    {
+      "rorId": "https://ror.org/03b94tp07",
+      "name": "University of Auckland",
+      "countryCode": "NZ",
+      "memberships": [{ "bodyId": "apru", "sourceUrl": "https://www.apru.org/members/", "checkedAt": "2026-09-05", "evidence": "Listed as The University of Auckland under New Zealand on APRU's official member list; the linked member profile identifies auckland.ac.nz." }],
+      "capabilities": [],
+      "gajraStatus": "not-assessed"
+    }
+  ]
+}

@@ -128,7 +128,7 @@ def check() -> dict:
     if stradbroke and not any(len(point) > 7 and point[7] for point in stradbroke):
         errors.append("North Stradbroke My Maps icon metadata is missing")
 
-    match_catalogue = REPO / "data" / "university-ror-matches-v2.11.csv"
+    match_catalogue = REPO / "data" / "university-matches-2026-09-05.csv"
     match_catalogue_hash = ""
     safe_match_methods = {
         "safe_active_exact_name_site_agreement",
@@ -136,15 +136,17 @@ def check() -> dict:
         "automatic-strict-name",
         "automatic-strict-name+domain-within-country",
         "automatic-strict-name-within-country",
+        "reviewed_official_same_identity",
     }
     group_search_labels = {
         "oceania": "Oceania",
         "fta_partner": "Australia in-force FTA partner outside Oceania",
         "eu_framework": "Australia-EU Framework Agreement",
         "named_treaty": "Named bilateral treaty",
+        "global_backlog": "Rest of the historical world university index",
     }
     group_matches: dict[str, dict[str, dict[str, str]]] = {
-        group: {} for group in ("oceania", "fta_partner", "eu_framework", "named_treaty")
+        group: {} for group in group_search_labels
     }
     group_source_counts = {group: 0 for group in group_matches}
     group_safe_counts = {group: 0 for group in group_matches}
@@ -270,6 +272,7 @@ def check() -> dict:
         "australia-fta-universities": "fta_partner",
         "eu-framework-universities": "eu_framework",
         "timor-leste-universities": "named_treaty",
+        "world-universities": "global_backlog",
     }
     scoped_university_rows = 0
     declared_scope_countries: dict[str, set[str]] = {}
@@ -305,8 +308,11 @@ def check() -> dict:
         declared_scope_countries[group] = scope_code_set
         if not group_countries[group].issubset(scope_code_set):
             errors.append(f"{layer_id}: publication ledger contains a country outside its scope")
-        if layer.get("scopeAsAt") != "2026-08-11":
+        expected_scope_date = "2026-09-05" if group == "global_backlog" else "2026-08-11"
+        if layer.get("scopeAsAt") != expected_scope_date:
             errors.append(f"{layer_id}: missing official-scope as-at date")
+        if layer.get("matchFile") != match_catalogue.name or layer.get("matchReviewedAt") != "2026-09-05":
+            errors.append(f"{layer_id}: incorrect reviewed catalogue provenance")
         if match_catalogue_hash and layer.get("matchSha256") != match_catalogue_hash:
             errors.append(f"{layer_id}: matchSha256 does not match the publication ledger")
         expected_records = group_matches[group]
@@ -374,8 +380,9 @@ def check() -> dict:
                 errors.append(
                     f"Declared university scopes overlap between {group} and {other}: {', '.join(sorted(overlap))}"
                 )
-    if len(set().union(*declared_scope_countries.values())) != 79:
-        errors.append("Declared university scope does not contain 79 disjoint ISO2 areas")
+    original_scopes = [codes for group, codes in declared_scope_countries.items() if group != "global_backlog"]
+    if len(set().union(*original_scopes)) != 79:
+        errors.append("Original university scope does not contain 79 disjoint ISO2 areas")
     if declared_scope_countries.get("named_treaty") != {"TL"}:
         errors.append("Named bilateral treaty university scope must identify Timor-Leste")
 
@@ -384,11 +391,29 @@ def check() -> dict:
     )
     if not university_backlog:
         errors.append("Missing world-universities backlog layer")
-    elif scoped_university_rows + int(university_backlog.get("unresolvedCount", 0)) != 9363:
-        errors.append("University scope and backlog do not reconcile to 9,363 source rows")
+    elif scoped_university_rows != 9363:
+        errors.append("All university scopes do not reconcile to 9,363 source rows")
 
-    if len(match_source_rows) != 6379:
-        errors.append("University publication ledger does not contain all 6,379 scoped source rows")
+    if match_source_rows != set(range(1, 9364)):
+        errors.append("University publication ledger does not account for every historical source row")
+
+    completion_path = REPO / "data" / "university-completion-summary.json"
+    completion = json.loads(completion_path.read_text(encoding="utf-8"))
+    if completion.get("outputSha256") != match_catalogue_hash:
+        errors.append("University completion summary hash disagrees with effective ledger")
+    for name, digest in completion.get("inputHashes", {}).items():
+        if Path(name).name != name or sha256_repository_text(REPO / "data" / name) != digest:
+            errors.append(f"University completion input drift: {name}")
+    reviews = json.loads((REPO / "data" / "university-reviewed-matches.json").read_text(encoding="utf-8"))
+    accepted_reviews = {int(r["sourceRowNumber"]): r for r in reviews["reviews"] if r["decision"] == "accept"}
+    with match_catalogue.open(encoding="utf-8", newline="") as handle:
+        reviewed_rows = {int(r["source_row_number"]): r for r in csv.DictReader(handle) if r["match_method"] == "reviewed_official_same_identity"}
+    if set(reviewed_rows) != set(accepted_reviews) or set(reviewed_rows) != set(completion["reviewedPromotions"]):
+        errors.append("Reviewed promotions do not match the evidence ledger")
+    for number, row in reviewed_rows.items():
+        evidence = accepted_reviews.get(number, {})
+        if row["ror_id"] != evidence.get("rorId") or not evidence.get("sources") or not evidence.get("reason"):
+            errors.append(f"Reviewed institution lacks matching identity evidence: {number}")
 
     if errors:
         raise SystemExit("\n".join(errors))

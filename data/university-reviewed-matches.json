@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-05",
+  "registryVersion": "2.11",
+  "registryDate": "2026-08-03",
+  "coordinateBasis": "Accepted locations use the ROR v2.11 GeoNames locality approximation. They are not campus, building or entrance coordinates, and do not imply that a multi-campus institution has only one site.",
+  "reviewRule": "Accept only officially evidenced identity continuity to an active education record with exactly one ROR location in the source country. A successor, containing institution or different-country parent is not the same entity. Holds preserve useful evidence and a concrete next action.",
+  "reviews": [
+    {
+      "sourceRowNumber": 253,
+      "sourceCountry": "AU",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "Australian Correspondence Schools has a current ACS Distance Education discovery lead. No matching ROR v2.11 education record was found. The official site describes distance learning and gives a postal address, which is insufficient for a campus pin.",
+      "nextAction": "Model the verified distance provider separately from campus universities; obtain an official public teaching-site location before mapping a physical site.",
+      "sources": [
+        {
+          "url": "https://www.acs.edu.au/default.aspx",
+          "supports": "Current distance-learning provider and postal contact; does not establish a campus coordinate."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 258,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/02r276210",
+      "decision": "accept",
+      "reason": "Avondale's official history explicitly lists Avondale College (1964), Avondale College of Higher Education (2011), Avondale University College (2019) and Avondale University (2021) as successive names of the institution. ROR v2.11 is active education with one Australian location. Publish its Cooranbong locality approximation under the current ROR name.",
+      "sources": [
+        {
+          "url": "https://www.avondale.edu.au/your-uni/history/",
+          "supports": "Explicit institutional name chronology and Cooranbong history."
+        },
+        {
+          "url": "https://ror.org/02r276210",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 260,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/02c1gbw96",
+      "decision": "hold",
+      "reason": "The possible Blue Mountains International Hotel Management School record is withdrawn in ROR v2.11. Current Torrens material confirms that school exists, but does not establish that the historical shortened name identifies the same entity. Neither the withdrawn record nor its parent is accepted as a current match.",
+      "nextAction": "Resolve the old school's identity from institutional archives; then create a separately sourced current campus record if appropriate, preserving its relationship to Torrens.",
+      "sources": [
+        {
+          "url": "https://www.torrens.edu.au/stories/blog/bmihms/bmihms-eagerly-anticipates-more-triumphs-in-2024",
+          "supports": "Current institutional account of Blue Mountains International Hotel Management School; does not by itself resolve the old row."
+        },
+        {
+          "url": "https://ror.org/02c1gbw96",
+          "supports": "Candidate identifier checked against the pinned ROR v2.11 record: withdrawn."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 270,
+      "sourceCountry": "AU",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "Holmes Institute is a current provider with four separately addressed campuses in Melbourne, Sydney, Brisbane and Gold Coast. No matching ROR v2.11 record was found. Choosing one campus for the undifferentiated historical provider row would be arbitrary.",
+      "nextAction": "Create four distinct official-source campus records with independently checked coordinates and a shared provider identity.",
+      "sources": [
+        {
+          "url": "https://holmes.edu.au/about-us/campus-locations",
+          "supports": "Official current list of four campuses and their street addresses."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 271,
+      "sourceCountry": "AU",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "A current Institute of Technology Australia official page gives an Adelaide street address, RTO 40295, CRICOS 03042K and a 2007 founding date. No corresponding ROR v2.11 record was found. The current identity is a useful lead but this review has not proved continuity with the historical row through official archival evidence.",
+      "nextAction": "Check the training-provider register and historical identity, then map the current Adelaide provider using a separately evidenced street coordinate rather than an invented ROR match.",
+      "sources": [
+        {
+          "url": "https://iota.edu.au/about/",
+          "supports": "Current provider's self-described history, register identifiers and Adelaide address."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 272,
+      "sourceCountry": "AU",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "ICMS officially confirms that it began in 1996 as International College of Tourism and Hotel Management and rebranded in 2006 to International College of Management, Sydney. Identity continuity is now evidenced, but no matching ROR v2.11 education record was found, so this catalogue cannot yet provide an accepted registry location.",
+      "nextAction": "Create current ICMS campus records from its official campus addresses and independently verify their coordinates, or match a later eligible ROR record.",
+      "sources": [
+        {
+          "url": "https://www.icms.edu.au/news/icms-celebrates-25-years/",
+          "supports": "Explicit 1996 founding name and 2006 rebranding chronology."
+        },
+        {
+          "url": "https://www.icms.edu.au/facts-and-rankings/",
+          "supports": "Current institutional identity and Sydney/Northern Beaches presence."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 273,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/04gsp2c11",
+      "decision": "accept",
+      "reason": "James Cook University explicitly identifies its earlier name as James Cook University of North Queensland in its own alumni history, and its institutional timeline documents the naming history. The active education ROR v2.11 record has one Australian location. Publish the Townsville locality approximation under the current ROR name.",
+      "sources": [
+        {
+          "url": "https://www.jcu.edu.au/alumni/alumni-stories/a-lifelong-friendship",
+          "supports": "Official account explicitly links the historical name to today's JCU."
+        },
+        {
+          "url": "https://www.jcu.edu.au/celebrating-50-years/timeline",
+          "supports": "Institutional timeline documents the original Bill and subsequent naming milestones."
+        },
+        {
+          "url": "https://ror.org/04gsp2c11",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 276,
+      "sourceCountry": "AU",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "Marcus Oldham College confirms its current Geelong campus. No matching ROR v2.11 record was found. The institutional location is established but this review has not accepted an independently evidenced coordinate.",
+      "nextAction": "Use the official getting-here map and current campus address to verify a campus coordinate in a separate official-source education layer.",
+      "sources": [
+        {
+          "url": "https://marcusoldham.vic.edu.au/contact",
+          "supports": "Official current Geelong campus description and directions."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 280,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/04ttjf776",
+      "decision": "accept",
+      "reason": "RMIT's official heritage page explicitly lists Royal Melbourne Institute of Technology (1960) and RMIT University (1992) in its name chronology. The active education ROR v2.11 Australian record is the same institution, distinct from its separately modelled overseas children. Publish its Melbourne locality approximation.",
+      "sources": [
+        {
+          "url": "https://www.rmit.edu.au/about/our-heritage",
+          "supports": "Explicit former-name/current-name continuity."
+        },
+        {
+          "url": "https://www.teqsa.gov.au/provider/royal-melbourne-institute-technology",
+          "supports": "Australian regulator identifies the provider and RMIT University name."
+        },
+        {
+          "url": "https://ror.org/04ttjf776",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 283,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/00892tw58",
+      "decision": "hold",
+      "reason": "The University of Adelaide is inactive in ROR v2.11. Official institutional material describes the merger with the University of South Australia as creating the new Adelaide University. Preserve the historical identity; a current successor is not a same-identity override.",
+      "nextAction": "Keep this row historical and add Adelaide University as a separately sourced current institution with explicit predecessor relationships.",
+      "sources": [
+        {
+          "url": "https://adelaide.edu.au/about/news/2024/transformative-new-adelaide-university-launches-to-the-world/",
+          "supports": "Official description of a new institution created by the merger."
+        },
+        {
+          "url": "https://ror.org/00892tw58",
+          "supports": "Historical identifier checked against the pinned ROR v2.11 record: inactive."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 284,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/05qbzwv83",
+      "decision": "accept",
+      "reason": "Section 79 of the official Federation University Australia Act 2010 expressly preserves the same body through the change from University of Ballarat to Federation University Australia. This is evidenced legal identity continuity, not an assumed predecessor substitution. The active education ROR v2.11 record has one Australian location. Publish its Ballarat locality approximation.",
+      "sources": [
+        {
+          "url": "https://www.legislation.vic.gov.au/in-force/acts/federation-university-australia-act-2010/012",
+          "supports": "Official authorised Act, section 79: the University remains the same body despite the change of name."
+        },
+        {
+          "url": "https://www.federation.edu.au/siteassets/files/governance/federation_university_annual_report_2015.pdf",
+          "supports": "University account of the 2014 name change and expanded institution."
+        },
+        {
+          "url": "https://ror.org/05qbzwv83",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 288,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/00eae9z71",
+      "decision": "accept",
+      "reason": "The source's Australian country and institutional website identify the Australian University of Newcastle. The official homepage uses The University of Newcastle, Australia; the extra Australia in the ROR display name is a disambiguator. The active education ROR v2.11 record has one Australian location. Publish its Newcastle locality approximation.",
+      "sources": [
+        {
+          "url": "https://www.newcastle.edu.au/",
+          "supports": "Current official identity is the University of Newcastle in Australia."
+        },
+        {
+          "url": "https://ror.org/00eae9z71",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, matching institutional website, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 291,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/02stey378",
+      "decision": "accept",
+      "reason": "The historical Notre Dame Australia website redirects to the current official University of Notre Dame Australia website. The official international guide identifies the same institution and retains its historical institutional email domain. Addition of The is a display-name variant. The active education ROR v2.11 record has one Australian location. Publish its Fremantle locality approximation.",
+      "sources": [
+        {
+          "url": "https://www.notredame.edu.au/",
+          "supports": "Current official identity and observed destination of the historical website redirect, checked 2026-09-05."
+        },
+        {
+          "url": "https://www.notredame.edu.au/publications/international-guide",
+          "supports": "Official guide identifies the institution and retains the historical institutional email domain."
+        },
+        {
+          "url": "https://ror.org/02stey378",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 293,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/01p93h210",
+      "decision": "hold",
+      "reason": "The University of South Australia is inactive in ROR v2.11. Official institutional material describes the merger with the University of Adelaide as creating the new Adelaide University. Preserve the historical identity rather than assigning the successor to the old row.",
+      "nextAction": "Keep this row historical and add Adelaide University as a separately sourced current institution with explicit predecessor relationships.",
+      "sources": [
+        {
+          "url": "https://adelaide.edu.au/about/news/2024/transformative-new-adelaide-university-launches-to-the-world/",
+          "supports": "Official description of the new institution and both predecessor universities."
+        },
+        {
+          "url": "https://ror.org/01p93h210",
+          "supports": "Historical identifier checked against the pinned ROR v2.11 record: inactive."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 295,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/0384j8v12",
+      "decision": "accept",
+      "reason": "The historical University of Sydney website redirects to the current official University of Sydney homepage. ROR v2.11 explicitly includes University of Sydney as an alias of The University of Sydney. It is active education with one Australian location. Publish its Sydney locality approximation.",
+      "sources": [
+        {
+          "url": "https://www.sydney.edu.au/",
+          "supports": "Current official identity and observed destination of the historical website redirect, checked 2026-09-05."
+        },
+        {
+          "url": "https://ror.org/0384j8v12",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: exact historical-name alias, active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 300,
+      "sourceCountry": "AU",
+      "rorId": "https://ror.org/03t52dk35",
+      "decision": "accept",
+      "reason": "Western Sydney University's official archive states that University of Western Sydney was rebranded to Western Sydney University in 2015. ROR v2.11 includes the old name as an alias and is active education with one Australian location. Publish its Richmond locality approximation; it does not identify a particular campus or all campuses.",
+      "sources": [
+        {
+          "url": "https://collections.westernsydney.edu.au/nodes/view/67636",
+          "supports": "Official university history explicitly records the 2015 rebranding."
+        },
+        {
+          "url": "https://ror.org/03t52dk35",
+          "supports": "Identifier checked against the pinned ROR v2.11 record: historical-name alias, active education, one AU locality."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 2260,
+      "sourceCountry": "FJ",
+      "rorId": "https://ror.org/00qk2nf71",
+      "decision": "hold",
+      "reason": "Fiji School of Medicine was one of the colleges amalgamated into Fiji National University in 2010, according to FNU. The candidate ROR models the containing university rather than the historical school. A same-country parent coordinate does not resolve the entity difference.",
+      "nextAction": "Preserve the school as historical; create a current medicine-college or campus record from official sources with its containing-university relationship.",
+      "sources": [
+        {
+          "url": "https://www.fnu.ac.fj/blog/news/fnu-to-celebrate-a-decade-of-formation/",
+          "supports": "Official account of the amalgamation and subsequent college structure."
+        },
+        {
+          "url": "https://ror.org/00qk2nf71",
+          "supports": "Candidate is Fiji National University, not the historical school."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 5443,
+      "sourceCountry": "NZ",
+      "rorId": "https://ror.org/01fkw3y20",
+      "decision": "hold",
+      "reason": "Ara's 2016 annual report confirms the legal vehicle was CPIT and documents the CPIT-to-Ara name change. However, later incorporation into Te Pukenga and re-establishment as a standalone polytechnic in 2026 require a further continuity review. The historical alias in an active ROR record alone is not treated as proof across those subsequent changes.",
+      "nextAction": "Check the 2020 and 2026 statutory transfer/re-establishment instruments; explicitly model the institutional lineage before accepting the current Ara identity for the historical CPIT row.",
+      "sources": [
+        {
+          "url": "https://www.ara.ac.nz/siteassets/documents---home/about-us/annual-report/previous-annual-reports/ara-annual-report-2016-lr.pdf",
+          "supports": "Annual report note 21 documents CPIT as legal vehicle and the 2016 name change."
+        },
+        {
+          "url": "https://www.education.govt.nz/news/regional-polytechnics-be-re-established-2026",
+          "supports": "Official government announcement includes Ara among polytechnics to be re-established in 2026."
+        },
+        {
+          "url": "https://www.ara.ac.nz/news-and-events/news-stories/ara-spring-graduation-2025/",
+          "supports": "Ara states it returns to standalone status in January 2026 after Te Pukenga."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 6526,
+      "sourceCountry": "SB",
+      "rorId": "https://ror.org/001vq2a15",
+      "decision": "hold",
+      "reason": "USP confirms its Solomon Islands Campus and a September 2024 move of most operations from Lawson Tama to King George. The historical row names only the regional parent, while the candidate ROR is a country campus. The country helps identify a candidate but does not prove the historical row's entity level.",
+      "nextAction": "Add the currently verified Solomon Islands Campus as a separately sourced campus record, or find archival evidence that the historical parent-labelled row specifically meant that campus.",
+      "sources": [
+        {
+          "url": "https://www.usp.ac.fj/usp-solomon-islands/",
+          "supports": "Official campus identity and relocation notice."
+        },
+        {
+          "url": "https://www.usp.ac.fj/usp-solomon-islands/contact/",
+          "supports": "Official campus and associated centre locations."
+        },
+        {
+          "url": "https://ror.org/001vq2a15",
+          "supports": "Candidate is the Solomon Islands campus with a parent relationship, not the regional parent itself."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 6813,
+      "sourceCountry": "TO",
+      "rorId": null,
+      "decision": "hold",
+      "reason": "USP identifies the current Tonga Campus at 'Atele in Ha'ateiho, with additional centres in Ha'apai and Vava'u. ROR v2.11 has no matching same-country USP campus record. A Fiji parent or another country's campus must not supply Tonga coordinates.",
+      "nextAction": "Verify a current official-source Tonga campus coordinate separately, and distinguish it from the other Tonga centres and the historical generic Centre row.",
+      "sources": [
+        {
+          "url": "https://www.usp.ac.fj/usp-tonga/about-tonga-campus/tonga-campus/",
+          "supports": "Official campus locality, street context and separate island centres."
+        }
+      ]
+    },
+    {
+      "sourceRowNumber": 9304,
+      "sourceCountry": "WS",
+      "rorId": "https://ror.org/03be9n013",
+      "decision": "hold",
+      "reason": "USP's 2025 accreditation report traces the School of Agriculture to the Alafua/Samoa site and explains that the later School of Agriculture and Food Technology became a discipline within SAGEONS in 2021. The ROR candidate models Samoa Campus, which contains the activity but is not the former school entity.",
+      "nextAction": "Retain the school's documented lineage and add a separately identified current Samoa Campus or agriculture-discipline record with an appropriate parent relationship.",
+      "sources": [
+        {
+          "url": "https://www.usp.ac.fj/wscuc-accreditation/wp-content/uploads/sites/166/2025/07/USP-Team-Report-AV-spring-2025.pdf",
+          "supports": "Samoa Campus appendix describes the 1977 School of Agriculture origin and 2021 discipline restructuring."
+        },
+        {
+          "url": "https://www.usp.ac.fj/samoa/support-services/student-administrative-services/",
+          "supports": "Current campus teaching includes agriculture within the wider campus course offering."
+        },
+        {
+          "url": "https://ror.org/03be9n013",
+          "supports": "Candidate is Samoa Campus with a parent relationship to the regional university."
+        }
+      ]
+    }
+  ]
+}

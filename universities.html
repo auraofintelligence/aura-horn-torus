@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore education organisations worldwide, their networks and shared identifiers, with sources for each connection.">
+  <title>Universities & connections · Aura Earth</title>
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="assets/universities.css">
+  <script src="assets/universities.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a href="index.html">← Earth globe</a><a href="https://auraofintelligence.github.io/gajra-earth-claude-build/">GAJRA Earth ↗</a></header>
+  <main>
+    <h1>Universities & connections</h1>
+    <p class="intro">Find institutions and networks that could contribute to the Global Association for Joyful Responsible Abundance on Earth. Explore the evidence, follow a connection, and discover where a conversation could begin.</p>
+    <p id="coverage" class="coverage" role="status">Loading the worldwide education index…</p>
+    <section class="filters" aria-label="Explore institutions">
+      <label class="search">Find an institution<input id="search" type="search" placeholder="Name, city or ROR identifier" autocomplete="off"></label>
+      <label>Country or territory<select id="country"><option value="">Everywhere</option></select></label>
+      <label>Peak body / association<select id="body"><option value="">All institutions</option></select></label>
+      <label>Shared identifier<select id="identifier"><option value="">Any identifier</option></select></label>
+      <label>Registry connections<select id="connection"><option value="">All institutions</option><option value="any">Has a recorded connection</option><option value="parent">Has a parent organisation</option><option value="child">Has child organisations</option></select></label>
+      <button id="reset" type="button">Clear filters</button>
+    </section>
+    <p class="small">Membership filters show sourced evidence collected so far. Other records have not been assessed. A shared identifier helps connect datasets; it does not prove that two institutions' systems work together.</p>
+    <div class="workspace">
+      <section aria-label="Institution results">
+        <div class="results-head"><h2 id="result-count" aria-live="polite">Institutions</h2><button id="download" type="button" disabled>Download results</button></div>
+        <div id="results"></div>
+        <nav class="pagination" aria-label="Result pages"><button id="previous" type="button" disabled>Previous</button><span id="page-count"></span><button id="next" type="button" disabled>Next</button></nav>
+      </section>
+      <section id="detail" class="detail" aria-label="Institution details" tabindex="-1">
+        <h2>Select an institution</h2>
+        <p>See its locations, website, shared identifiers, recorded organisational links and any sourced association memberships.</p>
+        <p>On the globe, locations are approximate city or locality positions. A university may have many campuses.</p>
+      </section>
+    </div>
+    <section class="directions">
+      <h2>What could we build together?</h2>
+      <p>Research and public learning; responsible AI and open tools; ecological regeneration; co-operative enterprise and shared resources; arts, play and belonging. These are proposed ways to explore applicability. Individual institutions still need programme-level evidence.</p>
+      <p><a href="https://github.com/auraofintelligence/aura-horn-torus/blob/main/docs/university-applicability.md">University applicability and peak-body research</a> · <a href="https://github.com/auraofintelligence/aura-horn-torus/blob/main/docs/location-layer-directions.md">Complementary location layers</a> · <a href="https://auraofintelligence.github.io/gajra-earth-claude-build/questions.html">GAJRA Earth's open questions</a></p>
+    </section>
+    <details class="sources"><summary>Coverage, sources and how to contribute</summary>
+      <p>This directory covers active education organisations in the <a href="https://zenodo.org/records/21773148">ROR v2.11 snapshot of 3 August 2026</a>. ROR covers research organisations: these records include universities, colleges and other education bodies. It is not a register of accreditation or a complete count of every university on Earth.</p>
+      <p>The older university list remains traceable in separate globe layers. Unresolved historical identities stay in the review ledger. The wider ROR layer adds current registry identities independently, including institutions that were missing from that older list.</p>
+      <p>ROR metadata is CC0; its GeoNames locality data is CC BY 4.0. Membership evidence has its own source and date. Registry relationships describe organisational links, not assumed collaboration or endorsement.</p>
+      <p>Appearing here does not establish GAJRA Earth membership. <a href="https://auraofintelligence.github.io/gajra-earth-claude-build/sign-on.html">Read the public invitation</a>. An individual's signature does not speak for their institution.</p>
+      <p><a href="data/education-registry-v2.11.json" download>Download the complete registry extract</a> · <a href="https://github.com/auraofintelligence/aura-horn-torus/blob/main/docs/location-completion-2026-09-05.md">Completion report and remaining gaps</a></p>
+    </details>
+  </main>
+  <footer><a href="#">Back to top ↑</a><span>Aura of Intelligence · <a href="LICENCE.md">Public Source Licence</a></span></footer>
+</body>
+</html>

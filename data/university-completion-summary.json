@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-09-05",
+  "registryVersion": "2.11",
+  "registryUpdatedAt": "2026-08-03",
+  "registrySourceUrl": "https://zenodo.org/records/21773148",
+  "registrySha256": "5984C0455F5AF6DD9AF69E8AD5DF3220D28EE0804B67A4D987EF98F079CE1DAA",
+  "sourceCount": 9363,
+  "classifications": {
+    "safe_active": 5141,
+    "unmatched": 2121,
+    "review": 1995,
+    "inactive_history": 106
+  },
+  "reviewedPromotions": [
+    258,
+    273,
+    280,
+    284,
+    288,
+    291,
+    295,
+    300
+  ],
+  "uniqueMappedOrganisations": 5133,
+  "inputHashes": {
+    "university-ror-matches-v2.11.csv": "CFAEEE01869CDF89C92A9E8D747E86C09F84373F1D5A7699F903CFF530DC8359",
+    "university-backlog-matches-v2.11.csv": "6738B367E6E37EC8FE9624D60FF40FD3BCBEEC682D960A5AA59D52A80DBFD5EB",
+    "university-reviewed-matches.json": "E13189E62C1DEAA12C8145D12AE0ED5F2BD316F85FB0C7E384ED07690D28B0A7"
+  },
+  "outputSha256": "D577BF655BBA66E93CEDA524E44EC79D516A2E213D6D27F43FD36A06C1EB4160"
+}

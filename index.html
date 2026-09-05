@@ -317,6 +317,7 @@
   <a href="tables.html">Tables</a>
   <a href="geometry.html">Geometry</a>
   <a href="about.html">About</a>
+  <a href="universities.html">Universities &amp; connections</a>
   <span class="mh">View</span>
   <button id="menuGuide" type="button">Build guide</button>
   <button id="menuReframe" type="button">Reframe view</button>
@@ -469,6 +470,7 @@
 
     <div class="group find-places">
       <h2>Earth</h2>
+      <p class="note"><a href="universities.html">Explore worldwide universities, peak bodies and connections →</a></p>
       <div class="maptoolbar" aria-label="Earth map display">
         <button id="mapopen" class="primary" type="button">Explore satellite Earth</button>
         <button id="mapstreets" type="button" aria-pressed="false">Streets off</button>
@@ -4708,6 +4710,29 @@ rebuild();
 if(/(^|[#&])guide\b/.test(location.hash)) startGuide(); else exploreMode();
 tick();
 if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
+
+/* Directory links resolve an exact registry ID in an allowlisted local layer. */
+(function openInstitutionLink(){
+  var params = new URLSearchParams(location.search);
+  var id = params.get('institution'), layerId = params.get('layer');
+  if(!id || !/^https:\/\/ror\.org\/[0-9a-z]{9}$/.test(id)) return;
+  var allowed = ['oceania-universities','australia-fta-universities','eu-framework-universities','timor-leste-universities','world-universities','education-registry'];
+  var layer = allowed.indexOf(layerId) >= 0 ? locationLayer(layerId) : null;
+  if(!layer || !layer.src) return;
+  setSphere(true); openPlaceControls();
+  setLayerNote('Loading this institution’s location…');
+  ensureLayerData(layer, function(error){
+    if(error){ setLayerNote('Could not load the institution layer. Try its layer switch again.'); return; }
+    locationStates[layerId].visible = true;
+    rebuildLocationMarkers(); renderLocationLayerControls();
+    setLayerNote(layer.label + ' ready. Positions are source-reported locality approximations.');
+    var candidates=[];
+    locationData[layerId].forEach(function(point,index){if(point[5]===id)candidates.push({layerId:layerId,index:index});});
+    if(candidates.length===1){focusPlace(layerId,candidates[0].index);return;}
+    if(candidates.length>1){showPlaceChoices(candidates,'This organisation has '+candidates.length+' reported localities. Choose one to explore.',0);return;}
+    setLayerNote('This registry identifier has no mapped point in the selected layer.');
+  });
+})();
 
 })();
 </script>
