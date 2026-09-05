@@ -325,7 +325,7 @@ window.AURA_LOCATION_MANIFEST=[
     "scopeCountryCodes": [
       "TL"
     ],
-    "unavailableReason": "No location was fabricated; a current source-led Timor-Leste university catalogue would be a separate future addition.",
+    "unavailableReason": "The historical list contains no Timor-Leste row. Search the university directory for separate ROR education records.",
     "matchReviewedAt": "2026-09-05",
     "registryUpdatedAt": "2026-08-03",
     "registrySourceUrl": "https://zenodo.org/records/21773148",

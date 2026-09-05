@@ -508,6 +508,8 @@ def refresh_university_layers(manifest: list[dict[str, Any]], matches: Path) -> 
             layer["src"] = f"data/layers/{layer['id']}.js"
             layer.pop("unavailableReason", None)
             write_layer(layer["id"], rows)
+        if group == "named_treaty" and not total:
+            layer["unavailableReason"] = "The historical list contains no Timor-Leste row. Search the university directory for separate ROR education records."
         if group == "global_backlog":
             layer.update(
                 label="Universities across the rest of the world", colour="#c084fc",
@@ -978,7 +980,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             scopeSourceCount=0,
             scopeAsAt="2026-08-11",
             scopeCountryCodes=UNIVERSITY_SCOPE_COUNTRIES["named_treaty"],
-            unavailableReason="No location was fabricated; a current source-led Timor-Leste university catalogue would be a separate future addition.",
+            unavailableReason="The historical list contains no Timor-Leste row. Search the university directory for separate ROR education records.",
         ),
         layer_metadata(
             id="world-universities",
