@@ -160,7 +160,7 @@
     $('retry').hidden = true; $('filters').disabled = true; $('coverage').classList.remove('error');
     $('coverage').textContent = 'Loading the missions directory...'; $('results').setAttribute('aria-busy', 'true');
     try {
-      var response = await fetch('data/missions-australia.json');
+      var response = await fetch('data/missions-australia.json?v=20260906');
       if (!response.ok) throw new Error('Directory request failed.');
       var data = await response.json();
       if (!Array.isArray(data.records) || !data.counts || data.counts.sourceRecords !== data.records.length) throw new Error('Invalid directory data.');
