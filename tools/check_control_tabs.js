@@ -110,6 +110,7 @@ vm.createContext(sandbox);
 const source = [
   section('function switchTab(name){', '\nvar sheet = '),
   section('function setSphere(on){', '\n/* chakra rail:'),
+  section("document.getElementById('railSphere').addEventListener", '\nfunction setAura('),
   section('function setAura(on){', '\nfunction setWire('),
   section('function toggleHornTorus(){', "\ndocument.getElementById('mapstreets')"),
   section('function openPlaceControls(target){', '\nfunction focusPlace('),
@@ -122,7 +123,7 @@ function active(key) {
   assert.deepEqual(panelElements.filter((node) => node.classList.contains('act')).map((node) => node.dataset.panel), [key]);
 }
 function clickTab(key) { tabElements.find((node) => node.dataset.tab === key).click(); }
-for (const entry of ['mapopen','sphere']) {
+for (const entry of ['mapopen','sphere','railSphere']) {
   sandbox.setSphere(false);
   sandbox.switchTab('view');
   id(entry).click();
@@ -159,9 +160,12 @@ sandbox.setSel(3, 2, false);
 assert.equal(sandbox.multiCount(), 2, 'Multi select must keep the previous facet');
 sandbox.setSel(3, 2, false);
 assert.equal(sandbox.multiCount(), 1, 'tapping a selected facet must remove it');
+sandbox.setSel(3, 3, true);
+assert.equal(sandbox.multiCount(), 2);
 id('multiBtn').click();
 assert.equal(sandbox.multi, false);
 assert.equal(id('multiBtn').attrs['aria-pressed'], 'false');
+assert.equal(sandbox.selMore.length, 0, 'turning Multi select off must clear the additional facets');
 for (const key of ['view','morph','grid','drive','look']) { clickTab(key); active(key); }
 
 console.log('CONTROL_TABS_OK tabs=7 facets=separate earth=separate multi-select=working routes=verified');
