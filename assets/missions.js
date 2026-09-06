@@ -108,7 +108,7 @@
     detail.appendChild(node('p', [record.country, record.city, record.type].filter(Boolean).join(' · ')));
     detail.appendChild(node('h3', 'Office address'));
     detail.appendChild(node('p', record.address || 'No current public office address is confirmed in this review.', 'address'));
-    detail.appendChild(node('p', 'Checked ' + dateLabel(record.checkedAt || checkedAt) + '. Historical list record ' + record.legacyRowNumber + '.', 'small'));
+      detail.appendChild(node('p', 'Checked ' + dateLabel(record.checkedAt || checkedAt) + '. Current DFAT directory record.', 'small'));
     if (record.reason) detail.appendChild(node('p', record.reason, 'review-reason'));
     if (record.reviewNote && record.reviewNote !== record.reason) detail.appendChild(node('p', record.reviewNote, 'small'));
 
@@ -166,8 +166,8 @@
       if (!Array.isArray(data.records) || !data.counts || data.counts.sourceRecords !== data.records.length) throw new Error('Invalid directory data.');
       var ids = new Set(), mapped = 0, held = 0;
       data.records.forEach(function (record) {
-        if (!/^mission-au-\d{3}$/.test(record.id) || ids.has(record.id) || typeof record.country !== 'string'
-          || typeof record.city !== 'string' || typeof record.type !== 'string' || !Number.isInteger(record.legacyRowNumber)
+        if (!/^dfat-protocol-(missions|consulates)-[A-Za-z0-9-]+$/.test(record.id) || ids.has(record.id) || typeof record.country !== 'string'
+          || typeof record.city !== 'string' || typeof record.type !== 'string' || typeof record.directoryKind !== 'string'
           || !['mapped', 'held'].includes(record.status)) throw new Error('Invalid mission record.');
         if (record.status === 'mapped' && (!validPosition(record) || !safeUrl(record.coordinateSourceUrl))) throw new Error('Missing coordinate evidence.');
         ids.add(record.id); if (record.status === 'mapped') mapped++; else held++;
@@ -180,8 +180,8 @@
       checkedAt = data.checkedAt; byId.clear(); rows.forEach(function (record) { byId.set(record.id, record); });
       addOptions('country', 'country'); addOptions('city', 'city'); addOptions('type', 'type');
       $('filters').disabled = false; applyFilters();
-      $('coverage').textContent = data.counts.sourceRecords.toLocaleString('en-AU') + ' historical records reviewed. '
-        + mapped.toLocaleString('en-AU') + ' source-backed office positions on Earth; ' + held.toLocaleString('en-AU') + ' not mapped. Checked ' + dateLabel(checkedAt) + '.';
+      $('coverage').textContent = data.counts.sourceRecords.toLocaleString('en-AU') + ' current DFAT office records. '
+        + mapped.toLocaleString('en-AU') + ' approximate office positions on Earth; ' + held.toLocaleString('en-AU') + ' directory-only records. Checked ' + dateLabel(checkedAt) + '.';
       var selected = new URLSearchParams(location.hash.slice(1)).get('mission') || new URLSearchParams(location.search).get('mission');
       if (selected && byId.has(selected)) select(selected, false);
     } catch (_) {
