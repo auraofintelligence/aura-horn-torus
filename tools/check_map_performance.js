@@ -35,6 +35,11 @@ assert(!referenceSource.includes('.style.stylesheet'),
   'optional overlays must not mutate MapLibre internals');
 assert(html.includes('body.earth-map #sheet') && html.includes('backdrop-filter:none'),
   'Earth mode must disable expensive panel blur');
+const releaseTag = html.match(/<script id="location-release" src="data\/location-layers\.js\?v=([\w-]+)" data-version="([\w-]+)"><\/script>/);
+assert(releaseTag && releaseTag[1] === releaseTag[2],
+  'the manifest and lazy layers must share a version to prevent mixed-release caches');
+assert(html.includes("document.getElementById('location-release').dataset.version") &&
+  html.includes("'v=' + encodeURIComponent(release)"), 'lazy layers must use the manifest release version');
 
 const sandbox = {window:{}};
 vm.createContext(sandbox);

@@ -691,7 +691,7 @@
 </section>
 
 <script src="data/map-style.js"></script>
-<script src="data/location-layers.js"></script>
+<script id="location-release" src="data/location-layers.js?v=20260906-reviewed" data-version="20260906-reviewed"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -3227,7 +3227,8 @@ function ensureLayerData(layer, done){
     callbacks.forEach(function(callback){ callback(error || null); });
   }
   var script = document.createElement('script');
-  script.src = layer.src;
+  var release = document.getElementById('location-release').dataset.version;
+  script.src = layer.src + (layer.src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + encodeURIComponent(release);
   script.async = true;
   script.dataset.locationLayer = layer.id;
   script.onload = function(){

@@ -6,7 +6,7 @@
   function node(tag,text,cls){var e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
   function link(text,url){var e=node('a',text);try{var u=new URL(url,location.href);if(!/^https?:$/.test(u.protocol))return node('span',text);e.href=u.href;e.rel='noopener';return e;}catch(_){return node('span',text);}}
   function norm(value){return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();}
-  async function getJson(url){var r=await fetch(url);if(!r.ok)throw new Error('Could not load '+url);return r.json();}
+  async function getJson(url){var r=await fetch(url+(url.includes('?')?'&':'?')+'v=20260906-reviewed');if(!r.ok)throw new Error('Could not load '+url);return r.json();}
   function addOption(select,value,label){var option=node('option',label);option.value=value;select.appendChild(option);}
   function setFilters(){
     var countries=new Map(), identifiers=new Set();
