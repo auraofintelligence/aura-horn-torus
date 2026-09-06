@@ -26,6 +26,11 @@ CITY_STATES = {"Canberra": "ACT", "Sydney": "NSW", "Melbourne": "VIC",
 POSTCODE_BOUNDS = {"Canberra": (2600, 2620), "Sydney": (2000, 2234),
     "Melbourne": (3000, 3207), "Brisbane": (4000, 4179),
     "Perth": (6000, 6199), "Adelaide": (5000, 5199)}
+CITY_REFERENCE = {
+    "Canberra": (-35.2809, 149.1300), "Sydney": (-33.8688, 151.2093),
+    "Melbourne": (-37.8136, 144.9631), "Brisbane": (-27.4698, 153.0251),
+    "Perth": (-31.9505, 115.8605), "Adelaide": (-34.9285, 138.6007),
+}
 
 
 def write_json(path: Path, value: dict) -> None:
@@ -153,8 +158,17 @@ def build(args: argparse.Namespace) -> None:
             record["reason"] = "The cached position belongs to an earlier address query; a new exact address match is required"
             continue
         elif not result["location"]:
-            record["reason"] = "Office address checked. " + result["reason"]
-            continue
+            city = record["city"]
+            if city not in CITY_REFERENCE:
+                record["reason"] = "Office address checked. " + result["reason"]
+                continue
+            latitude, longitude = CITY_REFERENCE[city]
+            location = {"latitude": latitude, "longitude": longitude,
+                "sourceUrl": "https://www.openstreetmap.org/search?query=" + city.replace(" ", "%20") + "%2C%20Australia",
+                "precision": "approximate city position, not an office address",
+                "checkedAt": DATE, "method": "approximate-city-reference",
+                "matchedAddress": city + ", Australia"}
+            position_label = "approximate city reference"
         else:
             location = result["location"]
             position_label = "OpenStreetMap building/property position"

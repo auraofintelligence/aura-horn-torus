@@ -54,13 +54,16 @@ def check(cache: bool = False) -> dict:
             assert row["coordinateEvidence"]["licence"] == "CC BY 4.0"
             assert row["coordinateEvidence"]["postcodeVerified"] is False
             assert row["coordinateSourceUrl"].startswith("https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/ACTGOV_ADDRESSES/FeatureServer/0/query?")
+        elif "approximate city position" in row["coordinateBasis"]:
+            assert row["coordinateEvidence"]["method"] == "approximate-city-reference"
+            assert row["coordinateSourceUrl"].startswith("https://www.openstreetmap.org/search?query=")
         else:
             assert re.match(r"^https://www.openstreetmap.org/(node|way|relation)/\d+$", row["coordinateSourceUrl"])
         point = points[row["id"]]
         assert point[1:3] == [row["latitude"], row["longitude"]]
         assert point[5] == row["sourceUrl"] and point[8]["address"] == row["address"]
         assert point[8]["coordinateSourceUrl"] == row["coordinateSourceUrl"]
-        if cache and not review:
+        if cache and not review and "approximate city position" not in row["coordinateBasis"]:
             from geocode_missions_australia import query_for, cache_path, strict_match
             query = query_for(row["address"])
             saved = json.loads(cache_path(query).read_text(encoding="utf-8"))

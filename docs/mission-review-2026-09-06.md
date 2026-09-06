@@ -4,11 +4,11 @@ Checked 6 September 2026. This repairs the historical 141-entry list, not every 
 
 ## Result
 
-All 141 identities remain traceable. Official sources provide 137 Australian office addresses. There are 124 mapped positions: 110 exact OpenStreetMap address matches and 14 ACT Government address points. Thirteen checked addresses still need coordinate review. Four other entries have specific operational or non-resident issues; they are not mapped.
+All 141 identities remain traceable. Official sources provide 137 Australian office addresses. There are 137 map positions: 124 source-backed building/property points (110 exact OpenStreetMap address matches and 14 ACT Government address points), plus 13 clearly labelled approximate city positions. Four entries have specific operational or non-resident issues and remain unpinned.
 
 Afghanistan has an official suspension notice. Venezuela has an official closure/restructure notice. Kazakhstan and Lesotho are represented by non-resident offices in Singapore and Japan respectively. An ACT heading in the DFAT directory is not proof that an office is physically in Canberra. Each record links to the evidence for its particular decision.
 
-The 13 addresses awaiting positions are Canada (Canberra), El Salvador (Canberra), Greece (Adelaide), India (Canberra and Melbourne), Indonesia (Perth), Italy (Adelaide), Malaysia (Perth), South Africa (Canberra), Uganda (Canberra), the United Kingdom (Canberra and Sydney), and the United States (Canberra). Missing coordinates do not mean those offices are closed.
+The 13 approximate city positions are Canada (Canberra), El Salvador (Canberra), Greece (Adelaide), India (Canberra and Melbourne), Indonesia (Perth), Italy (Adelaide), Malaysia (Perth), South Africa (Canberra), Uganda (Canberra), the United Kingdom (Canberra and Sydney), and the United States (Canberra). They help find the city, but do not identify the office building.
 
 ## Evidence and boundaries
 
