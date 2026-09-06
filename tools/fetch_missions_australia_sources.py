@@ -302,33 +302,51 @@ def parse_offices(html: str, source: dict, mode: str, checked_at: str) -> list[d
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--legacy", type=Path, default=ROOT.parent / "Australian-world-travel" / "missions.html")
-    parser.add_argument("--output", type=Path, default=ROOT / "work" / "missions-australia" / "dfat-offices.json")
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--checked-at", default="2026-09-06")
     parser.add_argument("--delay", type=float, default=0.5)
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--limit-pages", type=int, default=None, help="Smoke-test a bounded number of needed country pages")
+    parser.add_argument(
+        "--all-current", action="store_true",
+        help="Fetch every current mission and consulate page from both official index pages into a separate snapshot"
+    )
     args = parser.parse_args()
+    if args.output is None:
+        args.output = ROOT / "work" / "missions-australia" / (
+            "dfat-all-current.json" if args.all_current else "dfat-offices.json"
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     cache = Cache(args.output.parent / "html" / args.checked_at, max(args.delay, 0.5), args.offline)
-    legacy = read_legacy(args.legacy)
+    legacy = [] if args.all_current else read_legacy(args.legacy)
     indices = {}
     index_urls = {"missions": BASE + "/Public/MissionsInAustralia", "consulates": BASE + "/Public/ConsulatesInAustralia"}
     for mode, url in index_urls.items():
         text, _ = cache.get(url)
         indices[mode] = country_index(text, mode)
     requests, unmatched = {}, []
-    for row in legacy:
-        mode = "consulates" if "consul" in row["type"].casefold() else "missions"
-        country_key = ALIASES.get(key(row["country"]), key(row["country"]))
-        source = indices[mode].get(country_key)
-        if not source:
-            unmatched.append({**row, "reason": f"Country not found in current official {mode} index"})
-            continue
-        request_key = (mode, source["countryId"])
-        if request_key not in requests:
-            requests[request_key] = {"source": source, "mode": mode, "legacyRows": []}
-        requests[request_key]["legacyRows"].append(row["legacyRowNumber"])
-    work = list(requests.values())
+    if args.all_current:
+        # The complete current snapshot is deliberately independent of the old
+        # 141-row list. Keep the directory mode in the request key because a
+        # country can have both a diplomatic and a consular index entry.
+        work = [
+            {"source": source, "mode": mode, "legacyRows": []}
+            for mode in ("missions", "consulates")
+            for source in sorted(indices[mode].values(), key=lambda item: (item["country"].casefold(), item["countryId"]))
+        ]
+    else:
+        for row in legacy:
+            mode = "consulates" if "consul" in row["type"].casefold() else "missions"
+            country_key = ALIASES.get(key(row["country"]), key(row["country"]))
+            source = indices[mode].get(country_key)
+            if not source:
+                unmatched.append({**row, "reason": f"Country not found in current official {mode} index"})
+                continue
+            request_key = (mode, source["countryId"])
+            if request_key not in requests:
+                requests[request_key] = {"source": source, "mode": mode, "legacyRows": []}
+            requests[request_key]["legacyRows"].append(row["legacyRowNumber"])
+        work = list(requests.values())
     if args.limit_pages:
         work = work[:args.limit_pages]
     result = {
@@ -338,7 +356,10 @@ def main() -> None:
         "sourceLicenceUrl": "https://www.dfat.gov.au/about-us/about-this-website/copyright",
         "licenceNote": "DFAT website copyright policy states CC BY 4.0 except otherwise noted; retain Protocol source links and check any source-specific exceptions before release.",
         "identityNote": "sourceCountryId is the official URL identifier; office id is locally derived, not a DFAT-issued identifier.",
-        "oldRecordCount": len(legacy), "neededCountryPages": len(requests), "limitedRun": bool(args.limit_pages),
+        "snapshotScope": "all current entries from both DFAT index pages" if args.all_current else "pages needed to reconcile the historical list",
+        "currentIndexCounts": {mode: len(indices[mode]) for mode in ("missions", "consulates")},
+        "oldRecordCount": len(legacy), "neededCountryPages": len(work), "limitedRun": bool(args.limit_pages),
+        "allCurrent": args.all_current,
         "complete": False,
         "legacyRecords": legacy, "offices": [], "pageResults": [], "unmatchedCountries": unmatched, "fetchErrors": [],
     }
@@ -351,11 +372,11 @@ def main() -> None:
             result["pageResults"].append({"url": source["url"], "country": source["country"], "mode": mode, "officeCount": len(offices), "legacyRows": item["legacyRows"], "cache": cache_status, "sha256": sha256(text.encode()).hexdigest()})
             print(f"{idx}/{len(work)} {mode} {source['country']}: {len(offices)} offices", flush=True)
         except Exception as error:
-            result["fetchErrors"].append({"url": source["url"], "country": source["country"], "legacyRows": item["legacyRows"], "error": str(error)})
+            result["fetchErrors"].append({"url": source["url"], "country": source["country"], "mode": mode, "legacyRows": item["legacyRows"], "error": str(error)})
             print(f"{idx}/{len(work)} failed {mode} {source['country']}: {type(error).__name__}", flush=True)
         # A partial file remains useful if a later network request is interrupted.
         result["counts"] = {"offices": len(result["offices"]), "pagesFetched": len(result["pageResults"]), "fetchErrors": len(result["fetchErrors"]), "unmatchedLegacyRows": len(unmatched)}
-        result["complete"] = idx == len(work) and len(result["pageResults"]) == len(requests) and not result["fetchErrors"]
+        result["complete"] = idx == len(work) and len(result["pageResults"]) == len(work) and not result["fetchErrors"]
         write_snapshot(args.output, result)
     print(json.dumps(result["counts"]), flush=True)
 

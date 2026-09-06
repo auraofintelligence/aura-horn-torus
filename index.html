@@ -4780,7 +4780,7 @@ if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
 /* Mission directory links load only the reviewed Australian office layer. */
 (function openMissionLink(){
   var id = new URLSearchParams(location.search).get('mission');
-  if(!id || !/^mission-au-\d{3}$/.test(id)) return;
+  if(!id || !/^dfat-protocol-(missions|consulates)-[A-Za-z0-9-]+$/.test(id)) return;
   var layerId = 'foreign-missions-australia', layer = locationLayer(layerId);
   if(!layer || !layer.src) return;
   setSphere(true); openPlaceControls();
