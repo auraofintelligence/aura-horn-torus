@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Find foreign missions in Australia, check their official sources and explore verified office locations on Aura Earth.">
+  <title>Foreign missions in Australia | Aura Earth</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-raster-32.png">
+  <link rel="stylesheet" href="assets/missions.css">
+  <script src="assets/missions.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to directory</a>
+  <header class="topbar">
+    <a href="index.html">Back to Earth</a>
+    <a href="universities.html">Universities and connections</a>
+  </header>
+  <main id="main">
+    <h1>Foreign missions in Australia</h1>
+    <p class="intro">Find an embassy, high commission or consulate. Check its office address and sources, then explore source-backed locations on Earth.</p>
+    <p class="coverage" id="coverage" role="status">Loading the missions directory...</p>
+    <button id="retry" type="button" hidden>Try loading again</button>
+    <noscript><p>This directory needs JavaScript to filter its records. You can still <a href="https://protocol.dfat.gov.au/Public/MissionsInAustralia">open the official DFAT directory</a> or <a href="data/missions-australia.json">read the mission data</a>.</p></noscript>
+
+    <fieldset id="filters" class="filters" disabled>
+      <legend class="visually-hidden">Filter missions</legend>
+      <label class="search">Search missions<input id="search" type="search" placeholder="Country, city, mission type or address" autocomplete="off"></label>
+      <label>Represented country<select id="country"><option value="">All countries</option></select></label>
+      <label>City<select id="city"><option value="">All cities</option></select></label>
+      <label>Mission type<select id="type"><option value="">All types</option></select></label>
+      <label>Map status<select id="status"><option value="">All records</option><option value="mapped">On Earth</option><option value="held">Not mapped</option></select></label>
+      <button id="reset" type="button">Clear filters</button>
+    </fieldset>
+    <p class="small">The starting list is historical. An address is not a verified map position: unresolved records stay visible here without invented city-centre pins. Check the mission's own website before visiting.</p>
+
+    <div class="workspace">
+      <section class="results-section" aria-labelledby="result-count">
+        <h2 id="result-count" tabindex="-1" aria-live="polite">Missions</h2>
+        <div id="results" aria-busy="true"></div>
+        <nav class="pagination" aria-label="Mission result pages">
+          <button id="previous" type="button" disabled>Previous</button>
+          <span id="page-count"></span>
+          <button id="next" type="button" disabled>Next</button>
+        </nav>
+      </section>
+      <section id="detail" class="detail" aria-labelledby="detail-title" tabindex="-1">
+        <h2 id="detail-title">Select a mission</h2>
+        <p>See its office address, review date, sources and map status.</p>
+        <p>Only source-backed office positions can be opened on Earth. A listing does not guarantee public access or available services.</p>
+      </section>
+    </div>
+
+    <details class="sources">
+      <summary>About this directory and its sources</summary>
+      <p>This directory begins with <a href="https://auraofintelligence.github.io/Australian-world-travel/missions.html">141 records in an older Australian World Travel list</a>. It is not a complete current list of every foreign office. The original list and the current review are kept distinct.</p>
+      <p>Moved offices, uncertain identities and missions accredited from another country need different treatment. A non-resident mission is not placed in Canberra simply because it is accredited to Australia. Postal boxes and personal residences are not substitutes for public office locations.</p>
+      <p>Each mapped record includes its coordinate source and basis. An office or building position is not a guaranteed visitor entrance. A record marked Not mapped may have a verified address but still lack sufficient coordinate evidence.</p>
+      <p>Directory information: <a href="https://protocol.dfat.gov.au/">Australian Government Department of Foreign Affairs and Trade</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+      <p>OpenStreetMap-derived positions: <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors, ODbL</a>. ACT Government address positions: <a href="https://www.arcgis.com/home/item.html?id=13427dc77da340a29dd6601af4d7484d">ACTGOV ADDRESSES</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, &copy; Australian Capital Territory. Each record identifies its coordinate source and basis.</p>
+      <p><a href="data/missions-australia.json" download>Download the reviewed mission data</a> · <a href="universities.html">Explore universities and connections</a></p>
+    </details>
+  </main>
+  <footer><a href="#main">Back to top</a><span>Aura of Intelligence · <a href="LICENCE.md">Public Source Licence</a></span></footer>
+</body>
+</html>

@@ -13,6 +13,10 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = REPO / "data" / "location-layers.js"
+LEGACY_UNIVERSITY_IDS = {
+    "oceania-universities", "australia-fta-universities", "eu-framework-universities",
+    "timor-leste-universities", "world-universities",
+}
 
 
 def sha256_repository_text(path: Path) -> str:
@@ -49,6 +53,19 @@ def check() -> dict:
     seen_ids: set[str] = set()
     expected_files: set[str] = set()
     summary: dict[str, dict[str, int]] = {}
+    archive_path = REPO / "data" / "university-legacy-layer-metadata.json"
+    archive_layers = json.loads(archive_path.read_text(encoding="utf-8")).get("layers", []) if archive_path.is_file() else []
+    archive_ids = [layer.get("id") for layer in archive_layers]
+    if set(archive_ids) != LEGACY_UNIVERSITY_IDS or len(archive_ids) != len(set(archive_ids)):
+        errors.append("Historical university scope metadata must retain the five original groups exactly once")
+    archived_files = set()
+    for layer in archive_layers:
+        src = layer.get("src")
+        if src:
+            if layer.get("id") not in LEGACY_UNIVERSITY_IDS or src != f"data/layers/{layer['id']}.js":
+                errors.append("Invalid archived university layer path")
+            else:
+                archived_files.add(Path(src).name)
 
     for layer in manifest:
         layer_id = layer.get("id", "")
@@ -85,9 +102,13 @@ def check() -> dict:
             errors.append(f"{layer_id}: zero mapped points need an explanation")
 
         for index, point in enumerate(points):
-            if not isinstance(point, list) or not 3 <= len(point) <= 8:
+            max_fields = 9 if layer_id == "foreign-missions-australia" else 8
+            if not isinstance(point, list) or not 3 <= len(point) <= max_fields:
                 errors.append(f"{layer_id}[{index}]: invalid compact point shape")
                 continue
+            if len(point) == 9:
+                if not isinstance(point[8], dict) or set(point[8]) - {"id", "address", "website", "checkedAt", "coordinateBasis", "coordinateSourceUrl", "warning"}:
+                    errors.append(f"{layer_id}[{index}]: invalid office metadata")
             lat, lon = point[1], point[2]
             if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)):
                 errors.append(f"{layer_id}[{index}]: coordinates are not numeric")
@@ -98,9 +119,11 @@ def check() -> dict:
         summary[layer_id] = {"mapped": len(points), "unresolved": unresolved}
 
     actual_files = {path.name for path in (REPO / "data" / "layers").glob("*.js")}
-    stale = sorted(actual_files - expected_files)
+    stale = sorted(actual_files - expected_files - archived_files)
     if stale:
         errors.append("Unregistered generated files: " + ", ".join(stale))
+    if seen_ids.intersection(LEGACY_UNIVERSITY_IDS):
+        errors.append("Historical university scopes must not be displayed as public globe categories")
 
     public_text = "\n".join(
         path.read_text(encoding="utf-8")
@@ -277,9 +300,9 @@ def check() -> dict:
     scoped_university_rows = 0
     declared_scope_countries: dict[str, set[str]] = {}
     for layer_id, group in university_layer_groups.items():
-        layer = next((item for item in manifest if item.get("id") == layer_id), None)
+        layer = next((item for item in archive_layers if item.get("id") == layer_id), None)
         if not layer:
-            errors.append(f"Missing university layer: {layer_id}")
+            errors.append(f"Missing historical university scope metadata: {layer_id}")
             continue
         scope_count = int(layer.get("scopeSourceCount", 0))
         scoped_university_rows += scope_count
@@ -316,7 +339,8 @@ def check() -> dict:
         if match_catalogue_hash and layer.get("matchSha256") != match_catalogue_hash:
             errors.append(f"{layer_id}: matchSha256 does not match the publication ledger")
         expected_records = group_matches[group]
-        university_points = data.get(layer_id, [])
+        archive_src = layer.get("src")
+        university_points = read_layer(REPO / archive_src, layer_id) if archive_src else []
         point_ids = [str(point[5]) for point in university_points if len(point) > 5]
         if len(point_ids) != len(set(point_ids)):
             errors.append(f"{layer_id}: duplicate ROR IDs in public points")
@@ -387,12 +411,18 @@ def check() -> dict:
         errors.append("Named bilateral treaty university scope must identify Timor-Leste")
 
     university_backlog = next(
-        (item for item in manifest if item.get("id") == "world-universities"), None
+        (item for item in archive_layers if item.get("id") == "world-universities"), None
     )
     if not university_backlog:
-        errors.append("Missing world-universities backlog layer")
+        errors.append("Missing historical university backlog metadata")
     elif scoped_university_rows != 9363:
         errors.append("All university scopes do not reconcile to 9,363 source rows")
+    unified_layer = next((item for item in manifest if item.get("id") == "education-registry"), None)
+    unified_points = data.get("education-registry", [])
+    if not unified_layer or unified_layer.get("label") != "Universities and education":
+        errors.append("The globe must have one Universities and education category")
+    if len(unified_points) != 26167 or len({point[5] for point in unified_points if len(point) > 5}) != 26103:
+        errors.append("Unified education layer must retain all 26,103 ROR organisations and 26,167 localities")
 
     if match_source_rows != set(range(1, 9364)):
         errors.append("University publication ledger does not account for every historical source row")

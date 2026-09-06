@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the portable ROR education registry, lazy directory and extra map layer.
+"""Build the portable ROR education registry, lazy directory and unified map layer.
 
 This selects all active education records in the pinned ROR release, independently
 of the historical university CSV. ROR is a research-organisation registry, not a
@@ -33,6 +33,7 @@ GROUP_LAYERS = {
     "named_treaty": "timor-leste-universities",
     "global_backlog": "world-universities",
 }
+UNIFIED_LAYER = "education-registry"
 
 
 def compact(value: Any) -> bytes:
@@ -84,6 +85,7 @@ def mappable(location: dict[str, Any]) -> bool:
 
 
 def mapped_identities(path: Path) -> dict[str, str]:
+    """Retain historical match groups for auditing, never for public map grouping."""
     result = {}
     with path.open(encoding="utf-8-sig", newline="") as handle:
         for row in csv.DictReader(handle):
@@ -102,23 +104,6 @@ def mapped_identities(path: Path) -> dict[str, str]:
     return result
 
 
-def check_existing_map_ids(mapped: dict[str, str], layer_dir: Path) -> None:
-    """Ensure directory links for accepted legacy records have an actual map pin."""
-    by_layer = defaultdict(set)
-    for rid, layer_id in mapped.items():
-        by_layer[layer_id].add(rid)
-    for layer_id, required in by_layer.items():
-        path = layer_dir / f"{layer_id}.js"
-        content = path.read_text(encoding="utf-8-sig")
-        prefix = f'window.AURA_LOCATION_DATA["{layer_id}"]='
-        if prefix not in content:
-            raise ValueError(f"Missing expected map layer assignment in {path.name}")
-        rows = json.loads(content.split(prefix, 1)[1].strip().removesuffix(";"))
-        actual = {row[5] for row in rows if len(row) > 5}
-        if not required.issubset(actual):
-            raise ValueError(f"Refresh existing university layers before this registry: {layer_id} lacks {len(required - actual)} identities")
-
-
 def build(args: argparse.Namespace) -> dict[str, Any]:
     source_hash = sha256(args.ror)
     if source_hash != ROR_HASH:
@@ -126,8 +111,6 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     if not args.matches.is_file():
         raise ValueError("Generate the effective university ledger before building this registry")
     mapped = mapped_identities(args.matches)
-    if not args.defer_map_link_check:
-        check_existing_map_ids(mapped, args.existing_layers_dir)
     match_hash = hashlib.sha256(args.matches.read_bytes().replace(b"\r\n", b"\n")).hexdigest().upper()
     organisations = []
     for raw in iter_records(args.ror):
@@ -143,7 +126,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     if not set(mapped).issubset(all_ids):
         raise ValueError("Effective map ledger includes identities absent from the active education registry")
     countries, chunks = set(), defaultdict(list)
-    search_rows, points, additional_ids = [], [], set()
+    search_rows, points, mapped_ids, additional_ids = [], [], set(), set()
+    additional_points = 0
     invalid_coords = unmappable = location_count = multi_location = 0
     relations = Counter()
     for organisation in organisations:
@@ -155,7 +139,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         for code in sorted(country_codes or {"ZZ"}):
             chunks[code].append(organisation)
         primary = locations[0] if locations else {}
-        layer_id = mapped.get(organisation["id"], "education-registry")
+        layer_id = UNIFIED_LAYER
         country_pairs = sorted({(location["countryCode"], location["countryName"])
                                 for location in locations if location["countryCode"]})
         search_terms = {entry["value"] for entry in organisation["names"]
@@ -176,7 +160,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         for number, location in enumerate(locations, 1):
             invalid_coords += not valid_coordinates(location)
             unmappable += not mappable(location)
-            if organisation["id"] in mapped or not mappable(location):
+            if not mappable(location):
                 continue
             detail = ", ".join(value for value in (location["name"], location["subdivision"], location["countryName"]) if value)
             if len(locations) > 1:
@@ -188,7 +172,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             points.append([organisation["name"], location["latitude"], location["longitude"], text(detail),
                            f"Education organisation · {location['countryName'] or location['countryCode']}",
                            organisation["id"], text(search)])
-            additional_ids.add(organisation["id"])
+            mapped_ids.add(organisation["id"])
+            if organisation["id"] not in mapped:
+                additional_ids.add(organisation["id"])
+                additional_points += 1
+    if mapped_ids != all_ids:
+        raise ValueError("Every directory identity must have a valid point in the unified education layer")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     layer_path = args.output_dir / "layers" / "education-registry.js"
     layer_path.parent.mkdir(parents=True, exist_ok=True)
@@ -200,7 +189,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "validLocalityEntries": location_count - unmappable, "invalidCoordinateEntries": invalid_coords,
         "unmappableLocalityEntries": unmappable, "multiLocationOrganisations": multi_location,
         "existingMappedOrganisations": len(mapped), "additionalMapOrganisations": len(additional_ids),
-        "additionalMapPoints": len(points), "unmappedOrganisations": len(all_ids - set(mapped) - additional_ids),
+        "additionalMapPoints": additional_points, "unmappedOrganisations": len(all_ids - mapped_ids),
+        "mappedOrganisations": len(mapped_ids), "mappedPoints": len(points),
         "relationships": dict(sorted(relations.items())),
     }
     source = {
@@ -210,7 +200,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     }
     map_layer = {
         "id": "education-registry", "src": "data/layers/education-registry.js", "defaultVisible": False,
-        "mappedCount": len(points), "organisationCount": len(additional_ids),
+        "mappedCount": len(points), "organisationCount": len(mapped_ids),
         "sourceCount": len(organisations), "unresolvedCount": counts["unmappedOrganisations"],
         "sha256": hashlib.sha256(layer_bytes).hexdigest().upper(),
         "matchFile": args.matches.name, "matchSha256": match_hash,
@@ -219,6 +209,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "schemaVersion": "aura-education-registry/1.0", "registryVersion": VERSION,
         "registryUpdatedAt": RELEASE_DATE, "sourceUrl": SOURCE_URL, "source": source,
         "coverage": "All active ROR v2.11 records with the education type; ROR covers research organisations and is not a complete global university or accreditation register.",
+        "historicalCountBasis": "existingMappedOrganisations identifies the accepted historical ledger matches; additionalMapOrganisations and additionalMapPoints describe ROR coverage beyond those matches. All identities now share one public map layer.",
         "coordinateBasis": "GeoNames locality coordinates, not campus or building positions. Every ROR locality is retained.",
         "relationshipBasis": "Only source parent, child, related and successor links; these do not establish peak-body membership, accreditation, project suitability or affiliation with Aura or GAJRA.",
         "counts": counts, "mapLayer": map_layer, "organisations": organisations,
@@ -247,7 +238,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         chunk_sizes[code] = len(payload)
     return {
         "counts": counts, "sourceSha256": source_hash, "matchSha256": match_hash,
-        "existingMapLinksChecked": not args.defer_map_link_check,
+        "unifiedMapLinksChecked": mapped_ids == all_ids,
         "mapLayer": map_layer, "files": {"registryBytes": full_path.stat().st_size,
         "indexBytes": index_path.stat().st_size, "layerBytes": layer_path.stat().st_size,
         "countryChunks": len(chunks), "largestCountryChunks": sorted(chunk_sizes.items(), key=lambda pair: pair[1], reverse=True)[:5]},
@@ -259,9 +250,6 @@ def parser() -> argparse.ArgumentParser:
     command.add_argument("--ror", type=Path, default=DEFAULT_ROR)
     command.add_argument("--matches", type=Path, default=REPO / "data" / "university-matches-2026-09-05.csv")
     command.add_argument("--output-dir", type=Path, default=REPO / "data")
-    command.add_argument("--existing-layers-dir", type=Path, default=REPO / "data" / "layers")
-    command.add_argument("--defer-map-link-check", action="store_true",
-                         help="Build before legacy layers are refreshed; rerun without this flag before publishing")
     return command
 
 

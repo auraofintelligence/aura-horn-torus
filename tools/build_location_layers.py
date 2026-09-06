@@ -458,12 +458,14 @@ def parse_university_matches(
 
 
 def refresh_university_layers(manifest: list[dict[str, Any]], matches: Path) -> dict[str, Any]:
-    """Refresh only university snapshots, preserving every unrelated layer and date."""
+    """Replace public historical scope groups with one complete education layer.
+
+    The historical ledgers, scope metadata and earlier generated assets remain
+    available for audit. They no longer define categories in the globe controls.
+    """
     grouped, diagnostics, source_rows = parse_university_matches(matches)
     if source_rows != set(range(1, 9364)):
         raise ValueError("The completed university ledger must account for all 9,363 source rows")
-    with matches.open(encoding="utf-8", newline="") as handle:
-        ledger = list(csv.DictReader(handle))
     ids = {
         "oceania-universities": "oceania",
         "australia-fta-universities": "fta_partner",
@@ -472,81 +474,61 @@ def refresh_university_layers(manifest: list[dict[str, Any]], matches: Path) -> 
         "world-universities": "global_backlog",
     }
     catalogue_hash = hashlib.sha256(matches.read_bytes().replace(b"\r\n", b"\n")).hexdigest().upper()
+    archive_path = REPO / "data" / "university-legacy-layer-metadata.json"
+    legacy_layers = [layer for layer in manifest if layer["id"] in ids]
+    if legacy_layers and not archive_path.exists():
+        archive_path.write_text(json.dumps({
+            "schemaVersion": 1, "archivedAt": "2026-09-06",
+            "description": "Former globe display groups retained as historical provenance; the public globe now uses one Universities and education layer.",
+            "layers": legacy_layers,
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest[:] = [layer for layer in manifest if layer["id"] not in ids]
     summary = {}
-    for layer in manifest:
-        group = ids.get(layer["id"])
-        if not group:
-            continue
+    for layer_id, group in ids.items():
         counts = diagnostics.get(group, Counter())
         total = sum(counts.values())
         safe = counts.get("safe_active", 0)
         rows = grouped.get(group, [])
         mapped, held = len(rows), total - safe
-        layer.update(
-            mappedCount=mapped, unresolvedCount=held,
-            matchedSourceCount=safe, deduplicatedCount=safe - mapped,
-            scopeSourceCount=total, matchFile=matches.name, matchSha256=catalogue_hash,
-            matchReviewedAt="2026-09-05", registryUpdatedAt="2026-08-03",
-            registrySourceUrl="https://zenodo.org/records/21773148",
-            resolutionCounts=dict(counts),
-        )
-        if total:
-            layer.update(
-                status="matched", statusLabel="active in ROR Aug 2026 snapshot",
-                coordinateBasis="ROR v2.11 / GeoNames locality centroid; not a campus pin",
-                warning=(
-                    f"Historical 2015 listings matched against the 3 August 2026 ROR snapshot. "
-                    f"{held:,} rows remain held: {counts.get('review', 0):,} identity reviews, "
-                    f"{counts.get('inactive_history', 0):,} inactive historical records and "
-                    f"{counts.get('unmatched', 0):,} without a match. "
-                    "Positions identify a locality, not a campus. Inclusion does not establish "
-                    "participation in an agreement or affiliation with GAJRA Earth or Aura of Intelligence."
-                ),
-                rightsNote="ROR metadata: CC0. GeoNames locality data: CC BY 4.0. Historical index used as discovery only; its compilation licence is unknown.",
-            )
-        if mapped:
-            layer["src"] = f"data/layers/{layer['id']}.js"
-            layer.pop("unavailableReason", None)
-            write_layer(layer["id"], rows)
-        if group == "named_treaty" and not total:
-            layer["unavailableReason"] = "The historical list contains no Timor-Leste row. Search the university directory for separate ROR education records."
-        if group == "global_backlog":
-            layer.update(
-                label="Universities across the rest of the world", colour="#c084fc",
-                sourceLabel="Historical world index · ROR v2.11",
-                sourceUrl="https://zenodo.org/records/21773148",
-                scopeAsAt="2026-09-05",
-                scopeCountryCodes=sorted({r["source_country"] for r in ledger if r["scope_group"] == group}),
-                pointSize=0.034, opacity=0.80,
-            )
-        summary[layer["id"]] = {"mapped": mapped, "held": held, "merged": safe - mapped}
+        summary[layer_id] = {"mapped": mapped, "held": held, "merged": safe - mapped}
+    refresh_education_registry_layer(manifest)
+    unified = next(layer for layer in manifest if layer["id"] == "education-registry")
+    unified.update(
+        matchFile=matches.name, matchSha256=catalogue_hash, matchReviewedAt="2026-09-05",
+        historicalCatalogue="data/university-matches-2026-09-05.csv",
+        historicalLayerMetadata="data/university-legacy-layer-metadata.json",
+        legacyLayerIds=list(ids),
+    )
     return summary
 
 
 def refresh_education_registry_layer(manifest: list[dict[str, Any]]) -> None:
-    """Register the independent global ROR extract without eager browser loading."""
+    """Register one global ROR education layer without eager browser loading."""
     index_path = REPO / "data" / "education-registry-index.json"
     layer_path = LAYERS_DIR / "education-registry.js"
     if not index_path.is_file() or not layer_path.is_file():
-        return
+        raise ValueError("Build the global education registry before refreshing university categories")
     index = json.loads(index_path.read_text(encoding="utf-8"))
     marker = 'window.AURA_LOCATION_DATA["education-registry"]='
     text = layer_path.read_text(encoding="utf-8")
     rows = json.JSONDecoder().raw_decode(text[text.index(marker) + len(marker):])[0]
     organisation_count = len({row[5] for row in rows})
+    if len(rows) != index["counts"].get("mappedPoints") or organisation_count != index["counts"].get("organisations"):
+        raise ValueError("Regenerate the unified education layer before refreshing its manifest")
     layer = next((item for item in manifest if item["id"] == "education-registry"), None)
     if layer is None:
         layer = {"id": "education-registry"}
-        manifest.insert(next(i for i,item in enumerate(manifest) if item["id"] == "world-universities") + 1, layer)
+        position = next((i + 1 for i,item in enumerate(manifest) if item["id"] == "world-cities"), len(manifest))
+        manifest.insert(position, layer)
     layer.update(
-        label="More education organisations worldwide", colour="#5eead4",
+        label="Universities and education", colour="#5eead4",
         mappedCount=len(rows), organisationCount=organisation_count,
         unresolvedCount=0, defaultOn=False, status="registry-snapshot",
-        statusLabel="active in ROR Aug 2026 snapshot", sourceLabel="ROR education registry · additional organisations",
+        statusLabel="active in ROR Aug 2026 snapshot", sourceLabel="ROR education registry · worldwide",
         sourceUrl="https://zenodo.org/records/21773148", sourceFile="v2.11-2026-08-03-ror-data.json",
         sourceSha256=index["sourceSha256"], sourceUpdatedAt="2026-08-03", importedAt="2026-09-05",
         coordinateBasis="ROR v2.11 / GeoNames locality centroid; not a campus pin",
-        warning=(f"{organisation_count:,} additional education organisations from ROR. Universities, colleges and other education bodies are included; this is not an accreditation register or proof of complete worldwide university coverage. All reported localities are retained; a locality is not a campus. GAJRA affiliation and programme applicability remain unassessed."),
+        warning=(f"{organisation_count:,} universities, colleges and other education organisations across the world. All reported ROR localities are included. Country and association filters are available in the university directory. Positions are locality approximations; ROR does not establish accreditation, complete worldwide university coverage or GAJRA membership."),
         rightsNote="ROR metadata: CC0. GeoNames locality data: CC BY 4.0.",
         registryIndex="data/education-registry-index.json", pointSize=0.030, opacity=0.80,
         src="data/layers/education-registry.js",
@@ -709,15 +691,9 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "australian-missions-abroad", missions_abroad
         ),
         "world-cities": write_layer("world-cities", world_cities),
-        "oceania-universities": write_layer(
-            "oceania-universities", university_groups.get("oceania", [])
-        ),
-        "australia-fta-universities": write_layer(
-            "australia-fta-universities", university_groups.get("fta_partner", [])
-        ),
-        "eu-framework-universities": write_layer(
-            "eu-framework-universities", university_groups.get("eu_framework", [])
-        ),
+        "oceania-universities": len(university_groups.get("oceania", [])),
+        "australia-fta-universities": len(university_groups.get("fta_partner", [])),
+        "eu-framework-universities": len(university_groups.get("eu_framework", [])),
     }
 
     university_scope_totals = {
@@ -1046,8 +1022,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         ),
     ]
     completion_summary = refresh_university_layers(manifest, paths["university_matches"])
-    refresh_education_registry_layer(manifest)
-    counts.update({key: value["mapped"] for key, value in completion_summary.items()})
+    for legacy_id in completion_summary:
+        counts.pop(legacy_id, None)
+    counts["education-registry"] = next(layer["mappedCount"] for layer in manifest if layer["id"] == "education-registry")
+    from build_missions_australia import apply_layer as apply_mission_layer
+    apply_mission_layer(manifest)
+    counts["foreign-missions-australia"] = next(layer["mappedCount"] for layer in manifest if layer["id"] == "foreign-missions-australia")
     write_manifest(manifest)
     return {
         "counts": counts,
@@ -1127,7 +1107,7 @@ def parser() -> argparse.ArgumentParser:
         type=Path,
     )
     command.add_argument("--imported-at", default="2026-08-11")
-    command.add_argument("--universities-only", action="store_true", help="Preserve all other source snapshots and refresh only the university layers")
+    command.add_argument("--universities-only", action="store_true", help="Preserve all other snapshots and register the single global university/education layer")
     return command
 
 
@@ -1139,7 +1119,6 @@ if __name__ == "__main__":
         start = text.index(marker) + len(marker)
         manifest = json.JSONDecoder().raw_decode(text[start:])[0]
         result = refresh_university_layers(manifest, args.university_matches)
-        refresh_education_registry_layer(manifest)
         write_manifest(manifest)
     else:
         result = build(args)

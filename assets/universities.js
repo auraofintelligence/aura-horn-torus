@@ -53,7 +53,7 @@
   function renderDetail(record,row){
     var detail=$('detail');detail.replaceChildren(node('h2',record.name));
     var actions=node('div',undefined,'actions');
-    actions.appendChild(link('Show on Earth','index.html?institution='+encodeURIComponent(record.id)+'&layer='+encodeURIComponent(row[8]||'education-registry')));
+    actions.appendChild(link('Show on Earth','index.html?institution='+encodeURIComponent(record.id)+'&layer=education-registry'));
     actions.appendChild(link('ROR record',record.id));
     if(record.websites?.length)actions.appendChild(link('Institution website',record.websites[0]));detail.appendChild(actions);
     section('Locations');var locations=node('ul');

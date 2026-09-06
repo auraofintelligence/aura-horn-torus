@@ -196,9 +196,10 @@ def check(ror_path: Path | None = None) -> dict:
     require(map_layer["id"] == "education-registry" and map_layer["src"] == "data/layers/education-registry.js", "Unexpected registry map target")
     require(map_layer["matchFile"] == ledger_path.name and map_layer["matchSha256"] == ledger_hash, "Registry map uses a different historical ledger")
     require(map_layer["defaultVisible"] is False, "Large registry map layer must load on demand")
+    require(not set(LAYERS.values()).intersection(manifest_by_id), "Historical university scopes must not appear as public globe categories")
     actual_points = Counter()
     map_ids = {}
-    for layer_id in [*LAYERS.values(), "education-registry"]:
+    for layer_id in ["education-registry"]:
         metadata = manifest_by_id.get(layer_id)
         require(metadata is not None, f"Map layer not registered: {layer_id}")
         points = read_layer(REPO / metadata["src"], layer_id) if metadata.get("src") else []
@@ -208,20 +209,18 @@ def check(ror_path: Path | None = None) -> dict:
             require(len(point) >= 6 and point[5] in organisations, f"Unknown map ID in {layer_id}")
             rid = point[5]
             require(point[0] == " ".join(organisations[rid]["name"].split()), f"Map name differs from registry: {rid}")
-            expected_layer = legacy.get(rid, "education-registry")
-            require(layer_id == expected_layer, f"Institution mapped in wrong/duplicate layer: {rid}")
             ids.add(rid)
             actual_points[point_key(rid, point[1], point[2])] += 1
-        expected_ids = set(organisations) - set(legacy) if layer_id == "education-registry" else {rid for rid, target in legacy.items() if target == layer_id}
+        expected_ids = set(organisations)
         require(ids == expected_ids, f"Map identities lost or added in {layer_id}")
         map_ids[layer_id] = ids
-    require(actual_points == expected_points, "Published pins do not retain every registry locality exactly once across layers")
-    additional = map_ids["education-registry"]
-    require(not additional.intersection(legacy), "Additional registry pins duplicate legacy mapped identities")
-    require(file_hash(REPO / map_layer["src"]) == map_layer["sha256"], "Additional map layer hash mismatch")
+    require(actual_points == expected_points, "Unified map does not retain every registry locality exactly once")
+    additional = set(organisations) - set(legacy)
+    require(file_hash(REPO / map_layer["src"]) == map_layer["sha256"], "Unified map layer hash mismatch")
     metadata = manifest_by_id["education-registry"]
+    require(metadata.get("label") == "Universities and education", "The single education category has an unexpected label")
     require(metadata.get("sourceSha256") == ROR_SHA256 and metadata.get("sourceUpdatedAt") == DATE, "Manifest registry snapshot provenance differs")
-    require(metadata.get("defaultOn") is False, "Additional registry layer must be off by default")
+    require(metadata.get("defaultOn") is False, "Large education layer must be off by default")
     require(metadata.get("registryIndex") == "data/education-registry-index.json", "Manifest directory index link differs")
     require("locality" in metadata.get("coordinateBasis", "").lower() and "not a campus" in metadata.get("coordinateBasis", "").lower(), "Manifest must explain locality precision")
 
@@ -238,7 +237,7 @@ def check(ror_path: Path | None = None) -> dict:
         require(row[5] is bool(record["websites"]), f"Directory website flag differs: {rid}")
         require(row[6] == sorted({item["type"] for item in record["externalIds"]}), f"Directory identifier types differ: {rid}")
         require(row[7] == sorted({item["type"] for item in record["relationships"]}), f"Directory relationship types differ: {rid}")
-        require(row[8] == legacy.get(rid, "education-registry") and rid in map_ids[row[8]], f"Directory map link has no exact corresponding institution: {rid}")
+        require(row[8] == "education-registry" and rid in map_ids[row[8]], f"Directory map link has no exact corresponding institution: {rid}")
         expected_countries = sorted({(loc["countryCode"], loc["countryName"]) for loc in record["locations"]})
         require(row[9] == [list(pair) for pair in expected_countries], f"Directory omits or changes a country: {rid}")
         require(isinstance(row[10], list) and all(isinstance(term, str) for term in row[10]) and len(row[10]) == len(set(row[10])), f"Invalid or duplicate directory search terms: {rid}")
@@ -271,11 +270,12 @@ def check(ror_path: Path | None = None) -> dict:
         "multiLocationOrganisations": multi_location,
         "existingMappedOrganisations": len(legacy), "additionalMapOrganisations": len(additional),
         "additionalMapPoints": additional_points, "unmappedOrganisations": 0,
+        "mappedOrganisations": len(organisations), "mappedPoints": locations_count,
         "relationships": dict(relationship_counts),
     }
     require(full["counts"] == expected_counts == index["counts"], "Registry/index counts disagree with actual data")
-    require(map_layer["sourceCount"] == len(organisations) and map_layer["mappedCount"] == additional_points and map_layer["organisationCount"] == len(additional) and map_layer["unresolvedCount"] == 0, "Registry map count metadata disagrees")
-    require(metadata["organisationCount"] == len(additional) and metadata["unresolvedCount"] == 0, "Manifest organisation count metadata disagrees")
+    require(map_layer["sourceCount"] == len(organisations) and map_layer["mappedCount"] == locations_count and map_layer["organisationCount"] == len(organisations) and map_layer["unresolvedCount"] == 0, "Registry map count metadata disagrees")
+    require(metadata["organisationCount"] == len(organisations) and metadata["unresolvedCount"] == 0, "Manifest organisation count metadata disagrees")
 
     evidence = load(DATA / "university-applicability-evidence.json")
     bodies = {}
@@ -305,6 +305,7 @@ def check(ror_path: Path | None = None) -> dict:
         check_raw(ror_path, organisations)
     return {"status": "ok", "organisations": len(organisations), "localities": locations_count,
             "directoryRows": len(indexed), "countryChunks": len(chunk_paths),
+            "mappedPoints": locations_count,
             "additionalMapPoints": additional_points, "membershipEvidence": len(assessed),
             "membershipAssertions": membership_count,
             "rawSnapshotChecked": ror_path is not None}

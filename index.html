@@ -220,8 +220,8 @@
   #err b{display:block;margin-bottom:3px;font-size:13px}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   body.seven .single-only{display:none}
-  #tabs{display:flex;gap:4px;padding:4px 0 10px}
-  #tabs .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  #tabs{display:flex;gap:4px;padding:4px 0 10px;overflow-x:auto;scrollbar-width:thin;overscroll-behavior-x:contain}
+  #tabs .tab{flex:1 0 42px;min-width:42px;display:flex;flex-direction:column;align-items:center;gap:3px;
     padding:7px 2px;border:1px solid transparent;background:none;border-radius:10px;
     font-size:10.5px;font-weight:500;color:var(--ink-soft);cursor:pointer}
   #tabs .tab svg{width:18px;height:18px;stroke:currentColor;fill:none;
@@ -230,10 +230,6 @@
     color:var(--accent);font-weight:600}
   .panel{display:none}
   .panel.act{display:block}
-  .panel[data-panel="find"].act{display:flex;flex-direction:column}
-  .find-places{order:1;border-top:0;padding-top:4px}
-  .find-address{order:2;border-top:1px solid var(--line);padding-top:14px}
-  .find-rays{order:3}
   #rail{position:fixed;left:14px;top:50%;transform:translateY(-50%);z-index:12;
     display:none;flex-direction:column;align-items:center;gap:11px;padding:12px 9px;
     background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
@@ -298,6 +294,7 @@
   EOxCloudless <a href="https://cloudless.eox.at/" target="_blank" rel="noopener">https://cloudless.eox.at</a> by <a href="https://eox.at/" target="_blank" rel="noopener">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2025)
   · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
   <span id="mapoverlaycredit" hidden> · <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> · data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a></span>
+  <span id="missionmapcredit" hidden> · Mission address positions © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors (ODbL)</a> and <a href="https://www.arcgis.com/home/item.html?id=13427dc77da340a29dd6601af4d7484d" target="_blank" rel="noopener">Australian Capital Territory (CC BY 4.0)</a></span>
 </div>
 <div id="mapmessage" role="status" aria-live="polite"><span id="mapmessagetext"></span><button id="mapretry" type="button">Retry</button></div>
 <div id="err" role="alert"></div>
@@ -381,7 +378,10 @@
         View</button>
       <button class="tab" data-tab="find" type="button">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-        Find</button>
+        Facets</button>
+      <button class="tab" data-tab="earth" type="button">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg>
+        Earth</button>
       <button class="tab" data-tab="morph" type="button">
         <svg viewBox="0 0 24 24"><path d="M3 17c4 0 4-10 9-10s5 10 9 10"/></svg>
         Morph</button>
@@ -425,7 +425,7 @@
     <div class="panel" data-panel="find">
 
     <div class="group find-address">
-      <h2>Address</h2>
+      <h2>Facet selection</h2>
       <div class="row"><label for="addrshell">Shell</label>
         <input id="addrshell" type="range" min="1" max="7" step="1" value="4"><output>4</output></div>
       <div class="row"><label for="addrcell">Cell</label>
@@ -468,9 +468,14 @@
       <p class="note">Rays run from the zero point out to the lattice: one register per vertex, one per cell centre. Off by default; Clear returns the bare shell.</p>
     </div>
 
+    </div>
+
+    <div class="panel" data-panel="earth">
+
     <div class="group find-places">
       <h2>Earth</h2>
       <p class="note"><a href="universities.html">Explore worldwide universities, peak bodies and connections →</a></p>
+      <p class="note"><a href="missions.html">Foreign missions in Australia: office details and mapping status →</a></p>
       <div class="maptoolbar" aria-label="Earth map display">
         <button id="mapopen" class="primary" type="button">Explore satellite Earth</button>
         <button id="mapstreets" type="button" aria-pressed="false">Streets off</button>
@@ -509,6 +514,8 @@
           <div class="placefact"><dt>Layer</dt><dd id="placecardlayer">—</dd></div>
           <div class="placefact"><dt>Coordinates</dt><dd id="placecardcoords">—</dd></div>
           <div class="placefact"><dt>Accuracy</dt><dd id="placecardbasis">—</dd></div>
+          <div class="placefact" id="placeaddressrow" hidden><dt>Office address</dt><dd id="placecardaddress"></dd></div>
+          <div class="placefact" id="placecheckedrow" hidden><dt>Source checked</dt><dd id="placecardchecked"></dd></div>
         </dl>
         <p id="placecardwarning" class="note"></p>
         <div class="placeactions">
@@ -517,6 +524,8 @@
           <button id="placesave" type="button">Save place</button>
           <button id="placecopy" type="button">Copy details</button>
           <a id="placesource" href="#" target="_blank" rel="noopener" hidden>Open source</a>
+          <a id="placewebsite" href="#" target="_blank" rel="noopener" hidden>Office website</a>
+          <a id="placecoordinatesource" href="#" target="_blank" rel="noopener" hidden>Position source</a>
         </div>
       </article>
 
@@ -2352,6 +2361,7 @@ function clearMulti(){
   selMore = [];
 }
 function setSel(k, cell, inside){
+  if(earthMapActive){ setSphere(false); setAura(true); }
   var hit = {k:k, cell:cell, inside:inside};
   if(multi){
     if(sel && sameCell(sel, hit)){                  // tapping the newest drops it
@@ -2746,8 +2756,9 @@ function rebuildLocationMarkers(){
 
 function fmtLatLon(p){
   var lat = locationLat(p), lon = locationLon(p);
-  return Math.abs(lat).toFixed(2) + '°' + (lat < 0 ? 'S' : 'N') + ', ' +
-         Math.abs(lon).toFixed(2) + '°' + (lon < 0 ? 'W' : 'E');
+  var digits = p[8] && p[8].coordinateSourceUrl ? 5 : 2;
+  return Math.abs(lat).toFixed(digits) + '°' + (lat < 0 ? 'S' : 'N') + ', ' +
+         Math.abs(lon).toFixed(digits) + '°' + (lon < 0 ? 'W' : 'E');
 }
 
 function safeLocationUrl(value){
@@ -2764,6 +2775,7 @@ function selectedPlaceContext(){
 }
 
 function placeRecord(layer, point, index){
+  var metadata = point[8] && typeof point[8] === 'object' && !Array.isArray(point[8]) ? point[8] : {};
   var source = safeLocationUrl(locationSourceUrl(point)) || safeLocationUrl(layer.sourceUrl);
   var lat = locationLat(point), lon = locationLon(point);
   var sourceIdentity = layer.sourceSha256 || layer.sourceFile || layer.id;
@@ -2771,8 +2783,10 @@ function placeRecord(layer, point, index){
     key:[sourceIdentity, locationName(point), lat.toFixed(6), lon.toFixed(6)].join('|'),
     layerId:layer.id, index:index, name:locationName(point), latitude:lat, longitude:lon,
     detail:locationDetail(point), category:locationCategory(point), layerLabel:layer.label,
-    statusLabel:layer.statusLabel || '', coordinateBasis:layer.coordinateBasis || 'not recorded',
-    warning:layer.warning || '', rightsNote:layer.rightsNote || '', sourceUrl:source,
+    statusLabel:layer.statusLabel || '', coordinateBasis:metadata.coordinateBasis || layer.coordinateBasis || 'not recorded',
+    address:String(metadata.address || ''), website:safeLocationUrl(metadata.website),
+    checkedAt:String(metadata.checkedAt || ''), coordinateSourceUrl:safeLocationUrl(metadata.coordinateSourceUrl),
+    warning:[layer.warning,metadata.warning].filter(Boolean).join(' '), rightsNote:layer.rightsNote || '', sourceUrl:source,
     sourceFile:String(layer.sourceFile || ''), sourceSha256:String(layer.sourceSha256 || '')
   };
 }
@@ -2798,6 +2812,14 @@ function renderPlaceDetails(layer, point, index){
   document.getElementById('placecardlayer').textContent = record.layerLabel;
   document.getElementById('placecardcoords').textContent = fmtLatLon(point);
   document.getElementById('placecardbasis').textContent = record.coordinateBasis;
+  document.getElementById('placecardaddress').textContent = record.address;
+  document.getElementById('placeaddressrow').hidden = !record.address;
+  document.getElementById('placecardchecked').textContent = record.checkedAt;
+  document.getElementById('placecheckedrow').hidden = !record.checkedAt;
+  [['placewebsite',record.website],['placecoordinatesource',record.coordinateSourceUrl]].forEach(function(item){
+    var link = document.getElementById(item[0]); link.hidden = !item[1];
+    if(item[1]) link.href = item[1]; else link.removeAttribute('href');
+  });
   var warnings = [record.warning, record.rightsNote].filter(function(value, at, all){
     return value && all.indexOf(value) === at;
   });
@@ -2948,7 +2970,7 @@ function holdLocationCamera(){
 }
 
 function openPlaceControls(target){
-  switchTab('find');
+  switchTab('earth');
   setSheetOpen(true);
   setTimeout(function(){
     var reveal = target || document.getElementById('placecard');
@@ -3032,7 +3054,8 @@ function selectedPlaceText(){
   var r = placeRecord(context.layer, context.point, context.index);
   return [r.name, r.detail, r.category, r.layerLabel + (r.statusLabel ? ' · ' + r.statusLabel : ''),
     fmtLatLon(context.point), 'Accuracy: ' + r.coordinateBasis,
-    r.warning, r.rightsNote, r.sourceUrl].filter(Boolean).join('\n');
+    r.address, r.checkedAt ? 'Source checked: ' + r.checkedAt : '', r.website,
+    r.warning, r.rightsNote, r.sourceUrl, r.coordinateSourceUrl].filter(Boolean).join('\n');
 }
 
 function copyPlainText(value, done){
@@ -3102,8 +3125,9 @@ function removeSavedLocation(key){
 }
 
 function focusSavedLocation(record){
-  var layer = locationLayer(record.layerId);
-  if(layer && record.sourceFile && layer.sourceFile !== record.sourceFile) layer = null;
+  var legacyUniversity = ['oceania-universities','australia-fta-universities','eu-framework-universities','timor-leste-universities','world-universities'].indexOf(record.layerId) >= 0;
+  var layer = locationLayer(legacyUniversity ? 'education-registry' : record.layerId);
+  if(!legacyUniversity && layer && record.sourceFile && layer.sourceFile !== record.sourceFile) layer = null;
   if(!layer && (record.sourceSha256 || record.sourceFile)){
     for(var li=0;li<locationManifest.length;li++){
       var candidate = locationManifest[li];
@@ -3128,7 +3152,9 @@ function focusSavedLocation(record){
     }
     var data = locationData[layer.id], found = -1;
     for(var i=0;i<data.length;i++){
-      if(locationName(data[i]) === record.name &&
+      var sameIdentity = legacyUniversity && /^https:\/\/ror\.org\/[0-9a-z]{9}$/.test(record.sourceUrl || '')
+        ? data[i][5] === record.sourceUrl : locationName(data[i]) === record.name;
+      if(sameIdentity &&
           Math.abs(locationLat(data[i]) - Number(record.latitude)) < 0.000001 &&
           Math.abs(locationLon(data[i]) - Number(record.longitude)) < 0.000001){ found = i; break; }
     }
@@ -3152,7 +3178,7 @@ function updateSavedExportLink(){
   var link = document.getElementById('savedexport'); if(!link) return;
   if(savedExportUrl){ URL.revokeObjectURL(savedExportUrl); savedExportUrl = ''; }
   if(!savedLocations.length){ link.hidden = true; link.removeAttribute('href'); return; }
-  var columns = ['name','detail','category','layerLabel','statusLabel','latitude','longitude','coordinateBasis','sourceFile','sourceUrl'];
+  var columns = ['name','detail','category','layerLabel','statusLabel','latitude','longitude','coordinateBasis','address','checkedAt','website','coordinateSourceUrl','sourceFile','sourceUrl'];
   var rows = [columns.join(',')].concat(savedLocations.map(function(record){
     return columns.map(function(column){ return csvValue(record[column]); }).join(',');
   }));
@@ -3263,6 +3289,8 @@ function hideAllLocationLayers(){
 }
 
 function renderLocationLayerControls(){
+  var missionCredit = document.getElementById('missionmapcredit');
+  if(missionCredit) missionCredit.hidden = !(locationStates['foreign-missions-australia'] && locationStates['foreign-missions-australia'].visible);
   var list = document.getElementById('layerlist');
   if(!list) return;
   list.innerHTML = '';
@@ -3764,6 +3792,7 @@ function setSphere(on){
   syncRail();
   if(sphereMesh) sphereMesh.visible = false;
   setEarthMapActive(on);
+  if(on) switchTab('earth');
 }
 document.getElementById('sphere').addEventListener('click', function(){ setSphere(!earthMapActive); });
 
@@ -3801,12 +3830,12 @@ function setWire(on){
 }
 document.getElementById('wireShellsBtn').addEventListener('click', function(){ setWire(!P.wireShells); });
 function toggleHornTorus(){
-  if(earthMapActive){ setSphere(false); setAura(true); }
+  if(earthMapActive){ setSphere(false); setAura(true); switchTab('find'); }
   else setAura(!P.aura);
 }
 document.getElementById('auraBtn').addEventListener('click', toggleHornTorus);
 document.getElementById('railAura').addEventListener('click', toggleHornTorus);
-document.getElementById('mapback').addEventListener('click', function(){ setSphere(false); setAura(true); });
+document.getElementById('mapback').addEventListener('click', function(){ setSphere(false); setAura(true); switchTab('find'); });
 document.getElementById('mapopen').addEventListener('click', function(){ setSphere(true); });
 document.getElementById('mapstreets').addEventListener('click', function(){
   setEarthMapGroup('streets', !earthMapStreetsVisible);
@@ -3989,15 +4018,26 @@ document.getElementById('save').addEventListener('click', function(){
 });
 
 function switchTab(name){
+  var current = document.querySelector('#tabs .tab.on');
+  var changed = !current || current.dataset.tab !== name;
   document.querySelectorAll('#tabs .tab').forEach(function(x){
     x.classList.toggle('on', x.dataset.tab === name);
   });
   document.querySelectorAll('.panel').forEach(function(p){
     p.classList.toggle('act', p.dataset.panel === name);
   });
+  if(name === 'earth'){
+    var place = selectedPlaceContext();
+    document.getElementById('gripval').textContent = place ? locationName(place.point) : 'Satellite Earth';
+  } else if(changed) document.getElementById('gripval').textContent = 'master ' + P.master.toFixed(2);
+  if(changed) document.getElementById('body').scrollTop = 0;
 }
 document.querySelectorAll('#tabs .tab').forEach(function(b){
-  b.addEventListener('click', function(){ switchTab(b.dataset.tab); });
+  b.addEventListener('click', function(){
+    if(b.dataset.tab === 'earth'){ setSphere(true); return; }
+    if(b.dataset.tab === 'find' && earthMapActive){ setSphere(false); setAura(true); }
+    switchTab(b.dataset.tab);
+  });
 });
 
 var sheet = document.getElementById('sheet'), grip = document.getElementById('grip');
@@ -4711,13 +4751,15 @@ if(/(^|[#&])guide\b/.test(location.hash)) startGuide(); else exploreMode();
 tick();
 if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
 
-/* Directory links resolve an exact registry ID in an allowlisted local layer. */
+/* Directory links and earlier scope links share the complete education layer. */
 (function openInstitutionLink(){
   var params = new URLSearchParams(location.search);
   var id = params.get('institution'), layerId = params.get('layer');
   if(!id || !/^https:\/\/ror\.org\/[0-9a-z]{9}$/.test(id)) return;
   var allowed = ['oceania-universities','australia-fta-universities','eu-framework-universities','timor-leste-universities','world-universities','education-registry'];
-  var layer = allowed.indexOf(layerId) >= 0 ? locationLayer(layerId) : null;
+  if(layerId && allowed.indexOf(layerId) < 0) return;
+  layerId = 'education-registry';
+  var layer = locationLayer(layerId);
   if(!layer || !layer.src) return;
   setSphere(true); openPlaceControls();
   setLayerNote('Loading this institution’s location…');
@@ -4731,6 +4773,24 @@ if(location.hash.indexOf('addr=') >= 0) setTimeout(openHashAddress, 260);
     if(candidates.length===1){focusPlace(layerId,candidates[0].index);return;}
     if(candidates.length>1){showPlaceChoices(candidates,'This organisation has '+candidates.length+' reported localities. Choose one to explore.',0);return;}
     setLayerNote('This registry identifier has no mapped point in the selected layer.');
+  });
+})();
+
+/* Mission directory links load only the reviewed Australian office layer. */
+(function openMissionLink(){
+  var id = new URLSearchParams(location.search).get('mission');
+  if(!id || !/^mission-au-\d{3}$/.test(id)) return;
+  var layerId = 'foreign-missions-australia', layer = locationLayer(layerId);
+  if(!layer || !layer.src) return;
+  setSphere(true); openPlaceControls();
+  setLayerNote('Loading the selected mission office...');
+  ensureLayerData(layer, function(error){
+    if(error){ setLayerNote('The mission layer could not load. Try its layer switch again.'); return; }
+    locationStates[layerId].visible = true;
+    rebuildLocationMarkers(); renderLocationLayerControls();
+    var index = locationData[layerId].findIndex(function(point){return point[8] && point[8].id === id;});
+    if(index >= 0){ focusPlace(layerId,index); setLayerNote('Office selected. Position identifies a building or property, not a visitor entrance.'); }
+    else setLayerNote('This mission has no approved map position. Open the missions directory for its review status.');
   });
 })();
 

@@ -1,0 +1,11 @@
+# Mission data sources and licence
+
+The mission office addresses and their source links come from the Department of Foreign Affairs and Trade Protocol directory and the individual official mission sources linked in each record. DFAT material is used under [CC BY 4.0, except where otherwise noted](https://www.dfat.gov.au/about-us/about-this-website/copyright). Records contain public institutional office facts, not staff names, private contact details, postal boxes or residences.
+
+The position data combines © OpenStreetMap contributors, available under the [Open Database Licence 1.0](https://www.openstreetmap.org/copyright), and [ACTGOV ADDRESSES from ACTmapi](https://www.arcgis.com/home/item.html?id=13427dc77da340a29dd6601af4d7484d), © Australian Capital Territory under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Each mapped record links to its own coordinate source. The geocoded compilation in `missions-australia.json` and `layers/foreign-missions-australia.js` is made available under ODbL 1.0, with the original source attributions retained. These dataset terms take precedence over the repository's licence for original code and design. The downloadable JSON provides the editable data used by the map.
+
+The 14 ACT Government matches use exact street number, street name and suburb, with a unit match where available. They locate government address points, not surveyed visitor entrances. That source has no postcode field, so no independent postcode verification is claimed. The accepted positions and held matches are documented in `missions-australia-coordinate-reviews.json`.
+
+An address match locates a building or property. It does not verify a visitor entrance, current services, diplomatic status, accessibility or opening hours. The records describe a checked repair of an older 141-entry list, not a complete current diplomatic directory.
+
+This update used a small, one-off, cached address lookup under the [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/), on one machine with one request at a time and a minimum 1.2-second request interval. No public geocoding API is embedded in the website. Do not schedule the one-off tool or expose it as a general lookup service.

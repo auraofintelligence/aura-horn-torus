@@ -34,6 +34,7 @@ Live page: https://auraofintelligence.github.io/aura-horn-torus/
 
 - [index.html](index.html) is the demo. One self-contained page, no build step.
 - [universities.html](universities.html) is the worldwide education directory: find institutions, sourced peak-body memberships and shared identifiers, then show a selected institution on Earth.
+- [missions.html](missions.html) explains the reviewed foreign missions in Australia, their office addresses, source evidence and mapping status.
 - [icons.html](icons.html) is the icon library: 173 icons cut out of the original prototype screens, each named, described, and given a generation prompt. Set a style line once and every prompt comes out in that hand.
 - [tables.html](tables.html) renders the register tables: the Vert and Face vector map per torus, and the shared ray directions.
 - [geometry.html](geometry.html) explains the maths in plain words.
@@ -63,7 +64,9 @@ Opening Satellite Earth sends ordinary tile requests, including the visitor's IP
 
 ## Location layers
 
-Open **Controls → Find → Earth**. The starter places are visible first; all larger or older lists begin switched off. Select a coloured point or search for a name to open its information card. **Zoom closer** can be pressed more than once for a local view; **Regional view** restores surrounding context.
+Open **Controls → Earth** for the globe, place searches and layers. **Controls → Facets** is separate: it contains torus cell selection, Multi select and Rays. Switching to Facets returns from the map to the torus; the two kinds of selection are not mixed into one panel.
+
+The starter places are visible first; all larger or older lists begin switched off. Select a coloured point or search for a name to open its information card. **Zoom closer** can be pressed more than once for a local view; **Regional view** restores surrounding context.
 
 The type filter works across whichever layers are visible. **Save place** creates a private shortlist in that browser only, and **Download CSV** makes the shortlist portable without uploading it anywhere.
 
@@ -74,17 +77,17 @@ The catalogue currently covers:
 - 139 points recovered from the **North Stradbroke Island** My Maps NetworkLink, clearly marked as a legacy reference rather than current or culturally authoritative truth;
 - 125 **Australian missions abroad**, checked on 19 May 2026 and shown at approximate city level;
 - 44,691 **world cities** from an old, version-undated local SimpleMaps copy, with [SimpleMaps attribution](https://simplemaps.com/data/world-cities) under CC BY 4.0; and
-- 5,133 university-index organisations matched to active identities in the August 2026 ROR snapshot: 64 across [UN M49 Oceania](https://unstats.un.org/unsd/methodology/m49/), 2,951 in non-Oceania countries in the 11 August 2026 [Australian free trade agreement](https://www.dfat.gov.au/trade/agreements/in-force) scope, 502 in EU member states in the [Australia-EU Framework Agreement](https://www.dfat.gov.au/geo/europe/european-union/australia-european-union-eu-framework-agreement) scope, and 1,616 across the remaining world backlog;
-- another 20,970 active ROR education organisations at 21,034 recorded localities, kept in an independent wider registry layer; and
+- one **Universities and education** layer: 26,103 active organisations in the August 2026 ROR snapshot, at all 26,167 recorded localities. Former geographic/treaty categories, including the empty Timor-Leste category, are no longer shown;
+- **Foreign missions in Australia**, with published office addresses and source-backed building/property positions from the 6 September 2026 review. The directory keeps all 141 historical entries and explains those without map positions; and
 - 19,636 minimal **Aura Affinity** discovery points. Every record is unverified; copied reviews, phone numbers and other contact material are deliberately excluded. Third-party reuse terms remain **TO BE CONFIRMED**, so this stays an off-by-default reference layer rather than verified business information.
 
-The education points use [ROR v2.11](https://zenodo.org/records/21773148), dated 3 August 2026, names and ROR links with GeoNames locality centroids. They are useful for finding an institution's city or region, but they are **not campus or building pins**. The historical layers trace accepted identities from the 2015 index. The wider registry independently includes universities, colleges and other education bodies. Neither establishes recognition, a complete list of every university on Earth, or participation in a treaty or agreement.
+The education points use [ROR v2.11](https://zenodo.org/records/21773148), dated 3 August 2026, names and ROR links with GeoNames locality centroids. They are useful for finding an institution's city or region, but they are **not campus or building pins**. The single public layer includes universities, colleges and other education bodies. Historical matching ledgers and former scope metadata remain archived for traceability, but are not separate map switches. Neither the registry nor the old index establishes recognition, a complete list of every university on Earth, or participation in a treaty or agreement.
 
-The release gate holds uncertain identities rather than guessing. All 9,363 historical source rows have now had an identity-matching pass: 5,141 accepted rows represent 5,133 unique organisations after eight duplicate listings are merged. Another 4,222 rows remain held for review, inactive history or no match. Timor-Leste has no row in the old list, so its historical treaty-scope layer remains empty; separate ROR education records can be explored through the directory. ROR metadata is CC0 and its GeoNames locality data is CC BY 4.0; the historical list declares no licence and is used only as a discovery index, without republishing its old website list.
+The release gate holds uncertain identities rather than guessing. All 9,363 historical source rows have now had an identity-matching pass: 5,141 accepted rows represent 5,133 unique organisations after eight duplicate listings are merged. Another 4,222 rows remain held for review, inactive history or no match. The six ROR education records in Timor-Leste remain available in the combined layer and directory's country filter. ROR metadata is CC0 and its GeoNames locality data is CC BY 4.0; the historical list declares no licence and is used only as a discovery index, without republishing its old website list.
 
 The [university directory](universities.html) brings together all 26,103 registry education organisations across 224 country and territory codes. It supports country, sourced membership, identifier and organisational-relationship filters, downloadable results and direct links to the globe. The initial evidence sample has 15 memberships across 13 institutions in Universities Australia, PIURN and APRU. GAJRA Earth applicability, contact and membership remain unassessed. See the [completion report](docs/location-completion-2026-09-05.md), [applicability research](docs/university-applicability.md) and [complementary location-layer suggestions](docs/location-layer-directions.md).
 
-The other supplied list that remains deliberately unmapped is the 141 foreign missions in Australia, because their addresses still need verified point coordinates. Its layer row explains what is missing.
+The [foreign mission directory](missions.html) repairs the historical 141-entry list using DFAT Protocol and linked official mission sources. It contains 137 checked Australian office addresses. Afghanistan's suspension, Venezuela's closure/restructure notice, and Kazakhstan and Lesotho's non-resident representation are explained separately. Missing coordinates do not mean an office has closed. Only source-backed positions are mapped, with record-specific accuracy and attribution. The same reviewed records are mirrored into the [Australian World Travel source page](https://auraofintelligence.github.io/Australian-world-travel/missions.html). See [mission data licence notes](data/MISSIONS-LICENCE.md).
 
 ### Import another list in the browser
 
