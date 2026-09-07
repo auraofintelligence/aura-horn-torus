@@ -152,7 +152,7 @@ window.AURA_LOCATION_MANIFEST=[
     "sourceLabel": "DFAT Protocol public directory",
     "sourceUrl": "https://protocol.dfat.gov.au/Public/MissionsInAustralia",
     "sourceFile": "missions-australia.json",
-    "sourceSha256": "BCA2421BD9291ED9FE9761DD2E7FF821D46B9C977E782CED477AE68AC52CFD51",
+    "sourceSha256": "1001BF5A4AFCA578CDCE86339BE193FF3B91C09B5684670BBC3BAE1121920748",
     "sourceUpdatedAt": "2026-09-06",
     "importedAt": "2026-09-06",
     "coordinateBasis": "Exact building/property point where matched; otherwise separate approximate address-area reference",
