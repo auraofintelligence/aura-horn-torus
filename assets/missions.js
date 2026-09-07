@@ -41,6 +41,7 @@
   }
   function statusLabel(record) { return record.status === 'mapped' ? 'On Earth' : 'Not mapped'; }
   function badge(record) { return node('span', statusLabel(record), 'badge' + (record.status === 'held' ? ' held' : '')); }
+  function honoraryBadge(record) { return record.honorary ? node('span', 'Honorary', 'badge honorary') : null; }
   function setSelectionUrl(id) {
     var url = new URL(location.href);
     url.searchParams.delete('mission');
@@ -67,6 +68,7 @@
         && (!$('country').value || record.country === $('country').value)
         && (!$('city').value || record.city === $('city').value)
         && (!$('type').value || record.type === $('type').value)
+        && (!$('honorary').value || (record.honorary ? 'yes' : 'no') === $('honorary').value)
         && (!$('status').value || record.status === $('status').value);
     });
     currentPage = 0;
@@ -86,6 +88,7 @@
       button.appendChild(node('strong', record.name || record.country + ' ' + record.type));
       button.appendChild(node('span', [record.country, record.city, record.type].filter(Boolean).join(' · '), 'context'));
       button.appendChild(badge(record));
+      if (record.honorary) button.appendChild(honoraryBadge(record));
       button.addEventListener('click', function () { select(record.id, true); });
       result.appendChild(button);
     });
@@ -105,6 +108,7 @@
   function renderDetail(record) {
     var detail = $('detail'), title = node('h2', record.name || record.country + ' ' + record.type);
     title.id = 'detail-title'; detail.replaceChildren(title, badge(record));
+    if (record.honorary) detail.appendChild(honoraryBadge(record));
     detail.appendChild(node('p', [record.country, record.city, record.type].filter(Boolean).join(' · ')));
     detail.appendChild(node('h3', 'Office address'));
     detail.appendChild(node('p', record.address || 'No current public office address is confirmed in this review.', 'address'));
@@ -191,8 +195,8 @@
     } finally { loading = false; }
   }
   $('search').addEventListener('input', function () { clearTimeout(filterTimer); filterTimer = setTimeout(applyFilters, 160); });
-  ['country', 'city', 'type', 'status'].forEach(function (id) { $(id).addEventListener('change', applyFilters); });
-  $('reset').addEventListener('click', function () { ['search', 'country', 'city', 'type', 'status'].forEach(function (id) { $(id).value = ''; }); applyFilters(); });
+  ['country', 'city', 'type', 'honorary', 'status'].forEach(function (id) { $(id).addEventListener('change', applyFilters); });
+  $('reset').addEventListener('click', function () { ['search', 'country', 'city', 'type', 'honorary', 'status'].forEach(function (id) { $(id).value = ''; }); applyFilters(); });
   $('previous').addEventListener('click', function () { changePage(-1); });
   $('next').addEventListener('click', function () { changePage(1); });
   $('retry').addEventListener('click', load);
