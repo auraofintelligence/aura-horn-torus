@@ -22,6 +22,11 @@ CITY_REFERENCE = {
     "TAS": ("Hobart", -42.8806, 147.3257),
     "NT": ("Darwin", -12.4634, 130.8456),
 }
+LOCALITY_REFERENCE = {
+    "Cairns": (-16.9186, 145.7781), "Townsville": (-19.2589, 146.8169),
+    "Gold Coast": (-28.0167, 153.4000), "Launceston": (-41.4332, 147.1441),
+    "Ayr": (-19.5736, 147.4067), "Macleay Island": (-27.6284, 153.3592),
+}
 
 
 def url(value):
@@ -44,7 +49,11 @@ def main():
     for office in source["offices"]:
         addresses = [a for a in office.get("addresses", []) if a.get("kind") == "office" and a.get("stateCode") in CITY_REFERENCE and a.get("postcode")]
         address = addresses[0] if addresses else None
-        city, lat, lon = CITY_REFERENCE.get(address["stateCode"], ("Australia", None, None)) if address else ("", None, None)
+        state_city, state_lat, state_lon = CITY_REFERENCE.get(address["stateCode"], ("Australia", None, None)) if address else ("", None, None)
+        locality = (address.get("locality") or "").strip() if address else ""
+        city = locality or state_city
+        base_lat, base_lon = LOCALITY_REFERENCE.get(locality.title(), (state_lat, state_lon))
+        lat, lon = base_lat, base_lon
         loc = geocodes.get(address.get("address", "").lower()) if address else None
         if address and not loc:
             # A transparent visual fallback keeps separate offices from collapsing
