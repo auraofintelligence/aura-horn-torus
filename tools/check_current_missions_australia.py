@@ -12,7 +12,7 @@ def main():
         assert r['status'] in {'mapped','held'}
         if r['status']=='mapped':
             assert r['address'] and math.isfinite(r['latitude']) and math.isfinite(r['longitude'])
-            assert 'approximate state-capital position' in r['coordinateBasis']
+            assert ('approximate address-area reference' in r['coordinateBasis'] or 'building/property point' in r['coordinateBasis'])
         else:
             assert r['latitude'] is None and r['longitude'] is None
     layer=json.loads((ROOT/'data/layers/foreign-missions-australia.js').read_text(encoding='utf-8').split('=',1)[1].rstrip(' ;\n'))
